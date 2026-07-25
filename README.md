@@ -1,30 +1,15 @@
-# Phoenix Summer Cup V6 Final
+# Phoenix Summer Cup V6.1
 
-## Tính năng mới
+Bản này sửa lỗi ảnh quy định không tải được.
 
-- Hiển thị ảnh quy định full màn hình.
-- Thành viên phải cuộn tới cuối ảnh mới mở được checkbox.
-- Tick cam kết xong mới bật nút “Tiếp tục đăng ký”.
-- Popup fade-out mượt trước khi hiện form.
-- Có thông báo rõ nếu ảnh quy định bị thiếu.
-- Giữ nguyên đồng hồ đếm ngược từng giây.
-- Giữ nguyên random đội, Supabase và trang Admin.
+## Ghi đè lên GitHub
 
-## Upload lên GitHub
-
-Ghi đè các file:
-
+Upload các file:
 - index.html
-- admin.html
 - app.js
-- admin.js
 - styles.css
-- config.js
-- assets/logo.png
-- assets/rules-poster.png
+- rules-poster.png
 
-Bấm Commit changes. Vercel sẽ tự deploy lại và giữ nguyên link.
+Quan trọng: `rules-poster.png` phải nằm cùng cấp với `index.html`, không nằm trong thư mục assets.
 
-## Supabase
-
-Không cần chỉnh SQL nếu database hiện đang chạy bình thường.
+Sau khi Commit, chờ Vercel deploy lại rồi tải lại trang.

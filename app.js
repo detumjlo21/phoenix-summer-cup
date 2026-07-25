@@ -106,6 +106,12 @@ continueButton.addEventListener("click",()=>{
   },320);
 });
 
+setTimeout(()=>{
+  if(!rulesLoading.hidden){
+    rulesLoading.textContent="Ảnh quy định chưa tải được. Hãy kiểm tra file rules-poster.png trên GitHub.";
+  }
+},8000);
+
 document.body.style.overflow="hidden";
 
 setInterval(updateCountdown,1000);updateCountdown();
