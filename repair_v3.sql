@@ -102,9 +102,9 @@ declare
   v_code text;
   v_max_team integer;
 begin
-  perform pg_advisory_xact_lock(20260802);
+  perform pg_advisory_xact_lock(20260730);
 
-  if now()>=timestamptz '2026-08-02 23:59:00+07' then
+  if now()>=timestamptz '2026-07-30 23:59:59+07' then
     raise exception 'registration_closed';
   end if;
 
