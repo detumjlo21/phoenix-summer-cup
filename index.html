@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phoenix Summer Cup 2026 — Lần 2</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <img src="assets/logo.png" alt="Logo Phoenix" class="logo">
+      <p class="eyebrow">PHOENIX TOURNAMENT</p>
+      <h1>Phoenix Summer Cup 2026</h1>
+      <p class="subtitle">Lần 2 • Giải đấu nội bộ quân đoàn</p>
+      <div class="counter"><span id="count">...</span>/55 người đã đăng ký</div>
+    </header>
+
+    <section class="panel">
+      <h2>Đăng ký tham gia</h2>
+      <form id="joinForm">
+        <label for="gameName">Tên trong game</label>
+        <input id="gameName" maxlength="40" placeholder="Ví dụ: PHX丶TênGame 禄" required>
+
+        <label for="uid">UID Free Fire</label>
+        <input id="uid" inputmode="numeric" maxlength="20" placeholder="Nhập UID của bạn" required>
+
+        <label for="facebook">Link Facebook</label>
+        <input id="facebook" type="url" placeholder="https://facebook.com/..." required>
+
+        <button id="joinBtn" type="submit">THAM GIA GIẢI ĐẤU</button>
+        <p id="message" class="message" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="section-row">
+        <div>
+          <h2>Danh sách đăng ký</h2>
+          <p class="muted">Chỉ hiển thị tên game.</p>
+        </div>
+        <button id="refreshBtn" class="secondary" type="button">Tải lại</button>
+      </div>
+      <div id="players" class="players"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Kết quả chia đội</h2>
+      <div id="teams" class="teams">
+        <p class="muted">Chưa có kết quả.</p>
+      </div>
+    </section>
+
+    <footer>
+      <a href="admin.html">Trang quản trị</a>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

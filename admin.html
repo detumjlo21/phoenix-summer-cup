@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản trị Phoenix Summer Cup</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page">
+    <header class="hero compact">
+      <img src="assets/logo.png" alt="Logo Phoenix" class="logo small">
+      <p class="eyebrow">PHOENIX ADMIN</p>
+      <h1>Quản trị giải đấu</h1>
+    </header>
+
+    <section id="loginPanel" class="panel">
+      <h2>Đăng nhập Admin</h2>
+      <form id="loginForm">
+        <label for="email">Email Admin</label>
+        <input id="email" type="email" required>
+
+        <label for="password">Mật khẩu</label>
+        <input id="password" type="password" required>
+
+        <button type="submit">ĐĂNG NHẬP</button>
+        <p id="loginMessage" class="message" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <div id="adminArea" hidden>
+      <section class="panel">
+        <div class="section-row">
+          <div>
+            <h2>Điều khiển</h2>
+            <p class="muted"><span id="adminCount">0</span>/55 người</p>
+          </div>
+          <button id="logoutBtn" type="button" class="secondary">Đăng xuất</button>
+        </div>
+
+        <div class="actions">
+          <button id="randomBtn" type="button">Random đội 4 người</button>
+          <button id="copyBtn" type="button" class="secondary">Copy kết quả</button>
+          <button id="exportBtn" type="button" class="secondary">Xuất CSV</button>
+          <button id="refreshAdminBtn" type="button" class="secondary">Tải lại</button>
+        </div>
+        <p id="adminMessage" class="message" aria-live="polite"></p>
+      </section>
+
+      <section class="panel">
+        <h2>Danh sách thành viên</h2>
+        <div id="adminPlayers" class="players"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Kết quả đội</h2>
+        <div id="adminTeams" class="teams"></div>
+      </section>
+    </div>
+
+    <footer><a href="index.html">← Trang đăng ký</a></footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
