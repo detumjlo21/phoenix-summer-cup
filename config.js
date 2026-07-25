@@ -4,5 +4,5 @@ window.PHOENIX_CONFIG = {
   maxPlayers: 55,
   teamSize: 4,
   tournamentName: "Phoenix Summer Cup 2026 — Lần 2",
-  closeAt: "2026-08-02T23:59:00+07:00"
+  closeAt: "2026-07-30T23:59:59+07:00"
 };
