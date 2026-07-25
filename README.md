@@ -1,42 +1,40 @@
-# Phoenix Summer Cup 2026 — V2
+# Phoenix Summer Cup V3
 
-## Có gì mới?
+## Cập nhật mới
 
-- Đăng ký xong được random đội ngay.
-- Mỗi đội tối đa 4 người.
-- Các đội được giữ cân bằng.
-- Thành viên thấy tên đội ngay.
-- Admin có thể đổi tên từng đội.
-- Có mã đăng ký `PSC2026-001`.
-- Tự khóa lúc 23:59 ngày 02/08/2026.
-- UID và Facebook chỉ Admin xem được.
+- Đồng hồ đếm ngược chạy từng giây.
+- Hiệu ứng random đội khoảng 2 giây.
+- Thanh tiến trình số người đăng ký.
+- Dashboard Admin.
+- Admin đổi tên đội.
+- Sửa lỗi view `public_players`.
+- Sửa foreign key giữa `players` và `team_names`.
+- Giữ nguyên link Vercel cũ.
 
-## Bước 1: Nâng cấp Supabase
+## Bước 1: Sửa Supabase
 
-1. Mở Supabase → SQL Editor → New query.
-2. Mở file `upgrade.sql`.
-3. Copy toàn bộ nội dung và bấm Run.
-4. Chờ đến khi Supabase báo `Success`.
+1. Supabase → SQL Editor → New query.
+2. Mở file `repair_v3.sql`.
+3. Copy toàn bộ, dán vào và bấm Run.
+4. Chờ dòng `Success`.
 
 ## Bước 2: Cập nhật GitHub
 
-Trong repository `phoenix-summer-cup`:
+Upload và ghi đè:
 
-1. Upload và ghi đè các file:
-   - `index.html`
-   - `admin.html`
-   - `app.js`
-   - `admin.js`
-   - `styles.css`
-   - `config.js`
-2. Upload thư mục `assets` nếu trước đó chưa có logo.
-3. Commit changes.
+- index.html
+- admin.html
+- app.js
+- admin.js
+- styles.css
+- config.js
+- assets/logo.png
 
-Vercel sẽ tự động deploy lại sau khi GitHub cập nhật.
+Bấm Commit changes. Vercel sẽ tự triển khai lại.
 
-## Kiểm tra
+## Bước 3: Kiểm tra
 
-1. Mở link Vercel.
-2. Đăng ký một tài khoản thử.
-3. Trang phải hiện ngay đội và mã đăng ký.
-4. Mở `admin.html`, đăng nhập rồi thử đổi tên đội.
+- Mở trang chủ bằng tab ẩn danh.
+- Đồng hồ phải đổi từng giây.
+- Đăng ký thử phải có hiệu ứng random.
+- Mở `admin.html` để thử đổi tên đội.

@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090d">
   <title>Phoenix Summer Cup 2026 — Lần 2</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="background-grid"></div>
+
   <main class="page">
     <header class="hero">
       <img src="assets/logo.png" alt="Logo Phoenix" class="logo">
@@ -14,23 +17,53 @@
       <h1>Phoenix Summer Cup 2026</h1>
       <p class="subtitle">Lần 2 • Giải đấu nội bộ quân đoàn</p>
 
-      <div class="hero-stats">
-        <div class="stat"><strong id="count">0</strong><span>/55 người</span></div>
-        <div class="stat"><strong id="countdown">...</strong><span>thời gian còn lại</span></div>
-      </div>
+      <section class="countdown-wrap" aria-label="Thời gian đăng ký còn lại">
+        <p class="countdown-title">Đăng ký kết thúc sau</p>
+        <div id="countdown" class="countdown">
+          <div class="time-box"><strong id="days">00</strong><span>Ngày</span></div>
+          <div class="time-box"><strong id="hours">00</strong><span>Giờ</span></div>
+          <div class="time-box"><strong id="minutes">00</strong><span>Phút</span></div>
+          <div class="time-box"><strong id="seconds">00</strong><span>Giây</span></div>
+        </div>
+        <p id="closedText" class="closed-text" hidden>ĐĂNG KÝ ĐÃ KẾT THÚC</p>
+      </section>
+
+      <section class="progress-card">
+        <div class="progress-heading">
+          <span>Đã đăng ký</span>
+          <strong><span id="count">0</span>/55</strong>
+        </div>
+        <div class="progress-track" aria-label="Tiến độ đăng ký">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+      </section>
     </header>
+
+    <section id="randomOverlay" class="random-overlay" hidden aria-live="polite">
+      <div class="random-dialog">
+        <p class="eyebrow">ĐANG RANDOM ĐỘI</p>
+        <div class="dice">🎲</div>
+        <strong id="rollingTeam">ĐỘI 1</strong>
+        <p>Hệ thống đang chọn đội cho bạn...</p>
+      </div>
+    </section>
 
     <section id="resultCard" class="panel result-card" hidden>
       <p class="eyebrow">ĐĂNG KÝ THÀNH CÔNG</p>
       <h2 id="resultName"></h2>
-      <p class="muted">Bạn được xếp ngẫu nhiên vào</p>
+      <p class="muted">Bạn được xếp vào</p>
       <div id="resultTeam" class="team-result"></div>
       <p id="resultCode" class="registration-code"></p>
     </section>
 
     <section id="joinPanel" class="panel">
-      <h2>Đăng ký tham gia</h2>
-      <p class="deadline">Đăng ký đến 23:59 ngày 02/08/2026</p>
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">THAM GIA NGAY</p>
+          <h2>Đăng ký giải đấu</h2>
+        </div>
+        <span class="deadline-chip">Đến 02/08/2026</span>
+      </div>
 
       <form id="joinForm">
         <label for="gameName">Tên trong game</label>
@@ -42,7 +75,7 @@
         <label for="facebook">Link Facebook</label>
         <input id="facebook" type="url" placeholder="https://facebook.com/..." required>
 
-        <button id="joinBtn" type="submit">THAM GIA GIẢI ĐẤU</button>
+        <button id="joinBtn" type="submit">THAM GIA & RANDOM ĐỘI</button>
         <p id="message" class="message" aria-live="polite"></p>
       </form>
     </section>
@@ -50,8 +83,8 @@
     <section class="panel">
       <div class="section-row">
         <div>
+          <p class="eyebrow">NGƯỜI THAM GIA</p>
           <h2>Danh sách đăng ký</h2>
-          <p class="muted">Chỉ hiển thị tên game và đội.</p>
         </div>
         <button id="refreshBtn" class="secondary" type="button">Tải lại</button>
       </div>
@@ -59,6 +92,7 @@
     </section>
 
     <section class="panel">
+      <p class="eyebrow">ĐỘI THI ĐẤU</p>
       <h2>Danh sách đội</h2>
       <div id="teams" class="teams">
         <p class="muted">Chưa có thành viên.</p>

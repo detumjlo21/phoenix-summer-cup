@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090d">
   <title>Quản trị Phoenix Summer Cup</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="background-grid"></div>
+
   <main class="page">
     <header class="hero compact">
       <img src="assets/logo.png" alt="Logo Phoenix" class="logo small">
@@ -27,11 +30,29 @@
     </section>
 
     <div id="adminArea" hidden>
+      <section class="dashboard-grid">
+        <article class="metric-card">
+          <span>Đã đăng ký</span>
+          <strong id="adminCount">0</strong>
+          <small>Tối đa 55 người</small>
+        </article>
+        <article class="metric-card">
+          <span>Số đội có người</span>
+          <strong id="activeTeams">0</strong>
+          <small>Mỗi đội tối đa 4</small>
+        </article>
+        <article class="metric-card">
+          <span>Còn chỗ</span>
+          <strong id="remainingSlots">55</strong>
+          <small>Suất đăng ký</small>
+        </article>
+      </section>
+
       <section class="panel">
         <div class="section-row">
           <div>
-            <h2>Bảng điều khiển</h2>
-            <p class="muted"><span id="adminCount">0</span>/55 người đã đăng ký</p>
+            <p class="eyebrow">ĐIỀU KHIỂN</p>
+            <h2>Quản lý giải đấu</h2>
           </div>
           <button id="logoutBtn" type="button" class="secondary">Đăng xuất</button>
         </div>
@@ -44,17 +65,20 @@
       </section>
 
       <section class="panel">
+        <p class="eyebrow">TÙY CHỈNH</p>
         <h2>Đổi tên đội</h2>
-        <p class="muted">Tên mới sẽ hiện ngay cho thành viên.</p>
+        <p class="muted">Tên mới sẽ hiện ngay trên trang thành viên.</p>
         <div id="teamNameEditor" class="team-editor"></div>
       </section>
 
       <section class="panel">
-        <h2>Danh sách thành viên</h2>
+        <p class="eyebrow">THÀNH VIÊN</p>
+        <h2>Danh sách đăng ký</h2>
         <div id="adminPlayers" class="players"></div>
       </section>
 
       <section class="panel">
+        <p class="eyebrow">ĐỘI THI ĐẤU</p>
         <h2>Danh sách đội</h2>
         <div id="adminTeams" class="teams"></div>
       </section>
