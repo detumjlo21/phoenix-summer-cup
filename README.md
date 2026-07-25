@@ -1,20 +1,18 @@
-# Phoenix Summer Cup V4
+# Phoenix Summer Cup V5
 
-## Tính năng chính
+## Thay đổi chính
 
-- Mở website là hiện quy định giải đấu toàn màn hình.
-- Phải tick cam kết mới bấm được “Tiếp tục đăng ký”.
-- Sau đó mới hiện trang đăng ký.
+- Dùng logo Phoenix mới.
+- Khi mở web sẽ hiện ảnh “Cách thức tính điểm & Quy định giải đấu”.
+- Thành viên phải đọc ảnh, tick cam kết rồi mới được vào form đăng ký.
 - Đồng hồ đếm ngược từng giây.
-- Đăng ký xong có hiệu ứng random và hiện đội ngay.
-- Mỗi đội tối đa 4 thành viên.
+- Đăng ký xong có hiệu ứng random đội.
+- Thành viên thấy đội ngay.
 - Admin đổi tên đội, xóa thành viên, copy danh sách và xuất CSV.
-- Tự khóa đăng ký lúc 23:59 ngày 02/08/2026.
-- Đã bỏ các dòng nhỏ “THAM GIA NGAY”, “NGƯỜI THAM GIA”, “ĐỘI THI ĐẤU”.
 
 ## Cập nhật GitHub
 
-Upload và ghi đè:
+Upload và ghi đè các file:
 
 - index.html
 - admin.html
@@ -23,11 +21,12 @@ Upload và ghi đè:
 - styles.css
 - config.js
 - assets/logo.png
+- assets/rules-poster.png
 
-Bấm Commit changes. Vercel sẽ tự deploy lại và giữ nguyên link cũ.
+Sau đó bấm Commit changes. Vercel sẽ tự deploy lại và giữ nguyên link cũ.
 
 ## Supabase
 
-Nếu V3 đã chạy ổn thì không cần chạy SQL lại.
+Nếu V3/V4 đang chạy bình thường thì không cần sửa SQL.
 
-Nếu vẫn còn lỗi database, chạy file `repair_v3.sql` một lần trong Supabase SQL Editor.
+Chỉ chạy `repair_v3.sql` nếu website vẫn báo lỗi database.

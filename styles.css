@@ -65,65 +65,62 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 }
 
 
-/* V4: Cổng đọc quy định trước khi đăng ký */
+
+
+/* V5: Quy định bằng ảnh */
 .rules-gate{
   position:fixed;
   inset:0;
   z-index:100;
   display:grid;
   place-items:center;
-  padding:16px;
-  background:rgba(4,5,8,.96);
+  padding:14px;
+  background:rgba(4,5,8,.97);
   backdrop-filter:blur(10px);
 }
 .rules-gate[hidden]{display:none}
-.rules-modal{
-  width:min(590px,100%);
-  max-height:calc(100vh - 32px);
-  padding:22px;
+
+.rules-modal-image{
+  width:min(760px,100%);
+  max-height:calc(100vh - 28px);
+  display:flex;
+  flex-direction:column;
+  padding:18px;
   overflow:hidden;
-  border:1px solid rgba(255,138,31,.42);
+  border:1px solid rgba(239,61,50,.55);
   border-radius:22px;
   background:
-    radial-gradient(circle at top,rgba(239,61,50,.15),transparent 38%),
+    radial-gradient(circle at top,rgba(239,61,50,.16),transparent 35%),
     var(--panel);
 }
-.rules-logo{
-  display:block;
-  width:min(125px,34vw);
-  height:auto;
-  margin:0 auto 8px;
-  filter:drop-shadow(0 0 18px rgba(239,61,50,.35));
-}
-.rules-modal h2{
-  margin:6px 0 8px;
+
+.rules-header{
+  display:flex;
+  justify-content:center;
+  align-items:center;
   text-align:center;
-  font-size:clamp(26px,6vw,38px);
+  margin-bottom:12px;
 }
-.rules-modal>.eyebrow{text-align:center}
-.rules-intro{
-  margin:0;
-  text-align:center;
-  color:var(--muted);
+.rules-header h2{
+  margin:4px 0 0;
+  font-size:clamp(24px,5vw,36px);
 }
-.rules-scroll{
-  max-height:43vh;
-  margin:18px 0 14px;
-  padding:15px 16px;
+
+.rules-poster-wrap{
+  flex:1 1 auto;
+  min-height:0;
   overflow-y:auto;
   overscroll-behavior:contain;
   border:1px solid var(--border);
-  border-radius:14px;
-  background:var(--panel2);
+  border-radius:15px;
+  background:#050608;
 }
-.rules-scroll ol{
-  margin:0;
-  padding-left:23px;
+.rules-poster{
+  display:block;
+  width:100%;
+  height:auto;
 }
-.rules-scroll li{
-  margin:11px 0;
-  line-height:1.55;
-}
+
 .agreement{
   display:flex;
   align-items:flex-start;
@@ -138,15 +135,27 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   height:21px;
   flex:0 0 auto;
   margin:1px 0 0;
-  accent-color:var(--orange);
+  accent-color:var(--red);
 }
-#continueButton{width:100%}
+
+#continueButton{
+  width:100%;
+}
 #continueButton:disabled{
   opacity:.42;
   cursor:not-allowed;
   filter:grayscale(.35);
 }
+
 @media(max-width:650px){
-  .rules-modal{padding:17px}
-  .rules-scroll{max-height:45vh;padding:13px}
+  .rules-modal-image{
+    padding:12px;
+    max-height:calc(100vh - 16px);
+  }
+  .rules-header h2{
+    font-size:22px;
+  }
+  .agreement{
+    font-size:14px;
+  }
 }
