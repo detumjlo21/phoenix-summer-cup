@@ -8,30 +8,32 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <section id="rulesGate" class="rules-gate" aria-labelledby="rulesTitle">
-    <div class="rules-modal rules-modal-image">
-      <div class="rules-header">
-        <div>
-          <p class="eyebrow">PHOENIX SUMMER CUP 2026 — LẦN 2</p>
-          <h2 id="rulesTitle">Cách thức tính điểm & Quy định</h2>
-        </div>
-      </div>
-
-      <div class="rules-poster-wrap">
+  <section id="rulesGate" class="rules-gate" aria-label="Quy định giải đấu">
+    <div class="rules-modal rules-modal-v6">
+      <div id="rulesPosterWrap" class="rules-poster-wrap-v6">
         <img
+          id="rulesPoster"
           src="assets/rules-poster.png"
           alt="Bảng cách thức tính điểm và quy định Phoenix Summer Cup 2026"
-          class="rules-poster"
+          class="rules-poster-v6"
+          loading="eager"
         >
+        <div id="rulesLoading" class="rules-loading">Đang tải quy định...</div>
       </div>
 
-      <label class="agreement">
-        <input id="agreeRules" type="checkbox">
+      <p id="scrollHint" class="scroll-hint">
+        Vuốt xuống cuối ảnh để mở xác nhận
+      </p>
+
+      <label id="agreementLabel" class="agreement agreement-disabled">
+        <input id="agreeRules" type="checkbox" disabled>
         <span>
           Tôi đã đọc toàn bộ cách thức tính điểm và quy định giải đấu,
           cam kết thực hiện đúng và chấp nhận quyết định xử lý của ban tổ chức nếu vi phạm.
         </span>
       </label>
+
+      <p id="agreementStatus" class="agreement-status" aria-live="polite"></p>
 
       <button id="continueButton" type="button" disabled>
         TIẾP TỤC ĐĂNG KÝ

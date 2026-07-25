@@ -12,6 +12,12 @@ const overlay=document.querySelector("#randomOverlay");
 const rulesGate=document.querySelector("#rulesGate");
 const agreeRules=document.querySelector("#agreeRules");
 const continueButton=document.querySelector("#continueButton");
+const rulesPosterWrap=document.querySelector("#rulesPosterWrap");
+const rulesPoster=document.querySelector("#rulesPoster");
+const rulesLoading=document.querySelector("#rulesLoading");
+const scrollHint=document.querySelector("#scrollHint");
+const agreementLabel=document.querySelector("#agreementLabel");
+const agreementStatus=document.querySelector("#agreementStatus");
 let publicPlayers=[];
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
@@ -45,15 +51,59 @@ function updateCountdown(){
   box.classList.toggle("warning",diff<86400000);
   box.classList.toggle("danger",diff<3600000);
 }
+let rulesUnlocked=false;
+
+function unlockAgreement(){
+  if(rulesUnlocked)return;
+  rulesUnlocked=true;
+  agreeRules.disabled=false;
+  agreementLabel.classList.remove("agreement-disabled");
+  scrollHint.textContent="Bạn đã xem hết nội dung quy định";
+  agreementStatus.textContent="✓ Có thể xác nhận và tiếp tục đăng ký";
+}
+
+function checkRulesScroll(){
+  const distanceFromBottom=
+    rulesPosterWrap.scrollHeight-rulesPosterWrap.scrollTop-rulesPosterWrap.clientHeight;
+  if(distanceFromBottom<=24)unlockAgreement();
+}
+
+rulesPosterWrap.addEventListener("scroll",checkRulesScroll,{passive:true});
+
+rulesPoster.addEventListener("load",()=>{
+  rulesLoading.hidden=true;
+  if(rulesPosterWrap.scrollHeight<=rulesPosterWrap.clientHeight+10){
+    unlockAgreement();
+  }
+});
+
+rulesPoster.addEventListener("error",()=>{
+  rulesLoading.textContent="Không tải được ảnh quy định. Hãy kiểm tra file assets/rules-poster.png";
+  scrollHint.textContent="Ảnh quy định đang bị thiếu";
+});
+
+if(rulesPoster.complete&&rulesPoster.naturalWidth>0){
+  rulesLoading.hidden=true;
+  requestAnimationFrame(()=>{
+    if(rulesPosterWrap.scrollHeight<=rulesPosterWrap.clientHeight+10)unlockAgreement();
+  });
+}
+
 agreeRules.addEventListener("change",()=>{
   continueButton.disabled=!agreeRules.checked;
+  agreementStatus.textContent=agreeRules.checked
+    ?"✓ Đã xác nhận. Bạn có thể tiếp tục đăng ký."
+    :"✓ Có thể xác nhận và tiếp tục đăng ký";
 });
 
 continueButton.addEventListener("click",()=>{
   if(!agreeRules.checked)return;
-  rulesGate.hidden=true;
+  rulesGate.classList.add("is-closing");
   document.body.style.overflow="";
-  document.querySelector("#joinPanel").scrollIntoView({behavior:"smooth",block:"start"});
+  setTimeout(()=>{
+    rulesGate.hidden=true;
+    document.querySelector("#joinPanel").scrollIntoView({behavior:"smooth",block:"start"});
+  },320);
 });
 
 document.body.style.overflow="hidden";
