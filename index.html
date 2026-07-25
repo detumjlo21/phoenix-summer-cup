@@ -13,11 +13,25 @@
       <p class="eyebrow">PHOENIX TOURNAMENT</p>
       <h1>Phoenix Summer Cup 2026</h1>
       <p class="subtitle">Lần 2 • Giải đấu nội bộ quân đoàn</p>
-      <div class="counter"><span id="count">...</span>/55 người đã đăng ký</div>
+
+      <div class="hero-stats">
+        <div class="stat"><strong id="count">0</strong><span>/55 người</span></div>
+        <div class="stat"><strong id="countdown">...</strong><span>thời gian còn lại</span></div>
+      </div>
     </header>
 
-    <section class="panel">
+    <section id="resultCard" class="panel result-card" hidden>
+      <p class="eyebrow">ĐĂNG KÝ THÀNH CÔNG</p>
+      <h2 id="resultName"></h2>
+      <p class="muted">Bạn được xếp ngẫu nhiên vào</p>
+      <div id="resultTeam" class="team-result"></div>
+      <p id="resultCode" class="registration-code"></p>
+    </section>
+
+    <section id="joinPanel" class="panel">
       <h2>Đăng ký tham gia</h2>
+      <p class="deadline">Đăng ký đến 23:59 ngày 02/08/2026</p>
+
       <form id="joinForm">
         <label for="gameName">Tên trong game</label>
         <input id="gameName" maxlength="40" placeholder="Ví dụ: PHX丶TênGame 禄" required>
@@ -37,7 +51,7 @@
       <div class="section-row">
         <div>
           <h2>Danh sách đăng ký</h2>
-          <p class="muted">Chỉ hiển thị tên game.</p>
+          <p class="muted">Chỉ hiển thị tên game và đội.</p>
         </div>
         <button id="refreshBtn" class="secondary" type="button">Tải lại</button>
       </div>
@@ -45,15 +59,13 @@
     </section>
 
     <section class="panel">
-      <h2>Kết quả chia đội</h2>
+      <h2>Danh sách đội</h2>
       <div id="teams" class="teams">
-        <p class="muted">Chưa có kết quả.</p>
+        <p class="muted">Chưa có thành viên.</p>
       </div>
     </section>
 
-    <footer>
-      <a href="admin.html">Trang quản trị</a>
-    </footer>
+    <footer><a href="admin.html">Trang quản trị</a></footer>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

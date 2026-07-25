@@ -5,70 +5,74 @@ let currentPlayers=[],currentTeams=[];
 const loginPanel=document.querySelector("#loginPanel"),adminArea=document.querySelector("#adminArea");
 const loginMessage=document.querySelector("#loginMessage"),adminMessage=document.querySelector("#adminMessage");
 const adminPlayers=document.querySelector("#adminPlayers"),adminTeams=document.querySelector("#adminTeams");
+const editor=document.querySelector("#teamNameEditor");
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 function msg(el,text,type=""){el.textContent=text;el.className=`message ${type}`}
 async function verifyAdmin(){
-  const {data:{user}}=await sb.auth.getUser();
-  if(!user)return false;
-  const {data}=await sb.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
-  return !!data;
+  const {data:{user}}=await sb.auth.getUser();if(!user)return false;
+  const {data}=await sb.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();return !!data;
 }
-async function syncUI(){
-  const ok=await verifyAdmin();loginPanel.hidden=ok;adminArea.hidden=!ok;if(ok){await loadPlayers();await loadTeams()}
-}
+async function syncUI(){const ok=await verifyAdmin();loginPanel.hidden=ok;adminArea.hidden=!ok;if(ok)await loadAll()}
+
 document.querySelector("#loginForm").addEventListener("submit",async e=>{
   e.preventDefault();msg(loginMessage,"Đang đăng nhập...");
   const email=document.querySelector("#email").value.trim(),password=document.querySelector("#password").value;
   const {error}=await sb.auth.signInWithPassword({email,password});
   if(error){msg(loginMessage,"Email hoặc mật khẩu không đúng.","error");return}
-  if(!(await verifyAdmin())){await sb.auth.signOut();msg(loginMessage,"Tài khoản này chưa được cấp quyền Admin.","error");return}
+  if(!(await verifyAdmin())){await sb.auth.signOut();msg(loginMessage,"Tài khoản chưa được cấp quyền Admin.","error");return}
   msg(loginMessage,"");syncUI();
 });
 document.querySelector("#logoutBtn").addEventListener("click",async()=>{await sb.auth.signOut();syncUI()});
 
-async function loadPlayers(){
-  const {data,error}=await sb.from("players").select("*").order("created_at");
-  if(error){msg(adminMessage,error.message,"error");return}
-  currentPlayers=data;document.querySelector("#adminCount").textContent=data.length;
-  adminPlayers.innerHTML=data.length?data.map((p,i)=>`<div class="player"><div><strong>${i+1}. ${esc(p.game_name)}</strong><small>UID: ${esc(p.uid)}</small><a href="${esc(p.facebook_url)}" target="_blank" rel="noopener">Facebook</a></div><button class="deleteBtn" data-id="${p.id}">Xóa</button></div>`).join(""):`<p class="muted">Chưa có thành viên.</p>`;
+async function loadAll(){
+  const [{data:players,error:pError},{data:teams,error:tError}]=await Promise.all([
+    sb.from("players").select("*,team_names(name)").order("created_at"),
+    sb.from("team_names").select("*").order("team_number")
+  ]);
+  if(pError||tError){msg(adminMessage,(pError||tError).message,"error");return}
+  currentPlayers=players;currentTeams=teams;
+  document.querySelector("#adminCount").textContent=players.length;
+  adminPlayers.innerHTML=players.length?players.map((p,i)=>`<div class="player"><div><strong>${i+1}. ${esc(p.game_name)}</strong><small>UID: ${esc(p.uid)} • ${esc(p.team_names?.name||("Đội "+p.team_number))}</small><a href="${esc(p.facebook_url)}" target="_blank" rel="noopener">Facebook</a></div><button class="deleteBtn" data-id="${p.id}">Xóa</button></div>`).join(""):`<p class="muted">Chưa có thành viên.</p>`;
+  renderTeams();renderEditor();
 }
+function renderTeams(){
+  const groups={};
+  for(const team of currentTeams)groups[team.team_number]={name:team.name,members:[]};
+  for(const p of currentPlayers)(groups[p.team_number]??={name:`Đội ${p.team_number}`,members:[]}).members.push(p);
+  adminTeams.innerHTML=Object.entries(groups).map(([n,g])=>`<article class="team"><h3>${esc(g.name)} (${g.members.length}/4)</h3><ol>${g.members.map(x=>`<li>${esc(x.game_name)}</li>`).join("")}</ol></article>`).join("");
+}
+function renderEditor(){
+  editor.innerHTML=currentTeams.map(t=>`<div class="editor-row"><strong>Đội ${t.team_number}</strong><input data-team="${t.team_number}" value="${esc(t.name)}" maxlength="40"><button type="button" class="saveTeamBtn" data-team="${t.team_number}">Lưu</button></div>`).join("");
+}
+editor.addEventListener("click",async e=>{
+  const b=e.target.closest(".saveTeamBtn");if(!b)return;
+  const team=Number(b.dataset.team),input=editor.querySelector(`input[data-team="${team}"]`),name=input.value.trim();
+  if(!name)return msg(adminMessage,"Tên đội không được để trống.","error");
+  const {error}=await sb.from("team_names").update({name}).eq("team_number",team);
+  if(error)msg(adminMessage,error.message,"error");else{msg(adminMessage,"Đã đổi tên đội.","success");loadAll()}
+});
 adminPlayers.addEventListener("click",async e=>{
   const b=e.target.closest(".deleteBtn");if(!b)return;
-  if(!confirm("Xóa thành viên này?"))return;
+  if(!confirm("Xóa thành viên này? Chỗ trống của đội sẽ được dùng cho người đăng ký sau."))return;
   const {error}=await sb.from("players").delete().eq("id",b.dataset.id);
-  if(error)msg(adminMessage,error.message,"error");else loadPlayers();
+  if(error)msg(adminMessage,error.message,"error");else loadAll();
 });
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
-document.querySelector("#randomBtn").addEventListener("click",async()=>{
-  if(!currentPlayers.length){msg(adminMessage,"Chưa có người chơi.","error");return}
-  const shuffled=shuffle(currentPlayers),rows=shuffled.map((p,i)=>({team_number:Math.floor(i/cfg.teamSize)+1,position:(i%cfg.teamSize)+1,player_id:p.id,game_name:p.game_name}));
-  msg(adminMessage,"Đang lưu kết quả...");
-  const del=await sb.from("teams").delete().gte("team_number",1);if(del.error){msg(adminMessage,del.error.message,"error");return}
-  const ins=await sb.from("teams").insert(rows);if(ins.error){msg(adminMessage,ins.error.message,"error");return}
-  msg(adminMessage,"Đã random và lưu kết quả!","success");loadTeams();
-});
-async function loadTeams(){
-  const {data,error}=await sb.from("teams").select("*").order("team_number").order("position");
-  if(error){msg(adminMessage,error.message,"error");return}
-  currentTeams=data;
-  if(!data.length){adminTeams.innerHTML=`<p class="muted">Chưa có kết quả.</p>`;return}
-  const groups=data.reduce((a,x)=>((a[x.team_number]??=[]).push(x),a),{});
-  adminTeams.innerHTML=Object.entries(groups).map(([n,m])=>`<article class="team"><h3>Đội ${n}</h3><ol>${m.map(x=>`<li>${esc(x.game_name)}</li>`).join("")}</ol></article>`).join("");
-}
 function resultText(){
-  const groups=currentTeams.reduce((a,x)=>((a[x.team_number]??=[]).push(x),a),{});
-  return `${cfg.tournamentName}\n\n`+Object.entries(groups).map(([n,m])=>`ĐỘI ${n}\n${m.map(x=>x.game_name).join("\n")}`).join("\n\n");
+  const groups={};
+  for(const team of currentTeams)groups[team.team_number]={name:team.name,members:[]};
+  for(const p of currentPlayers)(groups[p.team_number]??={name:`Đội ${p.team_number}`,members:[]}).members.push(p);
+  return `${cfg.tournamentName}\n\n`+Object.values(groups).filter(g=>g.members.length).map(g=>`${g.name}\n${g.members.map(x=>x.game_name).join("\n")}`).join("\n\n");
 }
 document.querySelector("#copyBtn").addEventListener("click",async()=>{
-  if(!currentTeams.length)return msg(adminMessage,"Chưa có kết quả.","error");
-  await navigator.clipboard.writeText(resultText());msg(adminMessage,"Đã copy kết quả!","success");
+  if(!currentPlayers.length)return msg(adminMessage,"Chưa có dữ liệu.","error");
+  await navigator.clipboard.writeText(resultText());msg(adminMessage,"Đã copy danh sách đội!","success");
 });
 document.querySelector("#exportBtn").addEventListener("click",()=>{
   if(!currentPlayers.length)return msg(adminMessage,"Chưa có dữ liệu.","error");
-  const rows=[["Tên game","UID","Facebook","Thời gian"],...currentPlayers.map(p=>[p.game_name,p.uid,p.facebook_url,p.created_at])];
+  const rows=[["Tên game","UID","Facebook","Đội","Mã đăng ký","Thời gian"],...currentPlayers.map(p=>[p.game_name,p.uid,p.facebook_url,p.team_names?.name||`Đội ${p.team_number}`,p.registration_code,p.created_at])];
   const csv="\ufeff"+rows.map(r=>r.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(",")).join("\n");
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="phoenix-summer-cup.csv";a.click();URL.revokeObjectURL(a.href);
 });
-document.querySelector("#refreshAdminBtn").addEventListener("click",()=>{loadPlayers();loadTeams()});
+document.querySelector("#refreshAdminBtn").addEventListener("click",loadAll);
 syncUI();

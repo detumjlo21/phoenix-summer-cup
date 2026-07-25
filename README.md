@@ -1,48 +1,42 @@
-# Phoenix Summer Cup 2026 — Lần 2
+# Phoenix Summer Cup 2026 — V2
 
-## 1. Tạo bảng Supabase
+## Có gì mới?
 
-1. Mở project Supabase.
-2. Chọn **SQL Editor**.
-3. Chọn **New query**.
-4. Mở file `setup.sql`, copy toàn bộ, dán vào và bấm **Run**.
+- Đăng ký xong được random đội ngay.
+- Mỗi đội tối đa 4 người.
+- Các đội được giữ cân bằng.
+- Thành viên thấy tên đội ngay.
+- Admin có thể đổi tên từng đội.
+- Có mã đăng ký `PSC2026-001`.
+- Tự khóa lúc 23:59 ngày 02/08/2026.
+- UID và Facebook chỉ Admin xem được.
 
-## 2. Tạo tài khoản Admin
+## Bước 1: Nâng cấp Supabase
 
-1. Supabase → **Authentication → Users**.
-2. Chọn **Add user → Create new user**.
-3. Nhập email và mật khẩu của bạn.
-4. Copy **User UID** của tài khoản vừa tạo.
-5. Vào SQL Editor và chạy:
+1. Mở Supabase → SQL Editor → New query.
+2. Mở file `upgrade.sql`.
+3. Copy toàn bộ nội dung và bấm Run.
+4. Chờ đến khi Supabase báo `Success`.
 
-```sql
-insert into public.admins(user_id)
-values ('DÁN-USER-UID-VÀO-ĐÂY');
-```
+## Bước 2: Cập nhật GitHub
 
-Không gửi mật khẩu Admin cho người khác.
+Trong repository `phoenix-summer-cup`:
 
-## 3. Chạy thử trên VS Code
+1. Upload và ghi đè các file:
+   - `index.html`
+   - `admin.html`
+   - `app.js`
+   - `admin.js`
+   - `styles.css`
+   - `config.js`
+2. Upload thư mục `assets` nếu trước đó chưa có logo.
+3. Commit changes.
 
-1. Mở thư mục dự án trong VS Code.
-2. Cài extension **Live Server**.
-3. Chuột phải `index.html` → **Open with Live Server**.
-4. Trang Admin nằm ở `admin.html`.
+Vercel sẽ tự động deploy lại sau khi GitHub cập nhật.
 
-## 4. Đưa lên Vercel
+## Kiểm tra
 
-1. Nén hoặc giữ nguyên thư mục dự án.
-2. Vào Vercel Dashboard.
-3. Tạo project mới bằng GitHub hoặc dùng trang Deploy/Drop nếu tài khoản có hỗ trợ.
-4. Upload toàn bộ thư mục này.
-5. Framework Preset chọn **Other**.
-6. Không cần Build Command.
-7. Output Directory để trống.
-8. Deploy và lấy link gửi cho mọi người.
-
-## Lưu ý
-
-- Publishable key được dùng ở trình duyệt; quyền thật sự được giới hạn bằng RLS trong `setup.sql`.
-- Không bao giờ đưa `service_role key` vào website.
-- Public chỉ xem tên game và kết quả đội.
-- UID và Facebook chỉ Admin đã đăng nhập mới xem được.
+1. Mở link Vercel.
+2. Đăng ký một tài khoản thử.
+3. Trang phải hiện ngay đội và mã đăng ký.
+4. Mở `admin.html`, đăng nhập rồi thử đổi tên đội.

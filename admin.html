@@ -19,10 +19,8 @@
       <form id="loginForm">
         <label for="email">Email Admin</label>
         <input id="email" type="email" required>
-
         <label for="password">Mật khẩu</label>
         <input id="password" type="password" required>
-
         <button type="submit">ĐĂNG NHẬP</button>
         <p id="loginMessage" class="message" aria-live="polite"></p>
       </form>
@@ -32,19 +30,23 @@
       <section class="panel">
         <div class="section-row">
           <div>
-            <h2>Điều khiển</h2>
-            <p class="muted"><span id="adminCount">0</span>/55 người</p>
+            <h2>Bảng điều khiển</h2>
+            <p class="muted"><span id="adminCount">0</span>/55 người đã đăng ký</p>
           </div>
           <button id="logoutBtn" type="button" class="secondary">Đăng xuất</button>
         </div>
-
         <div class="actions">
-          <button id="randomBtn" type="button">Random đội 4 người</button>
-          <button id="copyBtn" type="button" class="secondary">Copy kết quả</button>
+          <button id="copyBtn" type="button">Copy danh sách đội</button>
           <button id="exportBtn" type="button" class="secondary">Xuất CSV</button>
           <button id="refreshAdminBtn" type="button" class="secondary">Tải lại</button>
         </div>
         <p id="adminMessage" class="message" aria-live="polite"></p>
+      </section>
+
+      <section class="panel">
+        <h2>Đổi tên đội</h2>
+        <p class="muted">Tên mới sẽ hiện ngay cho thành viên.</p>
+        <div id="teamNameEditor" class="team-editor"></div>
       </section>
 
       <section class="panel">
@@ -53,7 +55,7 @@
       </section>
 
       <section class="panel">
-        <h2>Kết quả đội</h2>
+        <h2>Danh sách đội</h2>
         <div id="adminTeams" class="teams"></div>
       </section>
     </div>
