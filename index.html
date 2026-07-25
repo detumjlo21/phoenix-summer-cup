@@ -8,6 +8,41 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <section id="rulesGate" class="rules-gate" aria-labelledby="rulesTitle">
+    <div class="rules-modal">
+      <img src="assets/logo.png" alt="Logo Phoenix" class="rules-logo">
+      <p class="eyebrow">PHOENIX SUMMER CUP 2026 — LẦN 2</p>
+      <h2 id="rulesTitle">Quy định giải đấu</h2>
+      <p class="rules-intro">
+        Thành viên vui lòng đọc kỹ toàn bộ quy định trước khi đăng ký.
+      </p>
+
+      <div class="rules-scroll">
+        <ol>
+          <li>Mỗi thành viên chỉ được đăng ký một tài khoản và phải nhập đúng tên game, UID và Facebook.</li>
+          <li>Không sử dụng phần mềm gian lận, can thiệp trò chơi hoặc lợi dụng lỗi game.</li>
+          <li>Thành viên phải có mặt đúng giờ theo lịch và thông báo của ban tổ chức.</li>
+          <li>Sau khi hệ thống random đội, thành viên không được tự ý đổi đội hoặc đăng ký lại.</li>
+          <li>Mỗi đội có tối đa 4 thành viên; đội được hệ thống phân ngẫu nhiên và lưu cố định.</li>
+          <li>Thành viên phải giữ thái độ văn minh, không xúc phạm, gây gổ hoặc làm ảnh hưởng đến giải đấu.</li>
+          <li>Trường hợp mất kết nối hoặc sự cố kỹ thuật sẽ được ban tổ chức xem xét theo tình hình thực tế.</li>
+          <li>Thành viên vi phạm có thể bị cảnh cáo, hủy kết quả hoặc loại khỏi giải đấu.</li>
+          <li>Quyết định cuối cùng thuộc về ban tổ chức Phoenix Summer Cup 2026 — Lần 2.</li>
+        </ol>
+      </div>
+
+      <label class="agreement">
+        <input id="agreeRules" type="checkbox">
+        <span>
+          Tôi đã đọc toàn bộ quy định, cam kết thực hiện đúng và chấp nhận quyết định xử lý của ban tổ chức nếu vi phạm.
+        </span>
+      </label>
+
+      <button id="continueButton" type="button" disabled>
+        TIẾP TỤC ĐĂNG KÝ
+      </button>
+    </div>
+  </section>
   <div class="background-grid"></div>
 
   <main class="page">
@@ -51,7 +86,7 @@
     <section id="resultCard" class="panel result-card" hidden>
       <p class="eyebrow">ĐĂNG KÝ THÀNH CÔNG</p>
       <h2 id="resultName"></h2>
-      <p class="muted">Con vợ được xếp vào</p>
+      <p class="muted">Bạn được xếp vào</p>
       <div id="resultTeam" class="team-result"></div>
       <p id="resultCode" class="registration-code"></p>
     </section>

@@ -9,6 +9,9 @@ const teamsBox=document.querySelector("#teams");
 const joinBtn=document.querySelector("#joinBtn");
 const resultCard=document.querySelector("#resultCard");
 const overlay=document.querySelector("#randomOverlay");
+const rulesGate=document.querySelector("#rulesGate");
+const agreeRules=document.querySelector("#agreeRules");
+const continueButton=document.querySelector("#continueButton");
 let publicPlayers=[];
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
@@ -42,6 +45,19 @@ function updateCountdown(){
   box.classList.toggle("warning",diff<86400000);
   box.classList.toggle("danger",diff<3600000);
 }
+agreeRules.addEventListener("change",()=>{
+  continueButton.disabled=!agreeRules.checked;
+});
+
+continueButton.addEventListener("click",()=>{
+  if(!agreeRules.checked)return;
+  rulesGate.hidden=true;
+  document.body.style.overflow="";
+  document.querySelector("#joinPanel").scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+document.body.style.overflow="hidden";
+
 setInterval(updateCountdown,1000);updateCountdown();
 
 async function loadPublicData(){

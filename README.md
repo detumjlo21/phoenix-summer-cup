@@ -1,24 +1,18 @@
-# Phoenix Summer Cup V3
+# Phoenix Summer Cup V4
 
-## Cập nhật mới
+## Tính năng chính
 
-- Đồng hồ đếm ngược chạy từng giây.
-- Hiệu ứng random đội khoảng 2 giây.
-- Thanh tiến trình số người đăng ký.
-- Dashboard Admin.
-- Admin đổi tên đội.
-- Sửa lỗi view `public_players`.
-- Sửa foreign key giữa `players` và `team_names`.
-- Giữ nguyên link Vercel cũ.
+- Mở website là hiện quy định giải đấu toàn màn hình.
+- Phải tick cam kết mới bấm được “Tiếp tục đăng ký”.
+- Sau đó mới hiện trang đăng ký.
+- Đồng hồ đếm ngược từng giây.
+- Đăng ký xong có hiệu ứng random và hiện đội ngay.
+- Mỗi đội tối đa 4 thành viên.
+- Admin đổi tên đội, xóa thành viên, copy danh sách và xuất CSV.
+- Tự khóa đăng ký lúc 23:59 ngày 02/08/2026.
+- Đã bỏ các dòng nhỏ “THAM GIA NGAY”, “NGƯỜI THAM GIA”, “ĐỘI THI ĐẤU”.
 
-## Bước 1: Sửa Supabase
-
-1. Supabase → SQL Editor → New query.
-2. Mở file `repair_v3.sql`.
-3. Copy toàn bộ, dán vào và bấm Run.
-4. Chờ dòng `Success`.
-
-## Bước 2: Cập nhật GitHub
+## Cập nhật GitHub
 
 Upload và ghi đè:
 
@@ -30,11 +24,10 @@ Upload và ghi đè:
 - config.js
 - assets/logo.png
 
-Bấm Commit changes. Vercel sẽ tự triển khai lại.
+Bấm Commit changes. Vercel sẽ tự deploy lại và giữ nguyên link cũ.
 
-## Bước 3: Kiểm tra
+## Supabase
 
-- Mở trang chủ bằng tab ẩn danh.
-- Đồng hồ phải đổi từng giây.
-- Đăng ký thử phải có hiệu ứng random.
-- Mở `admin.html` để thử đổi tên đội.
+Nếu V3 đã chạy ổn thì không cần chạy SQL lại.
+
+Nếu vẫn còn lỗi database, chạy file `repair_v3.sql` một lần trong Supabase SQL Editor.
