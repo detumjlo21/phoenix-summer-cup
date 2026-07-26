@@ -150,10 +150,36 @@ function showResult(data){
   resultCard.hidden=false;
   resultCard.scrollIntoView({behavior:"smooth",block:"center"});
 }
-try{
-  const saved=JSON.parse(localStorage.getItem("phoenix_registration"));
-  if(saved)showResult(saved);
-}catch{}
+async function refreshSavedRegistration(){
+  try{
+    const saved=JSON.parse(localStorage.getItem("phoenix_registration"));
+    if(!saved?.registration_code)return;
+
+    const {data,error}=await sb.rpc("get_player_registration",{
+      p_registration_code:saved.registration_code
+    });
+
+    if(error||!data||!data.length){
+      showResult(saved);
+      return;
+    }
+
+    const latest=Array.isArray(data)?data[0]:data;
+    const updated={
+      ...saved,
+      game_name:latest.game_name,
+      team_number:latest.team_number,
+      team_name:latest.team_name,
+      registration_code:latest.registration_code
+    };
+
+    rememberRegistration(updated);
+    showResult(updated);
+  }catch{
+    // Không làm gián đoạn trang nếu localStorage lỗi.
+  }
+}
+refreshSavedRegistration();
 
 function playRandomAnimation(finalTeam){
   return new Promise(resolve=>{
