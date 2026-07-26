@@ -1,6 +1,6 @@
 const cfg=window.PHOENIX_CONFIG;
 const sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseKey);
-let currentPlayers=[],currentTeams=[];
+let currentPlayers=[],currentTeams=[],searchTerm="";
 
 const loginPanel=document.querySelector("#loginPanel"),adminArea=document.querySelector("#adminArea");
 const loginMessage=document.querySelector("#loginMessage"),adminMessage=document.querySelector("#adminMessage");
@@ -44,8 +44,17 @@ async function loadAll(){
   document.querySelector("#activeTeams").textContent=active;
   document.querySelector("#remainingSlots").textContent=Math.max(0,cfg.maxPlayers-currentPlayers.length);
 
-  adminPlayers.innerHTML=currentPlayers.length
-    ?currentPlayers.map((p,i)=>{
+  renderAdminPlayers();
+  renderTeams();renderEditor();
+}
+function renderAdminPlayers(){
+  const filtered=currentPlayers.filter(p=>{
+    const haystack=`${p.game_name||""} ${p.facebook_name||""}`.toLowerCase();
+    return haystack.includes(searchTerm);
+  });
+
+  adminPlayers.innerHTML=filtered.length
+    ?filtered.map((p,i)=>{
       const options=currentTeams.map(t=>`
         <option value="${t.team_number}" ${Number(t.team_number)===Number(p.team_number)?"selected":""}>
           ${esc(t.name)}
@@ -57,34 +66,38 @@ async function loadAll(){
           <strong>${i+1}. ${esc(p.game_name)}</strong>
           <small>Facebook: ${esc(p.facebook_name||"")}</small>
           <small>Đội hiện tại: ${esc(p.team_names?.name||("Đội "+p.team_number))}</small>
+          <small>Mã: ${esc(p.registration_code||"")}</small>
         </div>
 
         <div class="player-actions">
           <select class="teamSelect" data-player-id="${p.id}">
             ${options}
           </select>
-          <button class="moveBtn secondary" data-id="${p.id}" type="button">
-            Chuyển đội
-          </button>
-          <button class="deleteBtn" data-id="${p.id}" type="button">
-            Xóa
-          </button>
+          <button class="moveBtn secondary" data-id="${p.id}" type="button">Chuyển đội</button>
+          <button class="deleteBtn" data-id="${p.id}" type="button">Xóa</button>
         </div>
       </div>`;
     }).join("")
-    :`<p class="muted">Chưa có thành viên.</p>`;
-  renderTeams();renderEditor();
+    :`<p class="muted">Không tìm thấy thành viên phù hợp.</p>`;
 }
+
 function renderTeams(){
   const groups={};
-  for(const team of currentTeams)groups[team.team_number]={name:team.name,members:[]};
+  for(const team of currentTeams)groups[team.team_number]={number:team.team_number,name:team.name,members:[]};
   for(const p of currentPlayers){
-    if(!groups[p.team_number])groups[p.team_number]={name:`Đội ${p.team_number}`,members:[]};
+    if(!groups[p.team_number])groups[p.team_number]={number:p.team_number,name:`Đội ${p.team_number}`,members:[]};
     groups[p.team_number].members.push(p);
   }
+
   adminTeams.innerHTML=Object.entries(groups)
     .filter(([,g])=>g.members.length)
-    .map(([n,g])=>`<article class="team"><h3>${esc(g.name)} (${g.members.length}/4)</h3><ol>${g.members.map(x=>`<li>${esc(x.game_name)}</li>`).join("")}</ol></article>`).join("")||`<p class="muted">Chưa có đội nào.</p>`;
+    .map(([n,g])=>`<article class="team">
+      <div class="team-title-row">
+        <h3>${esc(g.name)} (${g.members.length}/4)</h3>
+        <button type="button" class="copyTeamBtn secondary" data-team="${n}">Copy đội</button>
+      </div>
+      <ol>${g.members.map(x=>`<li>${esc(x.game_name)}</li>`).join("")}</ol>
+    </article>`).join("")||`<p class="muted">Chưa có đội nào.</p>`;
 }
 function renderEditor(){
   editor.innerHTML=currentTeams.map(t=>`<div class="editor-row"><strong>Đội ${t.team_number}</strong><input data-team="${t.team_number}" value="${esc(t.name)}" maxlength="40"><button type="button" class="saveTeamBtn" data-team="${t.team_number}">Lưu</button></div>`).join("");
@@ -180,5 +193,54 @@ document.querySelector("#exportBtn").addEventListener("click",()=>{
   a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
   a.download="phoenix-summer-cup.csv";a.click();URL.revokeObjectURL(a.href);
 });
+document.querySelector("#playerSearch").addEventListener("input",e=>{
+  searchTerm=e.target.value.trim().toLowerCase();
+  renderAdminPlayers();
+});
+
+adminTeams.addEventListener("click",async e=>{
+  const button=e.target.closest(".copyTeamBtn");
+  if(!button)return;
+
+  const teamNumber=Number(button.dataset.team);
+  const team=currentTeams.find(t=>Number(t.team_number)===teamNumber);
+  const members=currentPlayers.filter(p=>Number(p.team_number)===teamNumber);
+
+  const text=`${team?.name||`Đội ${teamNumber}`}\n\n`+
+    members.map((p,i)=>`${i+1}. ${p.game_name}`).join("\n");
+
+  await navigator.clipboard.writeText(text);
+  msg(adminMessage,`Đã copy ${team?.name||`Đội ${teamNumber}`}.`,"success");
+});
+
+document.querySelector("#rerandomBtn").addEventListener("click",async()=>{
+  if(!currentPlayers.length){
+    msg(adminMessage,"Chưa có thành viên để random.","error");
+    return;
+  }
+
+  if(!confirm("Random lại toàn bộ đội? Tất cả thành viên sẽ được chia lại ngẫu nhiên."))return;
+
+  const button=document.querySelector("#rerandomBtn");
+  button.disabled=true;
+  msg(adminMessage,"Đang random lại toàn bộ đội...");
+
+  const {error}=await sb.rpc("admin_rerandom_all_players");
+
+  button.disabled=false;
+
+  if(error){
+    const known={
+      not_admin:"Bạn không có quyền thực hiện thao tác này.",
+      too_many_players:"Số lượng thành viên vượt giới hạn đội."
+    };
+    msg(adminMessage,known[error.message]||error.message,"error");
+    return;
+  }
+
+  msg(adminMessage,"Đã random lại toàn bộ đội.","success");
+  await loadAll();
+});
+
 document.querySelector("#refreshAdminBtn").addEventListener("click",loadAll);
 syncUI();

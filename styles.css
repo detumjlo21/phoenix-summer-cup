@@ -241,3 +241,36 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     width:100%;
   }
 }
+
+
+/* V10 Stable */
+.admin-search{
+  width:min(320px,100%);
+}
+.team-title-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+.team-title-row h3{
+  margin:0;
+}
+.copyTeamBtn{
+  padding:8px 10px;
+  white-space:nowrap;
+}
+.danger-outline{
+  border-color:rgba(239,61,50,.45);
+  color:#ff8c85;
+}
+@media(max-width:650px){
+  .team-title-row{
+    align-items:stretch;
+    flex-direction:column;
+  }
+  .copyTeamBtn{
+    width:100%;
+  }
+}

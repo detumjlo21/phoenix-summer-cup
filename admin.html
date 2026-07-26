@@ -57,8 +57,9 @@
           <button id="logoutBtn" type="button" class="secondary">Đăng xuất</button>
         </div>
         <div class="actions">
-          <button id="copyBtn" type="button">Copy danh sách đội</button>
+          <button id="copyBtn" type="button">Copy toàn bộ đội</button>
           <button id="exportBtn" type="button" class="secondary">Xuất CSV</button>
+          <button id="rerandomBtn" type="button" class="secondary danger-outline">Random lại toàn bộ</button>
           <button id="refreshAdminBtn" type="button" class="secondary">Tải lại</button>
         </div>
         <p id="adminMessage" class="message" aria-live="polite"></p>
@@ -73,7 +74,13 @@
 
       <section class="panel">
         <p class="eyebrow">THÀNH VIÊN</p>
-        <h2>Danh sách đăng ký</h2>
+        <div class="section-row">
+          <div>
+            <h2>Danh sách đăng ký</h2>
+            <p class="muted">Tìm kiếm, chuyển đội hoặc xóa thành viên.</p>
+          </div>
+          <input id="playerSearch" class="admin-search" type="search" placeholder="Tìm tên game hoặc Facebook...">
+        </div>
         <p class="muted">Có thể chuyển từng thành viên sang đội khác. Mỗi đội tối đa 4 người.</p>
         <div id="adminPlayers" class="players"></div>
       </section>
