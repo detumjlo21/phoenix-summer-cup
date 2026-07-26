@@ -45,7 +45,7 @@ async function loadAll(){
   document.querySelector("#remainingSlots").textContent=Math.max(0,cfg.maxPlayers-currentPlayers.length);
 
   adminPlayers.innerHTML=currentPlayers.length
-    ?currentPlayers.map((p,i)=>`<div class="player"><div><strong>${i+1}. ${esc(p.game_name)}</strong><small>UID: ${esc(p.uid)} • ${esc(p.team_names?.name||("Đội "+p.team_number))}</small><a href="${esc(p.facebook_url)}" target="_blank" rel="noopener">Facebook</a></div><button class="deleteBtn" data-id="${p.id}">Xóa</button></div>`).join("")
+    ?currentPlayers.map((p,i)=>`<div class="player"><div><strong>${i+1}. ${esc(p.game_name)}</strong><small>Facebook: ${esc(p.facebook_name||"")}</small><small>Đội: ${esc(p.team_names?.name||("Đội "+p.team_number))}</small></div><button class="deleteBtn" data-id="${p.id}">Xóa</button></div>`).join("")
     :`<p class="muted">Chưa có thành viên.</p>`;
   renderTeams();renderEditor();
 }
@@ -95,8 +95,8 @@ document.querySelector("#copyBtn").addEventListener("click",async()=>{
 });
 document.querySelector("#exportBtn").addEventListener("click",()=>{
   if(!currentPlayers.length)return msg(adminMessage,"Chưa có dữ liệu.","error");
-  const rows=[["Tên game","UID","Facebook","Đội","Mã đăng ký","Thời gian"],
-    ...currentPlayers.map(p=>[p.game_name,p.uid,p.facebook_url,p.team_names?.name||`Đội ${p.team_number}`,p.registration_code,p.created_at])];
+  const rows=[["Tên game","Tên Facebook","Đội","Mã đăng ký","Thời gian"],
+    ...currentPlayers.map(p=>[p.game_name,p.facebook_name||"",p.team_names?.name||`Đội ${p.team_number}`,p.registration_code,p.created_at])];
   const csv="\ufeff"+rows.map(r=>r.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(",")).join("\n");
   const a=document.createElement("a");
   a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));

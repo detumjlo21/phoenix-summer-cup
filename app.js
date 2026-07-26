@@ -176,31 +176,33 @@ form.addEventListener("submit",async e=>{
   e.preventDefault();
   if(isClosed()){setMsg("Đăng ký đã kết thúc.","error");return}
   const gameName=document.querySelector("#gameName").value.trim();
-  const uid=document.querySelector("#uid").value.trim();
-  let facebook=document.querySelector("#facebook").value.trim();
-  if(!/^https?:\/\//i.test(facebook))facebook="https://"+facebook;
-  if(gameName.length<2||!/^\d{5,20}$/.test(uid)){
-    setMsg("Kiểm tra lại tên game và UID.","error");return;
+  const facebookName=document.querySelector("#facebookName").value.trim();
+
+  if(gameName.length<2){
+    setMsg("Tên trong game phải có ít nhất 2 ký tự.","error");return;
+  }
+  if(facebookName.length<2){
+    setMsg("Tên Facebook phải có ít nhất 2 ký tự.","error");return;
   }
 
   joinBtn.disabled=true;setMsg("Đang gửi đăng ký...");
   const {data,error}=await sb.rpc("register_player_random_team",{
-    p_game_name:gameName,p_uid:uid,p_facebook_url:facebook
+    p_game_name:gameName,
+    p_facebook_name:facebookName
   });
   if(error){
     const known={
       registration_closed:"Đăng ký đã kết thúc.",
       tournament_full:"Giải đã đủ 55 người.",
       duplicate_game_name:"Tên game đã được đăng ký.",
-      duplicate_uid:"UID đã được đăng ký.",
-      duplicate_facebook:"Facebook đã được đăng ký."
+      duplicate_facebook_name:"Tên Facebook đã được đăng ký."
     };
     setMsg(known[error.message]||error.message,"error");
     joinBtn.disabled=isClosed();return;
   }
 
   const result=Array.isArray(data)?data[0]:data;
-  const saved={...result,uid,game_name:gameName};
+  const saved={...result,facebook_name:facebookName,game_name:gameName};
   await playRandomAnimation(result.team_name);
   rememberRegistration(saved);showResult(saved);
   form.reset();setMsg(`Đăng ký thành công! Bạn thuộc ${result.team_name}.`,"success");
