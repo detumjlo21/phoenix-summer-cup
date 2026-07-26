@@ -128,15 +128,23 @@ async function loadPublicData(){
   joinBtn.disabled=isClosed()||publicPlayers.length>=cfg.maxPlayers;
 
   playersBox.innerHTML=publicPlayers.length
-    ?publicPlayers.map((p,i)=>`<div class="player"><strong>${i+1}. ${esc(p.game_name)}</strong><span class="badge">${esc(p.team_name)}</span></div>`).join("")
+    ?publicPlayers.map((p,i)=>`<div class="player"><strong>${i+1}. ${esc(p.game_name)}</strong><span class="badge team-badge">
+      ${p.logo_url?`<img src="${esc(p.logo_url)}" alt="" class="team-logo team-logo-small">`:""}
+      ${esc(p.team_name)}
+    </span></div>`).join("")
     :`<p class="muted">Chưa có ai đăng ký.</p>`;
 
   const groups=publicPlayers.reduce((a,x)=>{
-    if(!a[x.team_number])a[x.team_number]={name:x.team_name,members:[]};
+    if(!a[x.team_number])a[x.team_number]={name:x.team_name,logo_url:x.logo_url,members:[]};
     a[x.team_number].members.push(x);return a;
   },{});
   teamsBox.innerHTML=Object.keys(groups).length
-    ?Object.entries(groups).map(([n,g])=>`<article class="team"><h3>${esc(g.name)} (${g.members.length}/4)</h3><ol>${g.members.map(x=>`<li>${esc(x.game_name)}</li>`).join("")}</ol></article>`).join("")
+    ?Object.entries(groups).map(([n,g])=>`<article class="team">
+      <div class="team-heading">
+        ${g.logo_url?`<img src="${esc(g.logo_url)}" alt="" class="team-logo">`:""}
+        <h3>${esc(g.name)} (${g.members.length}/4)</h3>
+      </div>
+      <ol>${g.members.map(x=>`<li>${esc(x.game_name)}</li>`).join("")}</ol></article>`).join("")
     :`<p class="muted">Chưa có thành viên.</p>`;
 }
 
@@ -146,6 +154,14 @@ function rememberRegistration(data){
 function showResult(data){
   document.querySelector("#resultName").textContent=data.game_name;
   document.querySelector("#resultTeam").textContent=data.team_name;
+  const resultLogo=document.querySelector("#resultTeamLogo");
+  if(data.logo_url){
+    resultLogo.src=data.logo_url;
+    resultLogo.hidden=false;
+  }else{
+    resultLogo.hidden=true;
+    resultLogo.removeAttribute("src");
+  }
   document.querySelector("#resultCode").textContent=`Mã đăng ký: ${data.registration_code}`;
   resultCard.hidden=false;
   resultCard.scrollIntoView({behavior:"smooth",block:"center"});

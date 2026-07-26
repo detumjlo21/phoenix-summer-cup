@@ -83,7 +83,7 @@ function renderAdminPlayers(){
 
 function renderTeams(){
   const groups={};
-  for(const team of currentTeams)groups[team.team_number]={number:team.team_number,name:team.name,members:[]};
+  for(const team of currentTeams)groups[team.team_number]={number:team.team_number,name:team.name,logo_url:team.logo_url,members:[]};
   for(const p of currentPlayers){
     if(!groups[p.team_number])groups[p.team_number]={number:p.team_number,name:`Đội ${p.team_number}`,members:[]};
     groups[p.team_number].members.push(p);
@@ -93,24 +93,158 @@ function renderTeams(){
     .filter(([,g])=>g.members.length)
     .map(([n,g])=>`<article class="team">
       <div class="team-title-row">
-        <h3>${esc(g.name)} (${g.members.length}/4)</h3>
+        <div class="team-heading">
+          ${g.logo_url?`<img src="${esc(g.logo_url)}" alt="" class="team-logo">`:""}
+          <h3>${esc(g.name)} (${g.members.length}/4)</h3>
+        </div>
         <button type="button" class="copyTeamBtn secondary" data-team="${n}">Copy đội</button>
       </div>
       <ol>${g.members.map(x=>`<li>${esc(x.game_name)}</li>`).join("")}</ol>
     </article>`).join("")||`<p class="muted">Chưa có đội nào.</p>`;
 }
 function renderEditor(){
-  editor.innerHTML=currentTeams.map(t=>`<div class="editor-row"><strong>Đội ${t.team_number}</strong><input data-team="${t.team_number}" value="${esc(t.name)}" maxlength="40"><button type="button" class="saveTeamBtn" data-team="${t.team_number}">Lưu</button></div>`).join("");
+  editor.innerHTML=currentTeams.map(t=>`
+    <div class="team-editor-card" data-team="${t.team_number}">
+      <div class="team-editor-preview">
+        ${t.logo_url
+          ?`<img src="${esc(t.logo_url)}" alt="Logo ${esc(t.name)}" class="team-logo team-logo-preview">`
+          :`<div class="team-logo-placeholder">Không có logo</div>`
+        }
+      </div>
+
+      <div class="team-editor-fields">
+        <strong>Đội ${t.team_number}</strong>
+        <input data-team="${t.team_number}" value="${esc(t.name)}" maxlength="40" aria-label="Tên đội ${t.team_number}">
+        <input
+          class="teamLogoInput"
+          data-team="${t.team_number}"
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+          aria-label="Chọn logo cho đội ${t.team_number}"
+        >
+        <small class="muted">PNG, JPG hoặc WEBP • tối đa 2 MB</small>
+      </div>
+
+      <div class="team-editor-actions">
+        <button type="button" class="saveTeamBtn" data-team="${t.team_number}">Lưu tên</button>
+        <button type="button" class="uploadLogoBtn secondary" data-team="${t.team_number}">Tải logo lên</button>
+        ${t.logo_url?`<button type="button" class="removeLogoBtn danger-outline" data-team="${t.team_number}">Xóa logo</button>`:""}
+      </div>
+    </div>
+  `).join("");
 }
 editor.addEventListener("click",async e=>{
-  const b=e.target.closest(".saveTeamBtn");if(!b)return;
-  const team=Number(b.dataset.team);
-  const input=editor.querySelector(`input[data-team="${team}"]`);
-  const name=input.value.trim();
-  if(!name)return msg(adminMessage,"Tên đội không được để trống.","error");
-  const {error}=await sb.from("team_names").update({name,updated_at:new Date().toISOString()}).eq("team_number",team);
-  if(error)msg(adminMessage,error.message,"error");
-  else{msg(adminMessage,"Đã đổi tên đội.","success");loadAll()}
+  const saveButton=e.target.closest(".saveTeamBtn");
+  if(saveButton){
+    const team=Number(saveButton.dataset.team);
+    const input=editor.querySelector(`input[data-team="${team}"]:not([type="file"])`);
+    const name=input.value.trim();
+
+    if(!name){
+      msg(adminMessage,"Tên đội không được để trống.","error");
+      return;
+    }
+
+    const {error}=await sb.from("team_names")
+      .update({name,updated_at:new Date().toISOString()})
+      .eq("team_number",team);
+
+    if(error)msg(adminMessage,error.message,"error");
+    else{
+      msg(adminMessage,"Đã đổi tên đội.","success");
+      await loadAll();
+    }
+    return;
+  }
+
+  const uploadButton=e.target.closest(".uploadLogoBtn");
+  if(uploadButton){
+    const team=Number(uploadButton.dataset.team);
+    const fileInput=editor.querySelector(`.teamLogoInput[data-team="${team}"]`);
+    const file=fileInput.files?.[0];
+
+    if(!file){
+      msg(adminMessage,"Hãy chọn ảnh logo trước.","error");
+      return;
+    }
+
+    if(!["image/png","image/jpeg","image/webp"].includes(file.type)){
+      msg(adminMessage,"Chỉ nhận ảnh PNG, JPG hoặc WEBP.","error");
+      return;
+    }
+
+    if(file.size>2*1024*1024){
+      msg(adminMessage,"Ảnh logo phải nhỏ hơn hoặc bằng 2 MB.","error");
+      return;
+    }
+
+    uploadButton.disabled=true;
+    msg(adminMessage,"Đang tải logo lên...");
+
+    const extension=(file.name.split(".").pop()||"png").toLowerCase();
+    const path=`team-${team}.${extension}`;
+
+    const {error:uploadError}=await sb.storage
+      .from("team-logos")
+      .upload(path,file,{
+        upsert:true,
+        contentType:file.type,
+        cacheControl:"3600"
+      });
+
+    if(uploadError){
+      uploadButton.disabled=false;
+      msg(adminMessage,uploadError.message,"error");
+      return;
+    }
+
+    const {data:publicData}=sb.storage.from("team-logos").getPublicUrl(path);
+    const logoUrl=`${publicData.publicUrl}?v=${Date.now()}`;
+
+    const {error:updateError}=await sb.from("team_names")
+      .update({logo_url:logoUrl,updated_at:new Date().toISOString()})
+      .eq("team_number",team);
+
+    uploadButton.disabled=false;
+
+    if(updateError){
+      msg(adminMessage,updateError.message,"error");
+      return;
+    }
+
+    msg(adminMessage,"Đã cập nhật logo đội.","success");
+    await loadAll();
+    return;
+  }
+
+  const removeButton=e.target.closest(".removeLogoBtn");
+  if(removeButton){
+    const team=Number(removeButton.dataset.team);
+    if(!confirm("Xóa logo của đội này?"))return;
+
+    const teamData=currentTeams.find(t=>Number(t.team_number)===team);
+    if(teamData?.logo_url){
+      try{
+        const url=new URL(teamData.logo_url);
+        const marker="/team-logos/";
+        const idx=url.pathname.indexOf(marker);
+        if(idx>=0){
+          const filePath=decodeURIComponent(url.pathname.slice(idx+marker.length));
+          await sb.storage.from("team-logos").remove([filePath]);
+        }
+      }catch{}
+    }
+
+    const {error}=await sb.from("team_names")
+      .update({logo_url:null,updated_at:new Date().toISOString()})
+      .eq("team_number",team);
+
+    if(error)msg(adminMessage,error.message,"error");
+    else{
+      msg(adminMessage,"Đã xóa logo đội.","success");
+      await loadAll();
+    }
+  }
 });
 adminPlayers.addEventListener("click",async e=>{
   const moveButton=e.target.closest(".moveBtn");
