@@ -45,7 +45,33 @@ async function loadAll(){
   document.querySelector("#remainingSlots").textContent=Math.max(0,cfg.maxPlayers-currentPlayers.length);
 
   adminPlayers.innerHTML=currentPlayers.length
-    ?currentPlayers.map((p,i)=>`<div class="player"><div><strong>${i+1}. ${esc(p.game_name)}</strong><small>Facebook: ${esc(p.facebook_name||"")}</small><small>Đội: ${esc(p.team_names?.name||("Đội "+p.team_number))}</small></div><button class="deleteBtn" data-id="${p.id}">Xóa</button></div>`).join("")
+    ?currentPlayers.map((p,i)=>{
+      const options=currentTeams.map(t=>`
+        <option value="${t.team_number}" ${Number(t.team_number)===Number(p.team_number)?"selected":""}>
+          ${esc(t.name)}
+        </option>
+      `).join("");
+
+      return `<div class="player admin-player">
+        <div class="player-main">
+          <strong>${i+1}. ${esc(p.game_name)}</strong>
+          <small>Facebook: ${esc(p.facebook_name||"")}</small>
+          <small>Đội hiện tại: ${esc(p.team_names?.name||("Đội "+p.team_number))}</small>
+        </div>
+
+        <div class="player-actions">
+          <select class="teamSelect" data-player-id="${p.id}">
+            ${options}
+          </select>
+          <button class="moveBtn secondary" data-id="${p.id}" type="button">
+            Chuyển đội
+          </button>
+          <button class="deleteBtn" data-id="${p.id}" type="button">
+            Xóa
+          </button>
+        </div>
+      </div>`;
+    }).join("")
     :`<p class="muted">Chưa có thành viên.</p>`;
   renderTeams();renderEditor();
 }
@@ -74,10 +100,62 @@ editor.addEventListener("click",async e=>{
   else{msg(adminMessage,"Đã đổi tên đội.","success");loadAll()}
 });
 adminPlayers.addEventListener("click",async e=>{
-  const b=e.target.closest(".deleteBtn");if(!b)return;
+  const moveButton=e.target.closest(".moveBtn");
+  if(moveButton){
+    const playerId=moveButton.dataset.id;
+    const select=adminPlayers.querySelector(`.teamSelect[data-player-id="${playerId}"]`);
+    const targetTeam=Number(select.value);
+
+    const player=currentPlayers.find(p=>p.id===playerId);
+    if(!player)return;
+
+    if(Number(player.team_number)===targetTeam){
+      msg(adminMessage,"Thành viên đang ở đội này rồi.","error");
+      return;
+    }
+
+    const targetCount=currentPlayers.filter(p=>Number(p.team_number)===targetTeam).length;
+    if(targetCount>=cfg.teamSize){
+      msg(adminMessage,"Đội được chọn đã đủ 4 thành viên.","error");
+      select.value=player.team_number;
+      return;
+    }
+
+    moveButton.disabled=true;
+    msg(adminMessage,"Đang chuyển đội...");
+
+    const {error}=await sb.rpc("admin_move_player",{
+      p_player_id:playerId,
+      p_target_team:targetTeam
+    });
+
+    moveButton.disabled=false;
+
+    if(error){
+      const known={
+        team_full:"Đội được chọn đã đủ 4 thành viên.",
+        not_admin:"Bạn không có quyền thực hiện thao tác này.",
+        player_not_found:"Không tìm thấy thành viên.",
+        invalid_team:"Đội không hợp lệ."
+      };
+      msg(adminMessage,known[error.message]||error.message,"error");
+      await loadAll();
+      return;
+    }
+
+    msg(adminMessage,"Đã chuyển thành viên sang đội mới.","success");
+    await loadAll();
+    return;
+  }
+
+  const deleteButton=e.target.closest(".deleteBtn");
+  if(!deleteButton)return;
+
   if(!confirm("Xóa thành viên này?"))return;
-  const {error}=await sb.from("players").delete().eq("id",b.dataset.id);
-  if(error)msg(adminMessage,error.message,"error");else loadAll();
+
+  const {error}=await sb.from("players").delete().eq("id",deleteButton.dataset.id);
+  if(error)msg(adminMessage,error.message,"error");
+  else await loadAll();
 });
 function resultText(){
   const groups={};

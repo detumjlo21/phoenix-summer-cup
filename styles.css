@@ -196,3 +196,48 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     font-size:13px;
   }
 }
+
+
+/* V9: chuyển thành viên giữa các đội */
+.admin-player{
+  align-items:center;
+}
+.player-main{
+  min-width:0;
+  flex:1 1 auto;
+}
+.player-actions{
+  display:grid;
+  grid-template-columns:minmax(140px,1fr) auto auto;
+  gap:8px;
+  align-items:center;
+}
+.teamSelect{
+  width:100%;
+  min-width:140px;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--panel2);
+  color:var(--text);
+  font-size:14px;
+}
+.moveBtn{
+  white-space:nowrap;
+  padding:10px 12px;
+}
+
+@media(max-width:700px){
+  .admin-player{
+    align-items:stretch;
+  }
+  .player-actions{
+    width:100%;
+    grid-template-columns:1fr;
+  }
+  .teamSelect,
+  .moveBtn,
+  .deleteBtn{
+    width:100%;
+  }
+}
