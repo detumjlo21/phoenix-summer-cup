@@ -235,7 +235,7 @@ form.addEventListener("submit",async e=>{
   if(error){
     const known={
       registration_closed:"Đăng ký đã kết thúc.",
-      tournament_full:"Giải đã đủ 55 người.",
+      tournament_full:"Giải đã đủ 48 người.",
       duplicate_game_name:"Tên game đã được đăng ký.",
       duplicate_facebook_name:"Tên Facebook đã được đăng ký."
     };
