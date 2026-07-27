@@ -1,16 +1,23 @@
+function scoreEsc(value){
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[char]));
+}
+
 function getMapImage(mapName){
   const normalized=String(mapName||"").trim().toLowerCase();
 
   const images={
     "đảo quân sự":"/dao-quan-su.jpg",
     "dao quan su":"/dao-quan-su.jpg",
-
     "thiên đường":"/thien-duong.jpg",
     "thien duong":"/thien-duong.jpg",
-
     "sa mạc":"/sa-mac.jpg",
     "sa mac":"/sa-mac.jpg",
-
     "thế kỷ":"/the-ky.jpg",
     "the ky":"/the-ky.jpg"
   };
