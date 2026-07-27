@@ -1,25 +1,22 @@
-function scoreEsc(value){
-  return String(value??"").replace(/[&<>"']/g,char=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[char]));
-}
-
-
 function getMapImage(mapName){
   const normalized=String(mapName||"").trim().toLowerCase();
+
   const images={
-    "đảo quân sự":"/assets/dao-quan-su.jpg",
-    "dao quan su":"/assets/dao-quan-su.jpg",
-    "thiên đường":"/assets/thien-duong.jpg",
-    "thien duong":"/assets/thien-duong.jpg",
-    "sa mạc":"/assets/sa-mac.jpg",
-    "sa mac":"/assets/sa-mac.jpg",
-    "thế kỷ":"/assets/the-ky.jpg",
-    "the ky":"/assets/the-ky.jpg"
+    "đảo quân sự":"/dao-quan-su.jpg",
+    "dao quan su":"/dao-quan-su.jpg",
+
+    "thiên đường":"/thien-duong.jpg",
+    "thien duong":"/thien-duong.jpg",
+
+    "sa mạc":"/sa-mac.jpg",
+    "sa mac":"/sa-mac.jpg",
+
+    "thế kỷ":"/the-ky.jpg",
+    "the ky":"/the-ky.jpg"
   };
+
   return images[normalized]||"";
 }
-
 function formatMatchDate(date,time){
   if(!date)return "Chưa cập nhật";
   const safeTime=time?String(time).slice(0,5):"00:00";
