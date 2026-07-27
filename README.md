@@ -1,1 +1,1 @@
-V15: PC giữ bảng đầy đủ; điện thoại chuyển sang card xếp hạng, không cần kéo ngang. Không cần chạy SQL.
+V15 Stable: chỉ sửa styles.css để BXH mobile thành card. Không sửa JS, không cần SQL.
