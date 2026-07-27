@@ -684,77 +684,119 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 }
 
 
-/* V15 MOBILE RANKING */
-.leaderboard-mobile-cards{display:none}
-
+/* V15 RECOVERY — BXH mobile dạng card, giữ nguyên toàn bộ JavaScript ổn định */
 @media(max-width:760px){
-  .leaderboard-table-wrap{display:none}
-  .leaderboard-mobile-cards{
-    display:grid;
-    gap:14px;
-    margin-top:18px;
+  .leaderboard-table-wrap{
+    overflow:visible;
   }
-  .mobile-rank-card{
-    position:relative;
-    overflow:hidden;
+
+  .leaderboard-table{
+    width:100%;
+    min-width:0;
+  }
+
+  .leaderboard-table thead{
+    display:none;
+  }
+
+  .leaderboard-table tbody{
     display:grid;
     gap:14px;
-    padding:17px;
+  }
+
+  .leaderboard-table tr{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px 12px;
+    padding:16px;
     border:1px solid var(--border);
     border-radius:18px;
-    background:linear-gradient(145deg,rgba(255,255,255,.025),transparent 56%),var(--panel2);
-    animation:mobileRankEnter .35s ease both;
-    animation-delay:var(--delay,0ms);
+    background:var(--panel2);
   }
-  .mobile-rank-card::before{
-    content:"";
-    position:absolute;
-    inset:0 auto 0 0;
-    width:4px;
-    background:rgba(255,138,31,.6);
-  }
-  .mobile-rank-top1{
-    border-color:rgba(255,199,54,.58);
-    background:radial-gradient(circle at 85% 5%,rgba(255,199,54,.19),transparent 34%),linear-gradient(145deg,rgba(255,199,54,.08),transparent 58%),var(--panel2);
-  }
-  .mobile-rank-top1::before{background:#ffc736}
-  .mobile-rank-top2::before{background:#cdd3dd}
-  .mobile-rank-top3::before{background:#cd702d}
-  .mobile-rank-card-head{
+
+  .leaderboard-table tr.rank-1{border-color:rgba(255,199,54,.55)}
+  .leaderboard-table tr.rank-2{border-color:rgba(205,211,221,.45)}
+  .leaderboard-table tr.rank-3{border-color:rgba(205,112,45,.45)}
+
+  .leaderboard-table td{
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    gap:12px;
+    justify-content:space-between;
+    gap:10px;
+    padding:9px 0;
+    border:0;
+    text-align:right;
   }
-  .mobile-rank-number{font-size:25px;font-weight:950}
-  .mobile-rank-team{display:flex;align-items:center;gap:14px;min-width:0}
-  .mobile-rank-logo{
-    width:66px;height:66px;flex:0 0 auto;object-fit:cover;
-    border:1px solid var(--border);border-radius:16px;background:#090a0e;
+
+  .leaderboard-table td::before{
+    color:var(--muted);
+    font-size:11px;
+    font-weight:900;
+    text-transform:uppercase;
   }
-  .mobile-rank-logo-placeholder{
-    display:grid;place-items:center;color:var(--orange);font-weight:900;
+
+  .leaderboard-table td:nth-child(1)::before{content:"Hạng"}
+  .leaderboard-table td:nth-child(3)::before{content:"Trận"}
+  .leaderboard-table td:nth-child(4)::before{content:"Kill"}
+  .leaderboard-table td:nth-child(5)::before{content:"Booyah"}
+  .leaderboard-table td:nth-child(6)::before{content:"Điểm"}
+  .leaderboard-table td:nth-child(7)::before{content:"Biến động"}
+
+  .leaderboard-table td:nth-child(1){
+    grid-column:1;
+    font-size:23px;
+    font-weight:950;
   }
-  .mobile-rank-team-text{min-width:0}
-  .mobile-rank-team-text h3{
-    margin:2px 0 0;font-size:22px;line-height:1.15;overflow-wrap:anywhere;
+
+  .leaderboard-table td:nth-child(2){
+    grid-column:1 / -1;
+    justify-content:flex-start;
+    padding:12px 0 14px;
+    text-align:left;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
   }
-  .mobile-crown{display:block;font-size:18px;line-height:1}
-  .mobile-rank-points{
-    display:flex;justify-content:center;align-items:baseline;gap:8px;
-    padding:13px;border:1px solid rgba(255,138,31,.25);
-    border-radius:14px;background:rgba(255,138,31,.06);
+
+  .leaderboard-table td:nth-child(2)::before{
+    content:none;
   }
-  .mobile-rank-points span{color:#ffc83d;font-size:36px;font-weight:950;line-height:1}
-  .mobile-rank-points small{color:var(--muted);font-weight:900;letter-spacing:1px}
-  .mobile-rank-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-  .mobile-rank-stats>div{
-    display:grid;place-items:center;gap:4px;padding:11px 7px;
-    border:1px solid var(--border);border-radius:12px;background:rgba(0,0,0,.13);
+
+  .leaderboard-table .leaderboard-team{
+    width:100%;
+    gap:13px;
   }
-  .mobile-rank-stats small{color:var(--muted);font-size:11px;text-transform:uppercase}
-  @keyframes mobileRankEnter{
-    from{opacity:0;transform:translateY(8px)}
-    to{opacity:1;transform:none}
+
+  .leaderboard-table .team-logo-small{
+    width:58px;
+    height:58px;
+    border-radius:14px;
+  }
+
+  .leaderboard-table .leaderboard-team strong{
+    font-size:20px;
+    line-height:1.2;
+    overflow-wrap:anywhere;
+  }
+
+  .leaderboard-table td:nth-child(6){
+    padding:12px;
+    border:1px solid rgba(255,138,31,.22);
+    border-radius:12px;
+    background:rgba(255,138,31,.06);
+  }
+
+  .leaderboard-table .points-cell{
+    color:#ffc83d;
+    font-size:25px;
+  }
+
+  .leaderboard-table td[colspan]{
+    grid-column:1 / -1;
+    justify-content:center;
+    text-align:center;
+  }
+
+  .leaderboard-table td[colspan]::before{
+    content:none;
   }
 }

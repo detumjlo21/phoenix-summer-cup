@@ -278,38 +278,6 @@ document.querySelector("#clearScoresBtn")?.addEventListener("click",async()=>{
   }
 });
 
-
-function renderAdminMobileRanking(rows){
-  const box=document.querySelector("#adminLeaderboardMobileCards");
-  if(!box)return;
-  if(!rows.length){
-    box.innerHTML='<p class="muted">Chưa có kết quả.</p>';
-    return;
-  }
-  box.innerHTML=rows.map((r,i)=>{
-    const rank=Number(r.current_rank);
-    return `<article class="mobile-rank-card ${rank<=3?`mobile-rank-top${rank}`:""}" style="--delay:${i*45}ms">
-      <div class="mobile-rank-card-head">
-        <div class="mobile-rank-number">${rankLabel(rank)}</div>
-        <div>${movementMarkupAdmin(r.rank_change)}</div>
-      </div>
-      <div class="mobile-rank-team">
-        ${r.logo_url?`<img src="${tournamentEsc(r.logo_url)}" alt="" class="mobile-rank-logo">`:`<div class="mobile-rank-logo mobile-rank-logo-placeholder">PHX</div>`}
-        <div class="mobile-rank-team-text">
-          ${rank===1?'<span class="mobile-crown">👑</span>':""}
-          <h3>${tournamentEsc(r.team_name)}</h3>
-        </div>
-      </div>
-      <div class="mobile-rank-points"><span>${r.total_points}</span><small>ĐIỂM</small></div>
-      <div class="mobile-rank-stats">
-        <div><span>🎮</span><strong>${r.matches_played}/4</strong><small>Trận</small></div>
-        <div><span>💀</span><strong>${r.total_kills}</strong><small>Kill</small></div>
-        <div><span>👑</span><strong>${r.booyahs}</strong><small>Booyah</small></div>
-      </div>
-    </article>`;
-  }).join("");
-}
-
 function renderAdminRanking(rows){
   const body=document.querySelector("#adminLeaderboardBody");
   if(!body)return;
@@ -330,8 +298,6 @@ function renderAdminRanking(rows){
       <td>${movementMarkupAdmin(row.rank_change)}</td>
     </tr>
   `).join("")||'<tr><td colspan="7" class="muted">Chưa có kết quả.</td></tr>';
-
-  renderAdminMobileRanking(rows);
 }
 
 setTimeout(loadTournamentAdmin,600);
