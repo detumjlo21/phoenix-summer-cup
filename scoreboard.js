@@ -174,6 +174,7 @@ async function loadTournamentPublic(){
   const announcement=document.querySelector("#publicAnnouncement");
   if(announcement){
     announcement.textContent=settings?.announcement||"Chưa có thông báo mới.";
+    announcement.classList.add("announcement-content");
   }
 
   renderSchedule(scheduleRes.data||[]);

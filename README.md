@@ -1,20 +1,18 @@
-# Phoenix Summer Cup V15.1 Robust
+# Phoenix Summer Cup V15.2
 
-Sửa dứt điểm phần lịch thi đấu và bảng xếp hạng công khai.
+## Sửa phần thông báo
 
-- Trang chủ tự lấy dữ liệu từ:
-  - team_names
-  - match_results
-  - match_schedule
-- Không còn phụ thuộc vào RPC get_public_leaderboard.
-- Lịch luôn hiện đủ 4 trận.
-- BXH luôn hiện đủ 12 đội nếu team_names có dữ liệu.
-- Không cần chạy SQL.
+- Giữ nguyên xuống dòng khi Admin nhập.
+- Tự xuống hàng trên điện thoại.
+- Chữ sáng và đậm hơn.
+- Khung thông báo nổi bật hơn.
+- Thêm icon 📢.
+- Ô nhập trong Admin dễ nhìn hơn.
 
-## Cập nhật
+## Cập nhật GitHub
 
-Upload ghi đè toàn bộ file, hoặc tối thiểu thay:
+Upload ghi đè:
 - scoreboard.js
 - styles.css
 
-Sau đó mở link với `?v=151`.
+Không cần chạy SQL hoặc chỉnh Supabase.
