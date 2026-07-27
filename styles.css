@@ -991,3 +991,36 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     font-size:24px;
   }
 }
+
+
+/* V16.2 — dùng thẻ IMG thật thay vì background-image */
+.schedule-map-visual{
+  overflow:hidden;
+}
+
+.schedule-map-image{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  z-index:0;
+}
+
+.schedule-map-overlay{
+  z-index:1;
+}
+
+.schedule-map-content{
+  z-index:2;
+}
+
+.schedule-card-with-image:hover .schedule-map-image{
+  transform:scale(1.04);
+}
+
+.schedule-map-image{
+  transition:transform .24s ease;
+}

@@ -1,25 +1,19 @@
-# Phoenix Summer Cup V16 — Map Images
+# Phoenix Summer Cup V16.2
 
-## Tính năng mới
+Sửa ảnh map bằng cách:
 
-- Lịch thi đấu có ảnh riêng cho từng map:
-  - Đảo Quân Sự
-  - Thiên Đường
-  - Sa Mạc
-  - Thế Kỷ
-- Ảnh phủ đầu card.
-- Có lớp tối để chữ rõ.
-- Trận tiếp theo có viền và badge nổi bật.
-- Map chưa chọn dùng nền tối mặc định.
-- Tối ưu cả PC và điện thoại.
+- Dùng thẻ `<img>` thật thay cho CSS background-image.
+- Dùng đường dẫn tuyệt đối:
+  - /assets/maps/dao-quan-su.jpg
+  - /assets/maps/thien-duong.jpg
+  - /assets/maps/sa-mac.jpg
+  - /assets/maps/the-ky.jpg
 
-## Cập nhật GitHub
+## Cập nhật
 
-Upload ghi đè toàn bộ file V16.
-
-Tối thiểu phải thay:
+Upload ghi đè toàn bộ V16.2, hoặc tối thiểu:
 - scoreboard.js
 - styles.css
-- thư mục assets/maps/
+- assets/maps/
 
-Không cần chạy SQL hoặc chỉnh Supabase.
+Không cần SQL hoặc Supabase.

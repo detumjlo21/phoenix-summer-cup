@@ -8,14 +8,14 @@ function scoreEsc(value){
 function getMapImage(mapName){
   const normalized=String(mapName||"").trim().toLowerCase();
   const images={
-    "đảo quân sự":"assets/maps/dao-quan-su.jpg",
-    "dao quan su":"assets/maps/dao-quan-su.jpg",
-    "thiên đường":"assets/maps/thien-duong.jpg",
-    "thien duong":"assets/maps/thien-duong.jpg",
-    "sa mạc":"assets/maps/sa-mac.jpg",
-    "sa mac":"assets/maps/sa-mac.jpg",
-    "thế kỷ":"assets/maps/the-ky.jpg",
-    "the ky":"assets/maps/the-ky.jpg"
+    "đảo quân sự":"/assets/maps/dao-quan-su.jpg",
+    "dao quan su":"/assets/maps/dao-quan-su.jpg",
+    "thiên đường":"/assets/maps/thien-duong.jpg",
+    "thien duong":"/assets/maps/thien-duong.jpg",
+    "sa mạc":"/assets/maps/sa-mac.jpg",
+    "sa mac":"/assets/maps/sa-mac.jpg",
+    "thế kỷ":"/assets/maps/the-ky.jpg",
+    "the ky":"/assets/maps/the-ky.jpg"
   };
   return images[normalized]||"";
 }
@@ -146,8 +146,8 @@ function renderSchedule(schedule){
   scheduleBox.innerHTML=all.map(match=>{
     const image=getMapImage(match.map_name);
     return `<article class="schedule-card schedule-card-with-image ${match.is_current?"current":""}">
-      <div class="schedule-map-visual ${image?"has-image":"no-image"}"
-        ${image?`style="background-image:url('${scoreEsc(image)}')"`:""}>
+      <div class="schedule-map-visual ${image?"has-image":"no-image"}">
+        ${image?`<img class="schedule-map-image" src="${scoreEsc(image)}" alt="${scoreEsc(match.map_name||"Ảnh map")}" loading="lazy">`:""}
         <div class="schedule-map-overlay"></div>
         <div class="schedule-map-content">
           <div class="schedule-number">TRẬN ${match.match_number}</div>
