@@ -887,3 +887,107 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     justify-content:center;
   }
 }
+
+
+/* V16 — Ảnh map trong lịch thi đấu */
+.schedule-card-with-image{
+  overflow:hidden;
+  padding:0;
+  gap:0;
+  background:var(--panel2);
+}
+
+.schedule-map-visual{
+  position:relative;
+  min-height:155px;
+  background-position:center;
+  background-size:cover;
+  border-bottom:1px solid var(--border);
+  transition:transform .22s ease;
+}
+
+.schedule-card-with-image:hover .schedule-map-visual{
+  transform:scale(1.025);
+}
+
+.schedule-map-visual.no-image{
+  background:
+    radial-gradient(circle at 78% 25%,rgba(255,138,31,.22),transparent 30%),
+    linear-gradient(135deg,#191b23,#0d0e13);
+}
+
+.schedule-map-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(to top,rgba(8,9,13,.9),rgba(8,9,13,.22) 65%),
+    linear-gradient(135deg,rgba(239,61,50,.14),transparent 48%);
+}
+
+.schedule-map-content{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  padding:14px;
+}
+
+.schedule-map-content .schedule-number{
+  display:inline-flex;
+  padding:7px 10px;
+  border:1px solid rgba(255,138,31,.48);
+  border-radius:999px;
+  background:rgba(8,9,13,.72);
+  backdrop-filter:blur(5px);
+}
+
+.schedule-current-label{
+  display:inline-flex;
+  padding:7px 10px;
+  border:1px solid rgba(255,181,80,.62);
+  border-radius:999px;
+  color:#ffbd68;
+  background:rgba(60,31,10,.82);
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.8px;
+}
+
+.schedule-card-body{
+  display:grid;
+  gap:7px;
+  padding:15px 16px 17px;
+}
+
+.schedule-card-body strong{
+  color:#fff;
+  font-size:21px;
+}
+
+.schedule-card-body span{
+  color:rgba(255,255,255,.68);
+}
+
+.schedule-card-with-image.current{
+  border-color:rgba(255,138,31,.85);
+  box-shadow:
+    0 0 0 1px rgba(255,138,31,.18),
+    0 0 24px rgba(255,104,35,.12);
+}
+
+@media(max-width:760px){
+  .schedule-map-visual{
+    min-height:190px;
+  }
+
+  .schedule-card-body{
+    padding:17px 18px 19px;
+  }
+
+  .schedule-card-body strong{
+    font-size:24px;
+  }
+}

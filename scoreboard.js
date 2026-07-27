@@ -4,6 +4,22 @@ function scoreEsc(value){
   }[char]));
 }
 
+
+function getMapImage(mapName){
+  const normalized=String(mapName||"").trim().toLowerCase();
+  const images={
+    "đảo quân sự":"assets/maps/dao-quan-su.jpg",
+    "dao quan su":"assets/maps/dao-quan-su.jpg",
+    "thiên đường":"assets/maps/thien-duong.jpg",
+    "thien duong":"assets/maps/thien-duong.jpg",
+    "sa mạc":"assets/maps/sa-mac.jpg",
+    "sa mac":"assets/maps/sa-mac.jpg",
+    "thế kỷ":"assets/maps/the-ky.jpg",
+    "the ky":"assets/maps/the-ky.jpg"
+  };
+  return images[normalized]||"";
+}
+
 function formatMatchDate(date,time){
   if(!date)return "Chưa cập nhật";
   const safeTime=time?String(time).slice(0,5):"00:00";
@@ -118,7 +134,7 @@ function renderSchedule(schedule){
   const scheduleBox=document.querySelector("#publicSchedule");
   if(!scheduleBox)return;
 
-  const byNumber=new Map((schedule||[]).map(m=>[Number(m.match_number),m]));
+  const byNumber=new Map((schedule||[]).map(match=>[Number(match.match_number),match]));
   const all=[1,2,3,4].map(number=>byNumber.get(number)||{
     match_number:number,
     map_name:null,
@@ -127,14 +143,24 @@ function renderSchedule(schedule){
     is_current:false
   });
 
-  scheduleBox.innerHTML=all.map(match=>`
-    <article class="schedule-card ${match.is_current?"current":""}">
-      <div class="schedule-number">TRẬN ${match.match_number}</div>
-      <strong>${scoreEsc(match.map_name||"Chưa chọn map")}</strong>
-      <span>${formatMatchDate(match.match_date,match.match_time)}</span>
-      ${match.is_current?'<em>Trận tiếp theo</em>':""}
-    </article>
-  `).join("");
+  scheduleBox.innerHTML=all.map(match=>{
+    const image=getMapImage(match.map_name);
+    return `<article class="schedule-card schedule-card-with-image ${match.is_current?"current":""}">
+      <div class="schedule-map-visual ${image?"has-image":"no-image"}"
+        ${image?`style="background-image:url('${scoreEsc(image)}')"`:""}>
+        <div class="schedule-map-overlay"></div>
+        <div class="schedule-map-content">
+          <div class="schedule-number">TRẬN ${match.match_number}</div>
+          ${match.is_current?'<span class="schedule-current-label">TRẬN TIẾP THEO</span>':""}
+        </div>
+      </div>
+
+      <div class="schedule-card-body">
+        <strong>${scoreEsc(match.map_name||"Chưa chọn map")}</strong>
+        <span>${formatMatchDate(match.match_date,match.match_time)}</span>
+      </div>
+    </article>`;
+  }).join("");
 
   const current=all.find(match=>match.is_current);
   const badge=document.querySelector("#currentMatchBadge");
