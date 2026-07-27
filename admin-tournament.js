@@ -37,6 +37,24 @@ async function loadTournamentAdmin(){
   tournamentSchedule=schedule||[];
   tournamentTeams=teams||[];
 
+  const dashboardRegistration=document.querySelector("#dashboardRegistration");
+  const dashboardMatch=document.querySelector("#dashboardMatch");
+  const dashboardMapTime=document.querySelector("#dashboardMapTime");
+  const currentMatch=tournamentSchedule.find(item=>item.is_current);
+
+  if(dashboardRegistration){
+    dashboardRegistration.textContent=tournamentSettings?.registration_open!==false?"Đang mở":"Đã đóng";
+  }
+  if(dashboardMatch){
+    dashboardMatch.textContent=currentMatch?`${currentMatch.match_number}/4`:"—";
+  }
+  if(dashboardMapTime){
+    const time=currentMatch?.match_time?String(currentMatch.match_time).slice(0,5):"";
+    dashboardMapTime.textContent=currentMatch
+      ?`${currentMatch.map_name||"Chưa chọn map"}${time?` • ${time}`:""}`
+      :"Chưa cập nhật";
+  }
+
   renderRegistrationSettings();
   renderScheduleEditor();
   await renderScoreEntry();
@@ -61,7 +79,8 @@ function renderScheduleEditor(){
   const box=document.querySelector("#scheduleEditor");
   if(!box)return;
 
-const maps=["Đảo Quân Sự","Đảo Thiên Đường","Đảo Sa Mạc","Đảo Thế Kỷ"];
+  const maps=["Đảo Quân Sự","Thiên Đường","Sa Mạc","Thế Kỷ"];
+
   box.innerHTML=[1,2,3,4].map(number=>{
     const match=tournamentSchedule.find(item=>Number(item.match_number)===number)||{};
     return `<article class="schedule-edit-card">

@@ -563,3 +563,122 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     flex-direction:column;
   }
 }
+
+
+/* V14 FINAL */
+.teams{
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:16px;
+}
+
+.team-card-esports{
+  position:relative;
+  overflow:hidden;
+  padding:18px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.025),transparent 55%),
+    var(--panel2);
+  transition:transform .18s ease,border-color .18s ease;
+}
+.team-card-esports:hover{
+  transform:translateY(-2px);
+  border-color:rgba(255,138,31,.45);
+}
+.team-card-esports::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:4px;
+  background:var(--muted);
+}
+.team-card-esports.team-full::before{background:#58d988}
+.team-card-esports.team-partial::before{background:#ffb14d}
+.team-card-esports.team-empty::before{background:#ff6961}
+
+.team-card-top{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.team-card-logo,
+.team-card-logo-placeholder{
+  width:72px;
+  height:72px;
+  flex:0 0 auto;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:#090a0e;
+}
+.team-card-logo{
+  object-fit:cover;
+}
+.team-card-logo-placeholder{
+  display:grid;
+  place-items:center;
+  color:var(--orange);
+  font-size:20px;
+  font-weight:900;
+}
+.team-number-label{
+  display:block;
+  margin-bottom:5px;
+  color:var(--orange);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:1.4px;
+}
+.team-card-top h3{
+  margin:0;
+  font-size:20px;
+}
+.team-member-list{
+  min-height:132px;
+  margin:16px 0 0;
+  padding:14px 14px 14px 34px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:rgba(0,0,0,.14);
+}
+.team-member-list li{
+  margin:8px 0;
+}
+.team-member-list .empty-slot{
+  color:var(--muted);
+  font-style:italic;
+}
+.team-card-footer{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:14px;
+  color:var(--muted);
+}
+.team-status-dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:currentColor;
+}
+.team-full .team-card-footer{color:#58d988}
+.team-partial .team-card-footer{color:#ffb14d}
+.team-empty .team-card-footer{color:#ff6961}
+
+.v14-dashboard{
+  grid-template-columns:repeat(4,1fr);
+}
+.v14-dashboard .metric-card strong{
+  font-size:28px;
+}
+
+@media(max-width:850px){
+  .v14-dashboard{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+@media(max-width:520px){
+  .v14-dashboard{
+    grid-template-columns:1fr;
+  }
+}

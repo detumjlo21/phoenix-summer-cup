@@ -174,7 +174,7 @@ async function loadPublicData(){
   document.querySelector("#progressBar").style.width=`${Math.min(100,(publicPlayers.length/cfg.maxPlayers)*100)}%`;
   joinBtn.disabled=isClosed()||publicPlayers.length>=cfg.maxPlayers;
 
-  playersBox.innerHTML=publicPlayers.length
+  if(playersBox) playersBox.innerHTML=publicPlayers.length
     ?publicPlayers.map((p,i)=>`<div class="player"><strong>${i+1}. ${esc(p.game_name)}</strong><span class="badge team-badge">
       ${p.logo_url?`<img src="${esc(p.logo_url)}" alt="" class="team-logo team-logo-small">`:""}
       ${esc(p.team_name)}
@@ -186,12 +186,34 @@ async function loadPublicData(){
     a[x.team_number].members.push(x);return a;
   },{});
   teamsBox.innerHTML=Object.keys(groups).length
-    ?Object.entries(groups).map(([n,g])=>`<article class="team">
-      <div class="team-heading">
-        ${g.logo_url?`<img src="${esc(g.logo_url)}" alt="" class="team-logo">`:""}
-        <h3>${esc(g.name)} (${g.members.length}/4)</h3>
-      </div>
-      <ol>${g.members.map(x=>`<li>${esc(x.game_name)}</li>`).join("")}</ol></article>`).join("")
+    ?Object.entries(groups).map(([n,g])=>{
+      const count=g.members.length;
+      const statusClass=count===4?"team-full":count>0?"team-partial":"team-empty";
+      const statusText=count===4?"Đủ đội":`${count}/4 thành viên`;
+
+      return `<article class="team-card-esports ${statusClass}">
+        <div class="team-card-top">
+          ${g.logo_url
+            ?`<img src="${esc(g.logo_url)}" alt="Logo ${esc(g.name)}" class="team-card-logo">`
+            :`<div class="team-card-logo-placeholder">PHX</div>`
+          }
+          <div>
+            <span class="team-number-label">ĐỘI ${n}</span>
+            <h3>${esc(g.name)}</h3>
+          </div>
+        </div>
+
+        <ol class="team-member-list">
+          ${g.members.map(x=>`<li>${esc(x.game_name)}</li>`).join("")}
+          ${Array.from({length:Math.max(0,4-count)},()=>`<li class="empty-slot">Chưa có thành viên</li>`).join("")}
+        </ol>
+
+        <div class="team-card-footer">
+          <span class="team-status-dot"></span>
+          <strong>${statusText}</strong>
+        </div>
+      </article>`;
+    }).join("")
     :`<p class="muted">Chưa có thành viên.</p>`;
 }
 

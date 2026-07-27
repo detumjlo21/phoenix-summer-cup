@@ -39,6 +39,17 @@ async function loadAll(){
   if(pError||tError){msg(adminMessage,(pError||tError).message,"error");return}
   currentPlayers=players||[];currentTeams=teams||[];
 
+  const fullTeams=new Set(
+    currentTeams
+      .filter(t=>currentPlayers.filter(p=>Number(p.team_number)===Number(t.team_number)).length===cfg.teamSize)
+      .map(t=>t.team_number)
+  ).size;
+
+  const dashboardPlayers=document.querySelector("#dashboardPlayers");
+  const dashboardFullTeams=document.querySelector("#dashboardFullTeams");
+  if(dashboardPlayers)dashboardPlayers.textContent=`${currentPlayers.length}/48`;
+  if(dashboardFullTeams)dashboardFullTeams.textContent=`${fullTeams}/12`;
+
   const active=new Set(currentPlayers.map(p=>p.team_number)).size;
   document.querySelector("#adminCount").textContent=currentPlayers.length;
   document.querySelector("#activeTeams").textContent=active;
