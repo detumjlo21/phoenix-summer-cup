@@ -61,7 +61,7 @@ function renderScheduleEditor(){
   const box=document.querySelector("#scheduleEditor");
   if(!box)return;
 
-  const maps=["Bermuda","Purgatory","Kalahari","Alpine","Nexterra"];
+  const maps=["Đảo Quân Sự","Thiên Đường","Sa Mạc"];
 
   box.innerHTML=[1,2,3,4].map(number=>{
     const match=tournamentSchedule.find(item=>Number(item.match_number)===number)||{};

@@ -1,40 +1,32 @@
-# Phoenix Summer Cup V12 Final
+# Phoenix Summer Cup V13 Final
 
-## Tính năng
+## Thay đổi
 
-- Tối đa 48 người, 12 đội.
-- Admin đóng/mở đăng ký bất cứ lúc nào.
-- Admin nhập thông báo Ban tổ chức.
-- Lịch 4 trận chỉ gồm:
-  - Map
-  - Ngày
-  - Giờ
-- Không có ID phòng hoặc mật khẩu.
-- Admin chỉ nhập Top và Kill.
-- Hệ thống tự tính điểm:
-  - Top 1: 20
-  - Top 2: 17
-  - Top 3: 15
-  - Top 4: 13
-  - Top 5: 12
-  - Top 6: 10
-  - Top 7: 8
-  - Top 8: 6
-  - Top 9: 4
-  - Top 10: 2
-  - Top 11: 1
-  - Top 12: 0
-  - 1 Kill = 2 điểm
-- BXH tự cộng tổng 4 trận.
-- Có logo đội.
-- Tăng hạng: mũi tên xanh.
-- Tụt hạng: mũi tên đỏ.
-- Giữ hạng: dấu gạch ngang.
+- Bỏ hoàn toàn mục “Danh sách đăng ký” khỏi trang chủ.
+- Người chơi chỉ thấy:
+  - Đội của mình
+  - Danh sách đội
+  - Lịch thi đấu
+  - Bảng xếp hạng
+  - Thông báo BTC
+- Admin vẫn xem đầy đủ danh sách thành viên.
+- Khi Admin đóng đăng ký:
+  - Đồng hồ dừng ở 00:00:00:00
+  - Tiêu đề đổi thành “Đăng ký đã đóng”
+  - Nút đăng ký bị khóa
+  - Hiện thông báo 48/48 thành viên đã hoàn tất
 
 ## Cập nhật
 
-1. Upload và ghi đè toàn bộ file trong V12 lên GitHub.
-2. Vào Supabase → SQL Editor.
-3. Chạy file `repair_v12.sql`.
-4. Chờ hiện `Success`.
-5. Tải lại trang Admin.
+1. Upload và ghi đè toàn bộ file V13 lên GitHub.
+2. Không cần chạy SQL mới nếu V12 đã chạy thành công.
+3. Chờ Vercel deploy rồi tải lại trang.
+
+
+## V13.1
+
+Danh sách map trong trang Admin đã đổi sang tiếng Việt:
+
+- Đảo Quân Sự
+- Thiên Đường
+- Sa Mạc

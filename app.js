@@ -1,4 +1,5 @@
 const cfg=window.PHOENIX_CONFIG;
+let registrationManuallyOpen=true;
 const sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseKey);
 
 const form=document.querySelector("#joinForm");
@@ -35,21 +36,40 @@ function updateUnit(id,value){
   }
 }
 function updateCountdown(){
-  const diff=new Date(cfg.closeAt).getTime()-Date.now();
-  const box=document.querySelector("#countdown");
-  if(diff<=0){
-    updateUnit("#days","00");updateUnit("#hours","00");updateUnit("#minutes","00");updateUnit("#seconds","00");
-    box.hidden=true;document.querySelector("#closedText").hidden=false;joinBtn.disabled=true;
-    if(!message.textContent)setMsg("Đăng ký đã kết thúc.","error");
+  const daysEl=document.querySelector("#days");
+  const hoursEl=document.querySelector("#hours");
+  const minutesEl=document.querySelector("#minutes");
+  const secondsEl=document.querySelector("#seconds");
+  const titleEl=document.querySelector("#countdownTitle");
+  const notice=document.querySelector("#registrationClosedNotice");
+
+  if(!registrationManuallyOpen){
+    if(daysEl)daysEl.textContent="00";
+    if(hoursEl)hoursEl.textContent="00";
+    if(minutesEl)minutesEl.textContent="00";
+    if(secondsEl)secondsEl.textContent="00";
+    if(titleEl)titleEl.textContent="Đăng ký đã đóng";
+    if(notice)notice.hidden=false;
+    if(joinBtn){
+      joinBtn.disabled=true;
+      joinBtn.textContent="ĐĂNG KÝ ĐÃ ĐÓNG";
+    }
     return;
   }
+
+  if(titleEl)titleEl.textContent="Đăng ký kết thúc sau";
+  if(notice)notice.hidden=true;
+
+  const diff=Math.max(0,new Date(cfg.closeAt).getTime()-Date.now());
   const days=Math.floor(diff/86400000);
-  const hours=Math.floor((diff%86400000)/3600000);
-  const mins=Math.floor((diff%3600000)/60000);
-  const secs=Math.floor((diff%60000)/1000);
-  updateUnit("#days",pad(days));updateUnit("#hours",pad(hours));updateUnit("#minutes",pad(mins));updateUnit("#seconds",pad(secs));
-  box.classList.toggle("warning",diff<86400000);
-  box.classList.toggle("danger",diff<3600000);
+  const hours=Math.floor(diff%86400000/3600000);
+  const minutes=Math.floor(diff%3600000/60000);
+  const seconds=Math.floor(diff%60000/1000);
+
+  if(daysEl)daysEl.textContent=String(days).padStart(2,"0");
+  if(hoursEl)hoursEl.textContent=String(hours).padStart(2,"0");
+  if(minutesEl)minutesEl.textContent=String(minutes).padStart(2,"0");
+  if(secondsEl)secondsEl.textContent=String(seconds).padStart(2,"0");
 }
 let rulesUnlocked=false;
 
@@ -114,7 +134,34 @@ setTimeout(()=>{
 
 document.body.style.overflow="hidden";
 
-setInterval(updateCountdown,1000);updateCountdown();
+async function syncRegistrationStatus(){
+  try{
+    const {data}=await sb.from("tournament_settings")
+      .select("registration_open")
+      .eq("id",1)
+      .maybeSingle();
+
+    registrationManuallyOpen=data?.registration_open!==false;
+    updateCountdown();
+
+    if(joinBtn){
+      const full=publicPlayers.length>=cfg.maxPlayers;
+      joinBtn.disabled=isClosed()||full;
+      if(!registrationManuallyOpen){
+        joinBtn.textContent="ĐĂNG KÝ ĐÃ ĐÓNG";
+      }else if(full){
+        joinBtn.textContent="GIẢI ĐÃ ĐỦ 48 NGƯỜI";
+      }else{
+        joinBtn.textContent="THAM GIA & RANDOM ĐỘI";
+      }
+    }
+  }catch{}
+}
+
+setInterval(updateCountdown,1000);
+updateCountdown();
+syncRegistrationStatus();
+setInterval(syncRegistrationStatus,30000);
 
 async function loadPublicData(){
   const {data,error}=await sb.from("public_players").select("*").order("created_at",{ascending:true});

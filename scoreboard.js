@@ -76,6 +76,11 @@ async function loadTournamentPublic(){
     status.className=`status-badge ${settings.registration_open?"open":"closed"}`;
   }
 
+  if(typeof registrationManuallyOpen!=="undefined"&&settings){
+    registrationManuallyOpen=settings.registration_open!==false;
+    if(typeof updateCountdown==="function")updateCountdown();
+  }
+
   const announcement=document.querySelector("#publicAnnouncement");
   if(announcement){
     announcement.textContent=settings?.announcement||"Chưa có thông báo mới.";
