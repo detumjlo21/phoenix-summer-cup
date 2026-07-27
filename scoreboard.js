@@ -8,14 +8,14 @@ function scoreEsc(value){
 function getMapImage(mapName){
   const normalized=String(mapName||"").trim().toLowerCase();
   const images={
-    "đảo quân sự":"/assets/maps/dao-quan-su.jpg",
-    "dao quan su":"/assets/maps/dao-quan-su.jpg",
-    "thiên đường":"/assets/maps/thien-duong.jpg",
-    "thien duong":"/assets/maps/thien-duong.jpg",
-    "sa mạc":"/assets/maps/sa-mac.jpg",
-    "sa mac":"/assets/maps/sa-mac.jpg",
-    "thế kỷ":"/assets/maps/the-ky.jpg",
-    "the ky":"/assets/maps/the-ky.jpg"
+    "đảo quân sự":"/assets/dao-quan-su.jpg",
+    "dao quan su":"/assets/dao-quan-su.jpg",
+    "thiên đường":"/assets/thien-duong.jpg",
+    "thien duong":"/assets/thien-duong.jpg",
+    "sa mạc":"/assets/sa-mac.jpg",
+    "sa mac":"/assets/sa-mac.jpg",
+    "thế kỷ":"/assets/the-ky.jpg",
+    "the ky":"/assets/the-ky.jpg"
   };
   return images[normalized]||"";
 }

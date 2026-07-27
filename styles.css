@@ -1024,3 +1024,106 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 .schedule-map-image{
   transition:transform .24s ease;
 }
+
+
+/* V17 MAP ASSETS */
+.schedule-card-with-image{
+  overflow:hidden;
+  padding:0;
+  gap:0;
+}
+
+.schedule-map-visual{
+  position:relative;
+  min-height:170px;
+  overflow:hidden;
+  border-bottom:1px solid var(--border);
+  background:
+    radial-gradient(circle at 76% 25%,rgba(255,138,31,.22),transparent 30%),
+    linear-gradient(135deg,#191b23,#0d0e13);
+}
+
+.schedule-map-image{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  z-index:0;
+  transition:transform .25s ease,filter .25s ease;
+}
+
+.schedule-card-with-image:hover .schedule-map-image{
+  transform:scale(1.045);
+  filter:saturate(1.08);
+}
+
+.schedule-map-overlay{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:
+    linear-gradient(to top,rgba(7,8,12,.92),rgba(7,8,12,.18) 66%),
+    linear-gradient(135deg,rgba(239,61,50,.14),transparent 46%);
+}
+
+.schedule-map-content{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  padding:14px;
+}
+
+.schedule-card-body{
+  display:grid;
+  gap:7px;
+  padding:16px 17px 18px;
+}
+
+.schedule-card-body strong{
+  color:#fff;
+  font-size:22px;
+}
+
+.schedule-card-body span{
+  color:rgba(255,255,255,.72);
+}
+
+.schedule-current-label{
+  display:inline-flex;
+  padding:7px 10px;
+  border:1px solid rgba(255,181,80,.62);
+  border-radius:999px;
+  color:#ffbd68;
+  background:rgba(60,31,10,.84);
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.8px;
+}
+
+.schedule-card-with-image.current{
+  border-color:rgba(255,138,31,.88);
+  box-shadow:
+    0 0 0 1px rgba(255,138,31,.18),
+    0 0 25px rgba(255,104,35,.13);
+}
+
+@media(max-width:760px){
+  .schedule-map-visual{
+    min-height:215px;
+  }
+
+  .schedule-card-body{
+    padding:18px 19px 20px;
+  }
+
+  .schedule-card-body strong{
+    font-size:25px;
+  }
+}

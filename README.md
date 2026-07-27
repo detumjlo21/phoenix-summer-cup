@@ -1,19 +1,24 @@
-# Phoenix Summer Cup V16.2
+# Phoenix Summer Cup V17
 
-Sửa ảnh map bằng cách:
+## Ảnh map
 
-- Dùng thẻ `<img>` thật thay cho CSS background-image.
-- Dùng đường dẫn tuyệt đối:
-  - /assets/maps/dao-quan-su.jpg
-  - /assets/maps/thien-duong.jpg
-  - /assets/maps/sa-mac.jpg
-  - /assets/maps/the-ky.jpg
+Ảnh được đặt trực tiếp trong thư mục `assets`:
 
-## Cập nhật
+- assets/dao-quan-su.jpg
+- assets/thien-duong.jpg
+- assets/sa-mac.jpg
+- assets/the-ky.jpg
 
-Upload ghi đè toàn bộ V16.2, hoặc tối thiểu:
+## Cập nhật GitHub
+
+Upload ghi đè toàn bộ V17.
+
+Tối thiểu phải thay:
 - scoreboard.js
 - styles.css
-- assets/maps/
+- 4 ảnh JPG trong thư mục assets/
 
-Không cần SQL hoặc Supabase.
+Sau khi deploy, kiểm tra:
+`https://phoenix-summer-cup.vercel.app/assets/dao-quan-su.jpg`
+
+Không cần sửa Supabase hoặc chạy SQL.
