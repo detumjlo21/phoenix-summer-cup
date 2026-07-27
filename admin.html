@@ -92,11 +92,102 @@
       </section>
     </div>
 
+    
+      <section class="panel">
+        <div class="section-row">
+          <div>
+            <p class="eyebrow">ĐĂNG KÝ</p>
+            <h2>Đóng/Mở đăng ký</h2>
+          </div>
+          <span id="adminRegistrationBadge" class="status-badge">Đang tải...</span>
+        </div>
+        <div class="actions">
+          <button id="toggleRegistrationBtn" type="button">Đóng đăng ký</button>
+        </div>
+
+        <label for="announcementInput">Thông báo của Ban tổ chức</label>
+        <textarea id="announcementInput" class="admin-textarea" maxlength="500"
+          placeholder="Ví dụ: Các đội tập trung trước giờ thi đấu 15 phút."></textarea>
+        <button id="saveAnnouncementBtn" type="button">Lưu thông báo</button>
+      </section>
+
+      <section class="panel">
+        <p class="eyebrow">LỊCH THI ĐẤU</p>
+        <h2>Quản lý 4 trận</h2>
+        <p class="muted">Chỉ có map, ngày và giờ. Không có ID phòng hoặc mật khẩu.</p>
+        <div id="scheduleEditor" class="schedule-editor"></div>
+      </section>
+
+      <section class="panel">
+        <div class="section-row">
+          <div>
+            <p class="eyebrow">NHẬP KẾT QUẢ</p>
+            <h2>Top và Kill từng đội</h2>
+            <p class="muted">Mỗi kill = 2 điểm. Điểm thứ hạng tự tính.</p>
+          </div>
+          <select id="scoreMatchSelect" class="match-select">
+            <option value="1">Trận 1</option>
+            <option value="2">Trận 2</option>
+            <option value="3">Trận 3</option>
+            <option value="4">Trận 4</option>
+          </select>
+        </div>
+
+        <div class="score-table-wrap">
+          <table class="score-entry-table">
+            <thead>
+              <tr>
+                <th>Đội</th>
+                <th>Top</th>
+                <th>Kill</th>
+                <th>Điểm hạng</th>
+                <th>Điểm trận</th>
+              </tr>
+            </thead>
+            <tbody id="scoreEntryBody"></tbody>
+          </table>
+        </div>
+
+        <div class="actions score-actions">
+          <button id="saveScoresBtn" type="button">Lưu kết quả trận</button>
+          <button id="clearScoresBtn" type="button" class="secondary danger-outline">Xóa kết quả trận</button>
+        </div>
+      </section>
+
+      <section class="panel leaderboard-panel">
+        <div class="leaderboard-header">
+          <div>
+            <p class="eyebrow">BẢNG XẾP HẠNG</p>
+            <h2>BXH hiện tại</h2>
+          </div>
+        </div>
+
+        <div class="leaderboard-table-wrap">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>Hạng</th>
+                <th>Đội</th>
+                <th>Trận</th>
+                <th>Kill</th>
+                <th>Booyah</th>
+                <th>Điểm</th>
+                <th>Biến động</th>
+              </tr>
+            </thead>
+            <tbody id="adminLeaderboardBody">
+              <tr><td colspan="7" class="muted">Chưa có kết quả.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
     <footer><a href="index.html">← Trang đăng ký</a></footer>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script src="admin.js"></script>
+  <script src="admin-tournament.js"></script>
 </body>
 </html>

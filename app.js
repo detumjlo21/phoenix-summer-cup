@@ -228,6 +228,17 @@ form.addEventListener("submit",async e=>{
   }
 
   joinBtn.disabled=true;setMsg("Đang gửi đăng ký...");
+
+  const {data:registrationSettings}=await sb.from("tournament_settings")
+    .select("registration_open")
+    .eq("id",1)
+    .maybeSingle();
+
+  if(registrationSettings&&registrationSettings.registration_open===false){
+    setMsg("Đăng ký đã được Ban tổ chức đóng.","error");
+    joinBtn.disabled=true;
+    return;
+  }
   const {data,error}=await sb.rpc("register_player_random_team",{
     p_game_name:gameName,
     p_facebook_name:facebookName

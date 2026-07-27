@@ -128,11 +128,68 @@
       </div>
     </section>
 
+    
+    <section class="panel tournament-info">
+      <div class="section-row">
+        <div>
+          <h2>Thông báo Ban tổ chức</h2>
+          <p id="publicAnnouncement" class="muted">Chưa có thông báo mới.</p>
+        </div>
+        <span id="registrationStatusBadge" class="status-badge">Đang tải...</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-row">
+        <div>
+          <h2>Lịch thi đấu</h2>
+          <p class="muted">4 trận • Chỉ hiển thị map, ngày và giờ</p>
+        </div>
+        <span id="currentMatchBadge" class="badge">Chưa bắt đầu</span>
+      </div>
+      <div id="publicSchedule" class="schedule-grid"></div>
+    </section>
+
+    <section class="panel leaderboard-panel">
+      <div class="leaderboard-header">
+        <div>
+          <p class="leaderboard-kicker">PHOENIX SUMMER CUP 2026</p>
+          <h2>Bảng xếp hạng trực tiếp</h2>
+          <p id="leaderboardSubtitle" class="muted">Chưa có kết quả trận đấu.</p>
+        </div>
+        <div class="leaderboard-legend">
+          <span class="rank-up">▲ Tăng hạng</span>
+          <span class="rank-down">▼ Tụt hạng</span>
+          <span class="rank-same">— Giữ hạng</span>
+        </div>
+      </div>
+
+      <div class="leaderboard-table-wrap">
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Hạng</th>
+              <th>Đội</th>
+              <th>Trận</th>
+              <th>Kill</th>
+              <th>Booyah</th>
+              <th>Điểm</th>
+              <th>Biến động</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody">
+            <tr><td colspan="7" class="muted">Chưa có dữ liệu.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <footer><a href="admin.html">Trang quản trị</a></footer>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script src="app.js"></script>
+  <script src="scoreboard.js"></script>
 </body>
 </html>
