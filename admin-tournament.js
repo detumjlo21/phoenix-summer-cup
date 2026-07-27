@@ -61,8 +61,7 @@ function renderScheduleEditor(){
   const box=document.querySelector("#scheduleEditor");
   if(!box)return;
 
-  const maps=["Đảo Quân Sự","Thiên Đường","Sa Mạc"];
-
+const maps=["Đảo Quân Sự","Đảo Thiên Đường","Đảo Sa Mạc","Đảo Thế Kỷ"];
   box.innerHTML=[1,2,3,4].map(number=>{
     const match=tournamentSchedule.find(item=>Number(item.match_number)===number)||{};
     return `<article class="schedule-edit-card">
