@@ -166,7 +166,7 @@ setInterval(syncRegistrationStatus,30000);
 async function loadPublicData(){
   const {data,error}=await sb.from("public_players").select("*").order("created_at",{ascending:true});
   if(error){
-    teamsBox.innerHTML=`<p class="error">Không tải được danh sách đội: ${esc(error.message)}</p>`;
+    playersBox.innerHTML=`<p class="error">Không tải được dữ liệu: ${esc(error.message)}</p>`;
     return;
   }
   publicPlayers=data||[];
@@ -331,5 +331,5 @@ form.addEventListener("submit",async e=>{
   await loadPublicData();
 });
 
-document.querySelector("#refreshBtn")?.addEventListener("click",loadPublicData);
+document.querySelector("#refreshBtn").addEventListener("click",loadPublicData);
 loadPublicData();
