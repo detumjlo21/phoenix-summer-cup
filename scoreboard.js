@@ -30,6 +30,38 @@ function medal(rank){
   return rank;
 }
 
+
+function renderMobileRankingCards(rows){
+  const box=document.querySelector("#leaderboardMobileCards");
+  if(!box)return;
+  if(!rows.length){
+    box.innerHTML='<p class="muted">Chưa có dữ liệu bảng xếp hạng.</p>';
+    return;
+  }
+  box.innerHTML=rows.map((r,i)=>{
+    const rank=Number(r.current_rank);
+    return `<article class="mobile-rank-card ${rank<=3?`mobile-rank-top${rank}`:""}" style="--delay:${i*45}ms">
+      <div class="mobile-rank-card-head">
+        <div class="mobile-rank-number">${medal(rank)}</div>
+        <div>${movementMarkup(r.rank_change)}</div>
+      </div>
+      <div class="mobile-rank-team">
+        ${r.logo_url?`<img src="${scoreEsc(r.logo_url)}" alt="" class="mobile-rank-logo">`:`<div class="mobile-rank-logo mobile-rank-logo-placeholder">PHX</div>`}
+        <div class="mobile-rank-team-text">
+          ${rank===1?'<span class="mobile-crown">👑</span>':""}
+          <h3>${scoreEsc(r.team_name)}</h3>
+        </div>
+      </div>
+      <div class="mobile-rank-points"><span>${r.total_points}</span><small>ĐIỂM</small></div>
+      <div class="mobile-rank-stats">
+        <div><span>🎮</span><strong>${r.matches_played}/4</strong><small>Trận</small></div>
+        <div><span>💀</span><strong>${r.total_kills}</strong><small>Kill</small></div>
+        <div><span>👑</span><strong>${r.booyahs}</strong><small>Booyah</small></div>
+      </div>
+    </article>`;
+  }).join("");
+}
+
 function renderPublicRanking(rows){
   const body=document.querySelector("#leaderboardBody");
   if(!body)return;
@@ -61,6 +93,8 @@ function renderPublicRanking(rows){
       <td>${movementMarkup(row.rank_change)}</td>
     </tr>
   `).join("");
+
+  renderMobileRankingCards(rows);
 }
 
 async function loadTournamentPublic(){
