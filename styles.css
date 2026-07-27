@@ -1127,3 +1127,205 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     font-size:25px;
   }
 }
+/* =======================================================
+   V17.1 - Phoenix Schedule Premium Card
+======================================================= */
+
+.schedule-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:22px;
+    margin-top:22px;
+}
+
+.schedule-card{
+    position:relative;
+    overflow:hidden;
+
+    border:2px solid rgba(255,145,40,.20);
+    border-radius:22px;
+
+    background:linear-gradient(
+        180deg,
+        rgba(255,140,40,.05) 0%,
+        #171a22 60%,
+        #1b1f28 100%
+    );
+
+    transition:
+        transform .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
+
+/* Thanh sáng phía trên */
+
+.schedule-card::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+
+    width:100%;
+    height:3px;
+
+    background:linear-gradient(
+        90deg,
+        #ff4a3c,
+        #ff8b24,
+        #ffcb55
+    );
+}
+
+/* Hover */
+
+.schedule-card:hover{
+    transform:translateY(-6px);
+
+    border-color:#ff9a33;
+
+    box-shadow:
+        0 0 0 1px rgba(255,155,55,.25),
+        0 0 30px rgba(255,145,40,.18),
+        0 18px 48px rgba(0,0,0,.55);
+}
+
+/* Trận tiếp theo */
+
+.schedule-card.current{
+    border-color:#ffb347;
+
+    box-shadow:
+        0 0 0 1px rgba(255,170,60,.45),
+        0 0 38px rgba(255,145,40,.28),
+        0 18px 55px rgba(0,0,0,.65);
+}
+
+/* Ảnh */
+
+.schedule-map-visual{
+    position:relative;
+    height:210px;
+    overflow:hidden;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.schedule-map-image{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+
+    transition:
+        transform .35s ease,
+        filter .35s ease;
+}
+
+.schedule-card:hover .schedule-map-image{
+    transform:scale(1.06);
+    filter:
+        brightness(1.05)
+        saturate(1.12);
+}
+
+/* Overlay */
+
+.schedule-map-overlay{
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(to top,
+            rgba(8,9,13,.92),
+            rgba(8,9,13,.18) 65%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(239,61,50,.12),
+            transparent 45%
+        );
+}
+
+/* Badge */
+
+.schedule-number{
+    display:inline-flex;
+    align-items:center;
+
+    padding:9px 16px;
+
+    border-radius:999px;
+
+    border:1px solid rgba(255,145,40,.5);
+
+    background:rgba(10,11,16,.78);
+
+    backdrop-filter:blur(8px);
+
+    color:#ff9628;
+
+    font-size:13px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+/* Trận tiếp theo */
+
+.schedule-current-label{
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    background:rgba(70,35,10,.82);
+
+    border:1px solid rgba(255,181,70,.6);
+
+    color:#ffbd67;
+
+    font-size:11px;
+    font-weight:900;
+
+    letter-spacing:.8px;
+}
+
+/* Nội dung */
+
+.schedule-card-body{
+    padding:18px;
+}
+
+.schedule-card-body strong{
+    display:block;
+
+    font-size:22px;
+
+    margin-bottom:8px;
+
+    color:white;
+}
+
+.schedule-card-body span{
+    color:#c5c8cf;
+    font-size:17px;
+}
+
+/* Mobile */
+
+@media(max-width:760px){
+
+    .schedule-grid{
+        grid-template-columns:1fr;
+    }
+
+    .schedule-map-visual{
+        height:230px;
+    }
+
+    .schedule-card-body strong{
+        font-size:30px;
+    }
+
+    .schedule-card-body span{
+        font-size:19px;
+    }
+
+}
