@@ -231,5 +231,15 @@
   <script src="scoreboard.js"></script>
   <script src="mvp.js"></script>
   <script src="champion.js"></script>
+
+  <div id="teamDetailModal" class="team-detail-modal" hidden>
+    <div class="team-detail-backdrop" data-close-team-modal></div>
+    <section class="team-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="teamDetailTitle">
+      <button class="team-detail-close" type="button" data-close-team-modal aria-label="Đóng">×</button>
+      <div id="teamDetailContent"></div>
+    </section>
+  </div>
+
+  <script src="team-details.js"></script>
 </body>
 </html>

@@ -189,7 +189,7 @@ function renderPublicRanking(rows){
         <td class="rank-cell">${medal(row.current_rank)}</td>
 
         <td>
-          <div class="leaderboard-team">
+          <button class="leaderboard-team leaderboard-team-button" type="button" data-team-number="${row.team_number}">
             ${
               row.logo_url
                 ? `<img src="${scoreEsc(row.logo_url)}" alt="" class="team-logo team-logo-small">`
@@ -197,7 +197,7 @@ function renderPublicRanking(rows){
             }
 
             <strong>${scoreEsc(row.team_name)}</strong>
-          </div>
+          </button>
         </td>
 
         <td>${row.matches_played}/4</td>

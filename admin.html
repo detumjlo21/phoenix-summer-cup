@@ -231,6 +231,38 @@
         <div id="championAdminPreview" class="champion-admin-preview"></div>
       </section>
 
+
+      <section class="panel">
+        <div class="section-row">
+          <div>
+            <p class="eyebrow">KIỂM SOÁT KẾT QUẢ</p>
+            <h2>Công bố, khóa và sao lưu</h2>
+            <p class="muted">
+              Kiểm tra dữ liệu trước khi công bố. Sau khi khóa, kết quả trận sẽ không thể sửa cho đến khi mở khóa.
+            </p>
+          </div>
+          <select id="resultControlMatch" class="match-select">
+            <option value="1">Trận 1</option>
+            <option value="2">Trận 2</option>
+            <option value="3">Trận 3</option>
+            <option value="4">Trận 4</option>
+          </select>
+        </div>
+
+        <div id="resultControlStatus" class="result-control-status"></div>
+
+        <div class="actions result-control-actions">
+          <button id="validateMatchBtn" type="button" class="secondary">Kiểm tra dữ liệu</button>
+          <button id="publishMatchBtn" type="button">Công bố kết quả</button>
+          <button id="lockMatchBtn" type="button" class="secondary">Khóa kết quả</button>
+          <button id="unlockMatchBtn" type="button" class="secondary danger-outline">Mở khóa</button>
+          <button id="undoMatchBtn" type="button" class="secondary">Hoàn tác gần nhất</button>
+        </div>
+
+        <div id="validationReport" class="validation-report"></div>
+        <div id="snapshotList" class="snapshot-list"></div>
+      </section>
+
 <section class="panel leaderboard-panel">
         <div class="leaderboard-header">
           <div>
@@ -269,5 +301,6 @@
   <script src="admin-mvp.js"></script>
   <script src="admin-champion.js"></script>
   <script src="toast.js"></script>
+  <script src="admin-results-control.js"></script>
 </body>
 </html>

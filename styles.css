@@ -1789,3 +1789,168 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     min-height:60px;
   }
 }
+
+
+/* V22 - TOURNAMENT CONTROL */
+.result-control-status{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin:16px 0;
+}
+.control-chip{
+  display:inline-flex;
+  padding:7px 11px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+}
+.control-chip.published{color:#77e6a1;border-color:rgba(119,230,161,.4);background:rgba(119,230,161,.10)}
+.control-chip.draft{color:#ffc06e;border-color:rgba(255,174,68,.4);background:rgba(255,174,68,.10)}
+.control-chip.locked{color:#ff817b;border-color:rgba(255,91,83,.4);background:rgba(255,91,83,.10)}
+.control-chip.unlocked{color:#8dc0ff;border-color:rgba(89,159,255,.4);background:rgba(89,159,255,.10)}
+.validation-report{margin-top:16px}
+.validation-success,.validation-error{
+  padding:14px 16px;
+  border-radius:14px;
+  line-height:1.6;
+}
+.validation-success{color:#77e6a1;border:1px solid rgba(119,230,161,.35);background:rgba(119,230,161,.08)}
+.validation-error{color:#ff9a94;border:1px solid rgba(255,91,83,.35);background:rgba(255,91,83,.08)}
+.snapshot-list{display:grid;gap:10px;margin-top:18px}
+.snapshot-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--panel2);
+}
+.snapshot-row span{display:grid;gap:3px}
+.snapshot-row small{color:var(--muted)}
+
+.leaderboard-team-button{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:10px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:inherit;
+  text-align:left;
+}
+.leaderboard-team-button:hover strong{color:#ffb05a}
+
+.team-detail-modal{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:grid;
+  place-items:center;
+  padding:20px;
+}
+.team-detail-modal[hidden]{display:none}
+.team-detail-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(3,4,7,.82);
+  backdrop-filter:blur(8px);
+}
+.team-detail-dialog{
+  position:relative;
+  z-index:1;
+  width:min(760px,100%);
+  max-height:88vh;
+  overflow:auto;
+  padding:22px;
+  border:1px solid rgba(255,138,31,.38);
+  border-radius:20px;
+  background:#11131a;
+  box-shadow:0 24px 70px rgba(0,0,0,.55);
+}
+.team-detail-close{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:36px;
+  height:36px;
+  padding:0;
+  border-radius:10px;
+  background:rgba(255,255,255,.07);
+}
+.team-detail-header{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding-right:40px;
+}
+.team-detail-logo{
+  width:84px;
+  height:84px;
+  object-fit:cover;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:#090a0e;
+}
+.team-detail-placeholder{display:grid;place-items:center;color:var(--orange);font-weight:900}
+.team-detail-members{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:18px 0;
+}
+.team-detail-members span{
+  padding:8px 11px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:var(--panel2);
+}
+.team-detail-match-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+.team-detail-match-card{
+  display:grid;
+  gap:7px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:var(--panel2);
+}
+.team-detail-match-card b{color:#ffc83d}
+.modal-open{overflow:hidden}
+
+.match-mvp-section{
+  background:
+    radial-gradient(circle at 90% 10%,rgba(255,138,31,.12),transparent 32%),
+    var(--panel);
+}
+.match-mvp-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+.match-mvp-card{
+  display:grid;
+  gap:7px;
+  padding:15px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:var(--panel2);
+}
+.match-mvp-card>span{color:var(--orange);font-size:11px;font-weight:900;letter-spacing:1px}
+.match-mvp-card small{color:var(--muted)}
+.match-mvp-card b{color:#ffc83d;font-size:20px}
+
+@media(max-width:760px){
+  .snapshot-row{align-items:stretch;flex-direction:column}
+  .snapshot-row button{width:100%}
+  .team-detail-header{align-items:flex-start;flex-direction:column}
+  .team-detail-match-grid,.match-mvp-grid{grid-template-columns:1fr}
+}
