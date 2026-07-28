@@ -1,0 +1,14 @@
+PHOENIX V19.1 — SỬA ĐỒNG HỒ
+
+Đã sửa:
+- Gọi renderLiveBanner() sau khi tải lịch thi đấu.
+- Banner và đồng hồ đếm ngược sẽ hiện nếu trận có ngày và giờ.
+
+Cập nhật GitHub:
+- Chỉ cần ghi đè scoreboard.js
+- Không cần sửa styles.css
+- Không cần chỉnh Supabase hoặc chạy SQL
+
+Lưu ý:
+- Trận phải có cả Ngày và Giờ.
+- Nếu ngày giờ đã qua, banner sẽ hiện LIVE hoặc ĐÃ XONG tùy trạng thái.

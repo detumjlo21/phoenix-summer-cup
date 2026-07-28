@@ -176,7 +176,38 @@
         </div>
       </section>
 
-      <section class="panel leaderboard-panel">
+      
+      <section class="panel">
+        <div class="section-row">
+          <div>
+            <p class="eyebrow">MVP KILL</p>
+            <h2>Kill cá nhân từng trận</h2>
+            <p class="muted">Nhập Kill của từng thành viên. Website tự cộng và chọn MVP.</p>
+          </div>
+          <select id="mvpMatchSelect" class="match-select">
+            <option value="1">Trận 1</option>
+            <option value="2">Trận 2</option>
+            <option value="3">Trận 3</option>
+            <option value="4">Trận 4</option>
+          </select>
+        </div>
+
+        <div id="mvpKillEditor" class="mvp-kill-editor"></div>
+        <button id="saveMvpKillsBtn" type="button">Lưu Kill cá nhân</button>
+
+        <hr class="mvp-divider">
+
+        <h3>Ảnh nhân vật vinh danh</h3>
+        <p class="muted">Upload ảnh PNG/JPG nhân vật game để đặt cạnh MVP.</p>
+        <input id="mvpCharacterFile" type="file" accept="image/png,image/jpeg,image/webp">
+        <div class="actions">
+          <button id="uploadMvpCharacterBtn" type="button">Tải ảnh nhân vật</button>
+          <button id="removeMvpCharacterBtn" type="button" class="secondary danger-outline">Xóa ảnh</button>
+        </div>
+        <div id="mvpAdminPreview" class="mvp-admin-preview"></div>
+      </section>
+
+<section class="panel leaderboard-panel">
         <div class="leaderboard-header">
           <div>
             <p class="eyebrow">BẢNG XẾP HẠNG</p>
@@ -211,5 +242,6 @@
   <script src="config.js"></script>
   <script src="admin.js"></script>
   <script src="admin-tournament.js"></script>
+  <script src="admin-mvp.js"></script>
 </body>
 </html>

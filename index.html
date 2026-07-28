@@ -140,6 +140,7 @@
       <div class="section-row">
         <div>
           <h2>Lịch thi đấu</h2>
+          <p class="muted">4 trận • Chỉ hiển thị map, ngày và giờ</p>
         </div>
         <span id="currentMatchBadge" class="badge">Chưa bắt đầu</span>
       </div>
@@ -180,12 +181,34 @@
       </div>
     </section>
 
-    <footer><a href="admin.html">Trang quản trị</a></footer>
+    
+    <section class="panel mvp-honor-panel">
+      <div class="mvp-honor-copy">
+        <p class="eyebrow">VINH DANH CÁ NHÂN</p>
+        <h2>⭐ MVP KILL</h2>
+        <p class="muted">Tuyển thủ có tổng số hạ gục cao nhất giải đấu.</p>
+
+        <div id="mvpPublicInfo" class="mvp-player-info">
+          <span class="mvp-status">Đang cập nhật MVP...</span>
+        </div>
+      </div>
+
+      <div class="mvp-character-stage">
+        <img id="mvpCharacterImage" class="mvp-character-image" alt="Nhân vật vinh danh MVP" hidden>
+        <div id="mvpCharacterPlaceholder" class="mvp-character-placeholder">
+          NHÂN VẬT<br>VINH DANH
+        </div>
+        <img id="mvpTeamLogo" class="mvp-team-logo" alt="Logo đội MVP" hidden>
+      </div>
+    </section>
+
+<footer><a href="admin.html">Trang quản trị</a></footer>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script src="app.js"></script>
   <script src="scoreboard.js"></script>
+  <script src="mvp.js"></script>
 </body>
 </html>

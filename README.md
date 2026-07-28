@@ -1,24 +1,13 @@
-# Phoenix Summer Cup V17
+# Phoenix V20 — MVP Kill
 
-## Ảnh map
+Tính năng:
+- Admin nhập Kill từng thành viên theo từng trận.
+- Website tự cộng Kill sau 4 trận.
+- Tự chọn tuyển thủ nhiều Kill nhất làm MVP.
+- Khu vinh danh có tên, đội, logo đội và ảnh nhân vật game.
+- Admin upload/xóa ảnh nhân vật.
 
-Ảnh được đặt trực tiếp trong thư mục `assets`:
-
-- assets/dao-quan-su.jpg
-- assets/thien-duong.jpg
-- assets/sa-mac.jpg
-- assets/the-ky.jpg
-
-## Cập nhật GitHub
-
-Upload ghi đè toàn bộ V17.
-
-Tối thiểu phải thay:
-- scoreboard.js
-- styles.css
-- 4 ảnh JPG trong thư mục assets/
-
-Sau khi deploy, kiểm tra:
-`https://phoenix-summer-cup.vercel.app/assets/dao-quan-su.jpg`
-
-Không cần sửa Supabase hoặc chạy SQL.
+Cập nhật:
+1. Upload ghi đè toàn bộ file V20 lên GitHub.
+2. Chạy `repair_v20_mvp.sql` trong Supabase SQL Editor.
+3. Tải lại trang Admin.

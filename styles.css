@@ -1401,3 +1401,70 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   .top-three-podium,.finished-podium{grid-template-columns:1fr}
   .podium-card.podium-1,.finished-1{transform:none}
 }
+
+
+/* V20 MVP KILL */
+.mvp-honor-panel{
+  position:relative;
+  overflow:hidden;
+  min-height:360px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(260px,42%);
+  align-items:center;
+  gap:22px;
+  border-color:rgba(255,170,55,.48);
+  background:
+    radial-gradient(circle at 85% 30%,rgba(255,150,35,.20),transparent 35%),
+    linear-gradient(135deg,rgba(239,61,50,.10),transparent 55%),
+    var(--panel);
+}
+.mvp-honor-panel::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:5px;
+  background:linear-gradient(#ffd057,#ff8a1f,#ef3d32);
+}
+.mvp-player-info{display:grid;gap:7px;margin-top:18px}
+.mvp-player-name{font-size:clamp(28px,5vw,48px);line-height:1}
+.mvp-team-name{color:#ffb05a;font-weight:900}
+.mvp-kill-number{
+  display:flex;align-items:baseline;gap:10px;margin-top:8px;
+  color:#ffc83d;font-size:clamp(52px,9vw,82px);font-weight:950;line-height:1
+}
+.mvp-kill-number small{font-size:18px;letter-spacing:2px}
+.mvp-match-count,.mvp-status{color:var(--muted)}
+.mvp-character-stage{
+  position:relative;align-self:stretch;min-height:320px;
+  display:flex;align-items:flex-end;justify-content:center
+}
+.mvp-character-image{
+  position:absolute;inset:auto 0 0 auto;width:100%;height:100%;
+  object-fit:contain;object-position:center bottom;filter:drop-shadow(0 15px 22px rgba(0,0,0,.55))
+}
+.mvp-character-placeholder{
+  display:grid;place-items:center;width:220px;height:280px;
+  border:1px dashed rgba(255,170,55,.45);border-radius:20px;
+  color:rgba(255,255,255,.34);text-align:center;font-weight:900
+}
+.mvp-team-logo{
+  position:absolute;right:8px;bottom:8px;width:72px;height:72px;
+  object-fit:cover;border-radius:16px;border:2px solid #ffad42;background:#090a0e
+}
+.mvp-divider{margin:22px 0;border:0;border-top:1px solid var(--border)}
+.mvp-kill-editor{display:grid;gap:9px;margin:16px 0}
+.mvp-kill-row{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--panel2)
+}
+.mvp-kill-row span{display:grid;gap:3px}
+.mvp-kill-row small{color:var(--muted)}
+.mvp-kill-row input{width:100px}
+.mvp-admin-preview{display:grid;gap:8px;margin-top:15px}
+.mvp-admin-character{max-width:260px;max-height:300px;object-fit:contain}
+@media(max-width:760px){
+  .mvp-honor-panel{grid-template-columns:1fr}
+  .mvp-character-stage{min-height:280px}
+  .mvp-kill-row{align-items:stretch;flex-direction:column}
+  .mvp-kill-row input{width:100%}
+}
