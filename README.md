@@ -1,22 +1,18 @@
-# Phoenix V21 — Vinh danh đội vô địch
+# Phoenix V21.1 — Toast Notification
 
-## Tính năng
+## Đã sửa
 
-- Sau khi đủ kết quả 4 trận, website tự xác định đội hạng 1.
-- Hiển thị:
-  - Logo đội
-  - Tên đội
-  - Tổng điểm
-  - Tổng Kill
-  - Tổng Booyah
-  - 4 thành viên
-  - Ảnh nhân vật riêng cho từng thành viên
-- Admin chọn từng thành viên để upload hoặc xóa ảnh nhân vật.
+- Mọi thông báo Admin xuất hiện ở góc dưới bên phải.
+- Tự biến mất sau khoảng 3 giây.
+- Có loại thành công, lỗi, thông tin và cảnh báo.
+- Không cần kéo lên đầu trang.
+- Không cần sửa từng lệnh `msg(...)`: file `toast.js` tự chuyển chúng thành toast.
 
-## Cập nhật
+## Cập nhật GitHub
 
-1. Upload ghi đè toàn bộ V21 lên GitHub.
-2. Chạy `repair_v21_champion.sql` trong Supabase SQL Editor.
-3. Tải lại trang Admin.
+Tối thiểu upload ghi đè:
+- admin.html
+- styles.css
+- toast.js
 
-Khu vinh danh chỉ xuất hiện sau khi đã có kết quả đủ 4 trận.
+Không cần chạy SQL hoặc chỉnh Supabase.
