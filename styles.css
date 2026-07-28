@@ -1127,205 +1127,164 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     font-size:25px;
   }
 }
-/* =======================================================
-   V17.1 - Phoenix Schedule Premium Card
-======================================================= */
 
+/* V18 - PHOENIX ESPORTS SCHEDULE */
 .schedule-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:22px;
-    margin-top:22px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+  margin-top:22px;
 }
-
 .schedule-card{
-    position:relative;
-    overflow:hidden;
-
-    border:2px solid rgba(255,145,40,.20);
-    border-radius:22px;
-
-    background:linear-gradient(
-        180deg,
-        rgba(255,140,40,.05) 0%,
-        #171a22 60%,
-        #1b1f28 100%
-    );
-
-    transition:
-        transform .25s ease,
-        border-color .25s ease,
-        box-shadow .25s ease;
+  position:relative;
+  overflow:hidden;
+  padding:0;
+  gap:0;
+  border:2px solid rgba(255,145,40,.20);
+  border-radius:22px;
+  background:#171a22;
+  transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;
 }
-
-/* Thanh sáng phía trên */
-
 .schedule-card::before{
-    content:"";
-    position:absolute;
-    left:0;
-    top:0;
-
-    width:100%;
-    height:3px;
-
-    background:linear-gradient(
-        90deg,
-        #ff4a3c,
-        #ff8b24,
-        #ffcb55
-    );
+  content:"";
+  position:absolute;
+  z-index:5;
+  top:0;
+  left:0;
+  width:100%;
+  height:3px;
+  background:linear-gradient(90deg,#ff4d37,#ff9326,#ffd04a);
 }
-
-/* Hover */
-
 .schedule-card:hover{
-    transform:translateY(-6px);
-
-    border-color:#ff9a33;
-
-    box-shadow:
-        0 0 0 1px rgba(255,155,55,.25),
-        0 0 30px rgba(255,145,40,.18),
-        0 18px 48px rgba(0,0,0,.55);
+  transform:translateY(-6px);
+  border-color:#ff9326;
+  box-shadow:0 0 0 1px rgba(255,155,55,.20),0 0 30px rgba(255,145,40,.18),0 18px 48px rgba(0,0,0,.55);
 }
-
-/* Trận tiếp theo */
-
 .schedule-card.current{
-    border-color:#ffb347;
-
-    box-shadow:
-        0 0 0 1px rgba(255,170,60,.45),
-        0 0 38px rgba(255,145,40,.28),
-        0 18px 55px rgba(0,0,0,.65);
+  border-color:#ffb347;
+  box-shadow:0 0 0 1px rgba(255,170,60,.42),0 0 38px rgba(255,145,40,.28),0 18px 55px rgba(0,0,0,.65);
 }
-
-/* Ảnh */
-
 .schedule-map-visual{
-    position:relative;
-    height:210px;
-    overflow:hidden;
-    border-bottom:1px solid rgba(255,255,255,.08);
+  position:relative;
+  height:220px;
+  min-height:220px;
+  overflow:hidden;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:radial-gradient(circle at 75% 25%,rgba(255,138,31,.22),transparent 30%),linear-gradient(135deg,#191b23,#0d0e13);
 }
-
 .schedule-map-image{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-
-    transition:
-        transform .35s ease,
-        filter .35s ease;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  z-index:0;
+  transition:transform .35s ease,filter .35s ease;
 }
-
 .schedule-card:hover .schedule-map-image{
-    transform:scale(1.06);
-    filter:
-        brightness(1.05)
-        saturate(1.12);
+  transform:scale(1.065);
+  filter:brightness(1.04) saturate(1.10);
 }
-
-/* Overlay */
-
 .schedule-map-overlay{
-    position:absolute;
-    inset:0;
-
-    background:
-        linear-gradient(to top,
-            rgba(8,9,13,.92),
-            rgba(8,9,13,.18) 65%
-        ),
-        linear-gradient(
-            135deg,
-            rgba(239,61,50,.12),
-            transparent 45%
-        );
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:linear-gradient(to top,rgba(7,8,12,.96),rgba(7,8,12,.10) 62%),linear-gradient(135deg,rgba(239,61,50,.14),transparent 48%);
 }
-
-/* Badge */
-
-.schedule-number{
-    display:inline-flex;
-    align-items:center;
-
-    padding:9px 16px;
-
-    border-radius:999px;
-
-    border:1px solid rgba(255,145,40,.5);
-
-    background:rgba(10,11,16,.78);
-
-    backdrop-filter:blur(8px);
-
-    color:#ff9628;
-
-    font-size:13px;
-    font-weight:900;
-    letter-spacing:1px;
+.schedule-map-content{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  padding:15px;
 }
-
-/* Trận tiếp theo */
-
-.schedule-current-label{
-    padding:8px 14px;
-
-    border-radius:999px;
-
-    background:rgba(70,35,10,.82);
-
-    border:1px solid rgba(255,181,70,.6);
-
-    color:#ffbd67;
-
-    font-size:11px;
-    font-weight:900;
-
-    letter-spacing:.8px;
+.schedule-round-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 13px;
+  border:1px solid rgba(255,145,40,.55);
+  border-radius:999px;
+  background:rgba(7,8,12,.78);
+  color:#ff9a31;
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:1px;
 }
-
-/* Nội dung */
-
+.next-match-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:8px 13px;
+  border:1px solid rgba(255,191,95,.62);
+  border-radius:999px;
+  background:rgba(255,147,38,.94);
+  color:#17100a;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.7px;
+  box-shadow:0 0 18px rgba(255,145,40,.34);
+}
+.schedule-map-name-overlay{
+  position:absolute;
+  z-index:2;
+  left:16px;
+  right:16px;
+  bottom:15px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:#fff;
+  font-size:clamp(22px,3vw,30px);
+  font-weight:950;
+  line-height:1.1;
+  text-shadow:0 2px 14px rgba(0,0,0,.9);
+}
 .schedule-card-body{
-    padding:18px;
+  display:grid;
+  gap:10px;
+  padding:17px 18px 19px;
 }
-
-.schedule-card-body strong{
-    display:block;
-
-    font-size:22px;
-
-    margin-bottom:8px;
-
-    color:white;
+.schedule-info{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
 }
-
-.schedule-card-body span{
-    color:#c5c8cf;
-    font-size:17px;
+.schedule-info-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 11px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:rgba(0,0,0,.15);
+  color:#d8dbe1;
+  font-size:14px;
+  font-weight:700;
 }
-
-/* Mobile */
-
+.empty-map{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  color:#999;
+  font-size:34px;
+}
+.empty-map span:last-child{
+  font-size:15px;
+  font-weight:700;
+}
 @media(max-width:760px){
-
-    .schedule-grid{
-        grid-template-columns:1fr;
-    }
-
-    .schedule-map-visual{
-        height:230px;
-    }
-
-    .schedule-card-body strong{
-        font-size:30px;
-    }
-
-    .schedule-card-body span{
-        font-size:19px;
-    }
-
+  .schedule-grid{grid-template-columns:1fr}
+  .schedule-map-visual{height:240px;min-height:240px}
+  .schedule-info{grid-template-columns:1fr}
+  .schedule-map-name-overlay{font-size:28px}
 }
