@@ -207,6 +207,30 @@
         <div id="mvpAdminPreview" class="mvp-admin-preview"></div>
       </section>
 
+
+      <section class="panel">
+        <p class="eyebrow">ĐỘI HÌNH VÔ ĐỊCH</p>
+        <h2>Ảnh nhân vật từng thành viên</h2>
+        <p class="muted">
+          Chọn thành viên và upload ảnh nhân vật game để hiển thị trong khu vinh danh đội vô địch.
+        </p>
+
+        <label for="championPlayerSelect">Thành viên</label>
+        <select id="championPlayerSelect" class="match-select"></select>
+
+        <label for="championCharacterFile">Ảnh nhân vật</label>
+        <input id="championCharacterFile" type="file" accept="image/png,image/jpeg,image/webp">
+
+        <div class="actions">
+          <button id="uploadChampionCharacterBtn" type="button">Tải ảnh nhân vật</button>
+          <button id="removeChampionCharacterBtn" type="button" class="secondary danger-outline">
+            Xóa ảnh
+          </button>
+        </div>
+
+        <div id="championAdminPreview" class="champion-admin-preview"></div>
+      </section>
+
 <section class="panel leaderboard-panel">
         <div class="leaderboard-header">
           <div>
@@ -243,5 +267,6 @@
   <script src="admin.js"></script>
   <script src="admin-tournament.js"></script>
   <script src="admin-mvp.js"></script>
+  <script src="admin-champion.js"></script>
 </body>
 </html>
