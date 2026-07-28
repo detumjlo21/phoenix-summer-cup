@@ -1,3 +1,5 @@
+let phoenixMatchTimer=null;
+
 function scoreEsc(value){
   return String(value ?? "").replace(/[&<>"']/g, char => ({
     "&":"&amp;",
@@ -183,7 +185,7 @@ function renderPublicRanking(rows){
 
   body.innerHTML = rows.length
     ? rows.map(row => `
-      <tr class="rank-row rank-${row.current_rank}">
+      <tr class="rank-row rank-${row.current_rank}" style="--rank-delay:${row.current_rank*35}ms">
         <td class="rank-cell">${medal(row.current_rank)}</td>
 
         <td>
@@ -206,6 +208,9 @@ function renderPublicRanking(rows){
       </tr>
     `).join("")
     : '<tr><td colspan="7" class="muted">Chưa có dữ liệu đội.</td></tr>';
+
+  renderTopThree(rows);
+  renderFinishedScreen(rows);
 }
 
 function renderSchedule(schedule){
@@ -273,6 +278,168 @@ function renderSchedule(schedule){
       </article>
     `;
   }).join("");
+}
+
+
+function ensureV19Sections(){
+  const schedule=document.querySelector("#publicSchedule");
+  if(schedule&&!document.querySelector("#liveTournamentBanner")){
+    const schedulePanel=schedule.closest("section")||schedule.parentElement;
+    const banner=document.createElement("section");
+    banner.id="liveTournamentBanner";
+    banner.className="panel live-tournament-banner";
+    banner.hidden=true;
+    banner.innerHTML=`
+      <div class="live-indicator"><span></span><strong id="liveBannerStatus">SẮP DIỄN RA</strong></div>
+      <div class="live-banner-main">
+        <div>
+          <p class="eyebrow">PHOENIX SUMMER CUP 2026</p>
+          <h2 id="liveBannerTitle">Trận đấu sắp diễn ra</h2>
+          <p id="liveBannerMeta" class="muted">Chưa cập nhật</p>
+        </div>
+        <div class="match-countdown">
+          <span id="matchCountdownLabel">Bắt đầu sau</span>
+          <strong id="matchCountdown">--:--:--</strong>
+        </div>
+      </div>`;
+    schedulePanel.parentNode.insertBefore(banner,schedulePanel);
+  }
+
+  const leaderboardBody=document.querySelector("#leaderboardBody");
+  if(leaderboardBody){
+    const leaderboardPanel=leaderboardBody.closest("section")||leaderboardBody.parentElement;
+
+    if(!document.querySelector("#topThreePodium")){
+      const podium=document.createElement("div");
+      podium.id="topThreePodium";
+      podium.className="top-three-podium";
+      const tableWrap=leaderboardBody.closest(".leaderboard-table-wrap");
+      leaderboardPanel.insertBefore(podium,tableWrap||leaderboardBody.parentElement);
+    }
+
+    if(!document.querySelector("#tournamentFinished")){
+      const finished=document.createElement("section");
+      finished.id="tournamentFinished";
+      finished.className="panel tournament-finished";
+      finished.hidden=true;
+      finished.innerHTML=`
+        <p class="eyebrow">PHOENIX SUMMER CUP 2026</p>
+        <h2>🏆 GIẢI ĐẤU ĐÃ KẾT THÚC</h2>
+        <div id="finishedPodium" class="finished-podium"></div>
+        <p class="muted">Cảm ơn tất cả các đội đã tham gia!</p>`;
+      leaderboardPanel.parentNode.insertBefore(finished,leaderboardPanel.nextSibling);
+    }
+  }
+}
+
+function getMatchDateTime(match){
+  if(!match?.match_date)return null;
+  const time=match.match_time?String(match.match_time).slice(0,5):"00:00";
+  const date=new Date(`${match.match_date}T${time}:00+07:00`);
+  return Number.isNaN(date.getTime())?null:date;
+}
+
+function formatDuration(ms){
+  const total=Math.max(0,Math.floor(ms/1000));
+  const hours=Math.floor(total/3600);
+  const minutes=Math.floor((total%3600)/60);
+  const seconds=total%60;
+  return `${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+}
+
+function renderLiveBanner(schedule){
+  ensureV19Sections();
+  const banner=document.querySelector("#liveTournamentBanner");
+  if(!banner)return;
+
+  const matches=(schedule||[])
+    .filter(match=>match.match_date)
+    .map(match=>({...match,dateTime:getMatchDateTime(match)}))
+    .filter(match=>match.dateTime)
+    .sort((a,b)=>a.dateTime-b.dateTime);
+
+  if(!matches.length){
+    banner.hidden=true;
+    return;
+  }
+
+  banner.hidden=false;
+  const now=new Date();
+  const current=matches.find(match=>match.is_current);
+  const next=current||matches.find(match=>match.dateTime>now)||matches[matches.length-1];
+
+  const status=document.querySelector("#liveBannerStatus");
+  const title=document.querySelector("#liveBannerTitle");
+  const meta=document.querySelector("#liveBannerMeta");
+  const label=document.querySelector("#matchCountdownLabel");
+  const countdown=document.querySelector("#matchCountdown");
+
+  title.textContent=`Trận ${next.match_number} • ${getMapDisplayName(next.map_name)}`;
+  meta.textContent=`${next.match_date?new Date(`${next.match_date}T00:00:00+07:00`).toLocaleDateString("vi-VN"):"Chưa cập nhật"} • ${next.match_time?String(next.match_time).slice(0,5):"--:--"}`;
+
+  if(phoenixMatchTimer)clearInterval(phoenixMatchTimer);
+
+  const update=()=>{
+    const diff=next.dateTime-Date.now();
+
+    if(next.is_current||(diff<=0&&diff>-7200000)){
+      banner.classList.add("is-live");
+      status.textContent="ĐANG THI ĐẤU";
+      label.textContent="Trạng thái";
+      countdown.textContent="LIVE";
+    }else if(diff>0){
+      banner.classList.remove("is-live");
+      status.textContent="SẮP DIỄN RA";
+      label.textContent="Bắt đầu sau";
+      countdown.textContent=formatDuration(diff);
+    }else{
+      banner.classList.remove("is-live");
+      status.textContent="ĐÃ KẾT THÚC";
+      label.textContent="Trạng thái";
+      countdown.textContent="ĐÃ XONG";
+    }
+  };
+
+  update();
+  phoenixMatchTimer=setInterval(update,1000);
+}
+
+function renderTopThree(rows){
+  ensureV19Sections();
+  const box=document.querySelector("#topThreePodium");
+  if(!box)return;
+
+  box.innerHTML=rows.slice(0,3).map((row,index)=>`
+    <article class="podium-card podium-${index+1}">
+      <div class="podium-rank">${medal(index+1)}</div>
+      ${row.logo_url
+        ?`<img src="${scoreEsc(row.logo_url)}" alt="" class="podium-logo">`
+        :`<div class="podium-logo podium-placeholder">PHX</div>`}
+      <h3>${scoreEsc(row.team_name)}</h3>
+      <strong>${row.total_points} điểm</strong>
+      <span>${row.total_kills} kill • ${row.booyahs} Booyah</span>
+    </article>
+  `).join("");
+}
+
+function renderFinishedScreen(rows){
+  ensureV19Sections();
+  const panel=document.querySelector("#tournamentFinished");
+  const box=document.querySelector("#finishedPodium");
+  if(!panel||!box)return;
+
+  const completed=rows.length>0&&rows.every(row=>Number(row.matches_played)>=4);
+  panel.hidden=!completed;
+  if(!completed)return;
+
+  box.innerHTML=rows.slice(0,3).map((row,index)=>`
+    <div class="finished-team finished-${index+1}">
+      <span>${medal(index+1)}</span>
+      ${row.logo_url?`<img src="${scoreEsc(row.logo_url)}" alt="">`:""}
+      <strong>${scoreEsc(row.team_name)}</strong>
+      <small>${row.total_points} điểm</small>
+    </div>
+  `).join("");
 }
 
 async function loadTournamentPublic(){

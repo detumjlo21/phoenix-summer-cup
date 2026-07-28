@@ -1298,3 +1298,106 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 .schedule-map-name-overlay{
   padding-left:0;
 }
+
+
+/* V19 LIVE TOURNAMENT */
+.live-tournament-banner{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(255,138,31,.42);
+  background:radial-gradient(circle at 85% 15%,rgba(255,138,31,.18),transparent 34%),linear-gradient(135deg,rgba(239,61,50,.11),transparent 55%),var(--panel);
+}
+.live-tournament-banner::before{
+  content:"";position:absolute;inset:0 auto 0 0;width:4px;
+  background:linear-gradient(#ff4d37,#ff9326,#ffd04a);
+}
+.live-tournament-banner.is-live{
+  border-color:rgba(255,76,61,.78);
+  box-shadow:0 0 30px rgba(255,76,61,.14);
+}
+.live-indicator{
+  display:flex;align-items:center;gap:9px;margin-bottom:14px;
+  color:#ffb05a;font-size:12px;font-weight:950;letter-spacing:1px;
+}
+.live-indicator span{
+  width:10px;height:10px;border-radius:50%;background:#ff9a31;
+  box-shadow:0 0 14px currentColor;
+}
+.is-live .live-indicator{color:#ff6258}
+.is-live .live-indicator span{
+  background:#ff4f45;animation:livePulse 1.1s ease-in-out infinite;
+}
+.live-banner-main{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+}
+.live-banner-main h2{margin:4px 0 8px}
+.match-countdown{
+  min-width:170px;padding:14px 17px;border:1px solid rgba(255,138,31,.28);
+  border-radius:16px;background:rgba(0,0,0,.18);text-align:center;
+}
+.match-countdown span{
+  display:block;margin-bottom:6px;color:var(--muted);font-size:12px;font-weight:800;
+}
+.match-countdown strong{
+  color:#ffbd68;font-size:25px;font-variant-numeric:tabular-nums;
+}
+@keyframes livePulse{
+  0%,100%{transform:scale(1);opacity:1}
+  50%{transform:scale(1.35);opacity:.55}
+}
+
+.top-three-podium{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0;
+}
+.podium-card{
+  display:grid;place-items:center;gap:8px;padding:18px 14px;
+  border:1px solid var(--border);border-radius:18px;background:var(--panel2);text-align:center;
+}
+.podium-card.podium-1{
+  border-color:rgba(255,199,54,.58);
+  background:radial-gradient(circle at 50% 0,rgba(255,199,54,.16),transparent 55%),var(--panel2);
+  transform:translateY(-8px);
+}
+.podium-card.podium-2{border-color:rgba(205,211,221,.42)}
+.podium-card.podium-3{border-color:rgba(205,112,45,.46)}
+.podium-rank{font-size:28px}
+.podium-logo{
+  width:72px;height:72px;object-fit:cover;border-radius:16px;
+  border:1px solid var(--border);background:#090a0e;
+}
+.podium-placeholder{display:grid;place-items:center;color:var(--orange);font-weight:900}
+.podium-card h3{margin:2px 0;font-size:18px}
+.podium-card strong{color:#ffc83d}
+.podium-card span{color:var(--muted);font-size:12px}
+
+.rank-row{
+  animation:rankEnter .38s ease both;
+  animation-delay:var(--rank-delay,0ms);
+}
+@keyframes rankEnter{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:none}
+}
+
+.tournament-finished{
+  text-align:center;border-color:rgba(255,199,54,.48);
+  background:radial-gradient(circle at 50% 0,rgba(255,199,54,.15),transparent 42%),var(--panel);
+}
+.finished-podium{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0;
+}
+.finished-team{
+  display:grid;place-items:center;gap:8px;padding:16px;
+  border:1px solid var(--border);border-radius:16px;background:var(--panel2);
+}
+.finished-team img{width:64px;height:64px;object-fit:cover;border-radius:14px}
+.finished-team span{font-size:27px}
+.finished-team small{color:#ffc83d}
+.finished-1{border-color:rgba(255,199,54,.58);transform:translateY(-8px)}
+
+@media(max-width:760px){
+  .live-banner-main{align-items:stretch;flex-direction:column}
+  .match-countdown{width:100%}
+  .top-three-podium,.finished-podium{grid-template-columns:1fr}
+  .podium-card.podium-1,.finished-1{transform:none}
+}
