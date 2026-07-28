@@ -503,7 +503,10 @@ async function loadTournamentPublic(){
       announcement.classList.add("announcement-content");
     }
 
-    renderSchedule(scheduleRes.data || []);
+    const publicSchedule = scheduleRes.data || [];
+
+    renderSchedule(publicSchedule);
+    renderLiveBanner(publicSchedule);
 
     const teams = teamsRes.data || [];
     const results = resultsRes.data || [];
