@@ -1288,3 +1288,13 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   .schedule-info{grid-template-columns:1fr}
   .schedule-map-name-overlay{font-size:28px}
 }
+
+
+/* V18.1 - Làm gọn lịch thi đấu */
+#currentMatchBadge{
+  display:none !important;
+}
+
+.schedule-map-name-overlay{
+  padding-left:0;
+}

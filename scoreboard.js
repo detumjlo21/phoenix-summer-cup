@@ -25,6 +25,24 @@ function getMapImage(mapName){
   return images[normalized] || "";
 }
 
+function getMapDisplayName(mapName){
+  const normalized=String(mapName||"").trim().toLowerCase();
+
+  const names={
+    "đảo quân sự":"Quân Sự",
+    "dao quan su":"Quân Sự",
+    "thiên đường":"Thiên Đường",
+    "thien duong":"Thiên Đường",
+    "sa mạc":"Sa Mạc",
+    "sa mac":"Sa Mạc",
+    "thế kỷ":"Thế Kỷ",
+    "the ky":"Thế Kỷ"
+  };
+
+  return names[normalized]||mapName||"Chưa chọn map";
+}
+
+
 function formatMatchDate(date, time){
   if(!date) return "Chưa cập nhật";
 
@@ -213,7 +231,7 @@ function renderSchedule(schedule){
 
   scheduleBox.innerHTML=all.map(match=>{
     const image=getMapImage(match.map_name);
-    const mapName=match.map_name||"Chưa chọn map";
+    const mapName=getMapDisplayName(match.map_name);
     const dateText=match.match_date
       ?new Date(`${match.match_date}T00:00:00+07:00`).toLocaleDateString("vi-VN")
       :"Chưa cập nhật";
@@ -233,7 +251,7 @@ function renderSchedule(schedule){
           <div class="schedule-map-overlay"></div>
 
           <div class="schedule-map-content">
-            <div class="schedule-round-badge">🏆 ROUND ${match.match_number}</div>
+            <div class="schedule-round-badge">TRẬN ${match.match_number}</div>
             ${
               match.is_current
                 ?`<div class="next-match-badge">🔥 TRẬN TIẾP THEO</div>`
@@ -242,7 +260,7 @@ function renderSchedule(schedule){
           </div>
 
           <div class="schedule-map-name-overlay">
-            🗺️ ${scoreEsc(mapName)}
+            ${scoreEsc(mapName)}
           </div>
         </div>
 
@@ -255,15 +273,6 @@ function renderSchedule(schedule){
       </article>
     `;
   }).join("");
-
-  const current=all.find(match=>match.is_current);
-  const badge=document.querySelector("#currentMatchBadge");
-
-  if(badge){
-    badge.textContent=current
-      ?`🔥 Trận ${current.match_number} • ${current.map_name||"Chưa chọn map"}`
-      :"📅 Chưa có trận đang diễn ra";
-  }
 }
 
 async function loadTournamentPublic(){
