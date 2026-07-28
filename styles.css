@@ -2287,3 +2287,346 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     width:82%;
   }
 }
+
+
+/* =======================================================
+   V23.1 - MVP PREMIUM EFFECTS
+   Giữ nguyên HTML/JS/Supabase
+======================================================= */
+
+/* Ẩn chữ placeholder khi đã có ảnh */
+#mvpCharacterPlaceholder{
+  display:none !important;
+}
+
+/* Nền tổng thể đậm chất esports */
+.mvp-ffws{
+  isolation:isolate;
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(255,150,35,.78);
+  background:
+    radial-gradient(circle at 78% 42%,rgba(255,132,20,.19),transparent 34%),
+    radial-gradient(circle at 16% 86%,rgba(255,90,20,.08),transparent 28%),
+    linear-gradient(135deg,rgba(255,255,255,.018),transparent 38%),
+    #090b10;
+  box-shadow:
+    0 0 0 1px rgba(255,147,38,.05),
+    0 18px 54px rgba(0,0,0,.44),
+    0 0 34px rgba(255,125,20,.08);
+}
+
+/* Lớp texture chéo */
+.mvp-ffws::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  opacity:.34;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 22px,
+      rgba(255,255,255,.014) 22px 23px
+    ),
+    linear-gradient(115deg,rgba(255,140,30,.06),transparent 30%);
+}
+
+/* Viền sáng quét chậm */
+.mvp-ffws::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  z-index:-1;
+  pointer-events:none;
+  border-radius:inherit;
+  padding:2px;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0 34%,
+      rgba(255,205,90,.95) 45%,
+      #ff8a1f 50%,
+      transparent 60% 100%
+    );
+  background-size:260% 100%;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  animation:mvpBorderSweep 5.8s linear infinite;
+}
+
+@keyframes mvpBorderSweep{
+  from{background-position:180% 0}
+  to{background-position:-80% 0}
+}
+
+/* Tiêu đề nổi bật */
+.mvp-main-title{
+  text-shadow:
+    0 0 12px rgba(255,255,255,.12),
+    0 0 28px rgba(255,145,35,.16);
+}
+
+.mvp-main-title b{
+  background:linear-gradient(180deg,#ffd35d 0%,#ff9d2f 44%,#ff711d 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  filter:drop-shadow(0 0 12px rgba(255,130,20,.24));
+}
+
+.mvp-star{
+  animation:mvpStarPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes mvpStarPulse{
+  0%,100%{
+    transform:scale(1) rotate(0);
+    filter:drop-shadow(0 0 8px rgba(255,198,55,.34));
+  }
+  50%{
+    transform:scale(1.10) rotate(-4deg);
+    filter:drop-shadow(0 0 18px rgba(255,198,55,.72));
+  }
+}
+
+/* Số kill đập nhẹ */
+.mvp-kill-number{
+  transform-origin:left center;
+  animation:mvpKillPulse 3s ease-in-out infinite;
+}
+
+@keyframes mvpKillPulse{
+  0%,100%{
+    transform:scale(1);
+    text-shadow:0 0 0 rgba(255,190,50,0);
+  }
+  50%{
+    transform:scale(1.025);
+    text-shadow:0 0 18px rgba(255,175,40,.28);
+  }
+}
+
+/* Khung nhân vật */
+.mvp-character-stage{
+  isolation:isolate;
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(255,150,35,.62);
+  box-shadow:
+    inset 0 0 50px rgba(255,135,20,.07),
+    0 18px 42px rgba(0,0,0,.35),
+    0 0 30px rgba(255,125,20,.10);
+}
+
+/* Hạt sáng */
+.mvp-character-stage::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  opacity:.78;
+  background-image:
+    radial-gradient(circle at 18% 82%,rgba(255,182,70,.92) 0 1px,transparent 2px),
+    radial-gradient(circle at 28% 68%,rgba(255,132,35,.72) 0 1.5px,transparent 2.5px),
+    radial-gradient(circle at 39% 88%,rgba(255,211,120,.86) 0 1px,transparent 2px),
+    radial-gradient(circle at 53% 73%,rgba(255,136,30,.78) 0 1px,transparent 2px),
+    radial-gradient(circle at 66% 86%,rgba(255,205,90,.92) 0 1.5px,transparent 2.5px),
+    radial-gradient(circle at 78% 69%,rgba(255,128,24,.78) 0 1px,transparent 2px),
+    radial-gradient(circle at 87% 83%,rgba(255,195,70,.82) 0 1px,transparent 2px);
+  background-size:100% 100%;
+  animation:mvpParticles 4.6s ease-in-out infinite alternate;
+}
+
+@keyframes mvpParticles{
+  from{transform:translateY(8px);opacity:.45}
+  to{transform:translateY(-10px);opacity:.92}
+}
+
+/* Ánh sáng nền sau nhân vật */
+.mvp-stage-light{
+  opacity:.9;
+  animation:mvpSpotlight 3.8s ease-in-out infinite alternate;
+}
+
+@keyframes mvpSpotlight{
+  from{
+    transform:translateX(-50%) scaleX(.92);
+    filter:blur(10px);
+    opacity:.58;
+  }
+  to{
+    transform:translateX(-50%) scaleX(1.08);
+    filter:blur(7px);
+    opacity:.94;
+  }
+}
+
+/* Bục 3D nhiều tầng */
+.mvp-stage-platform{
+  height:68px;
+  border-width:2px;
+  background:
+    radial-gradient(ellipse at center,rgba(255,165,45,.34),rgba(8,9,13,.95) 66%),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0 4px,transparent 4px 9px);
+  box-shadow:
+    0 0 30px rgba(255,140,25,.38),
+    0 10px 0 -2px #090a0e,
+    0 12px 0 0 rgba(255,128,20,.70),
+    0 20px 0 -1px #090a0e,
+    0 22px 0 1px rgba(255,118,20,.42),
+    inset 0 0 24px rgba(255,146,30,.18);
+  animation:mvpPlatformGlow 2.8s ease-in-out infinite;
+}
+
+@keyframes mvpPlatformGlow{
+  0%,100%{
+    box-shadow:
+      0 0 24px rgba(255,140,25,.28),
+      0 10px 0 -2px #090a0e,
+      0 12px 0 0 rgba(255,128,20,.64),
+      0 20px 0 -1px #090a0e,
+      0 22px 0 1px rgba(255,118,20,.38),
+      inset 0 0 20px rgba(255,146,30,.14);
+  }
+  50%{
+    box-shadow:
+      0 0 42px rgba(255,150,35,.48),
+      0 10px 0 -2px #090a0e,
+      0 12px 0 0 rgba(255,156,40,.88),
+      0 20px 0 -1px #090a0e,
+      0 22px 0 1px rgba(255,130,25,.56),
+      inset 0 0 30px rgba(255,160,45,.24);
+  }
+}
+
+/* Nhân vật */
+.mvp-character-image{
+  z-index:4;
+  filter:
+    drop-shadow(0 20px 26px rgba(0,0,0,.70))
+    drop-shadow(0 0 18px rgba(255,135,25,.12))
+    saturate(1.06)
+    contrast(1.04);
+  animation:mvpCharacterFloat 4s ease-in-out infinite;
+}
+
+@keyframes mvpCharacterFloat{
+  0%,100%{
+    transform:translateX(-50%) translateY(0) scale(1);
+  }
+  50%{
+    transform:translateX(-50%) translateY(-5px) scale(1.012);
+  }
+}
+
+.mvp-character-stage:hover .mvp-character-image{
+  animation-play-state:paused;
+  transform:translateX(-50%) translateY(-8px) scale(1.035);
+}
+
+/* Chữ MVP nền */
+.mvp-background-word{
+  opacity:.78;
+  animation:mvpWordGlow 3.4s ease-in-out infinite alternate;
+}
+
+@keyframes mvpWordGlow{
+  from{
+    -webkit-text-stroke-color:rgba(255,145,35,.11);
+    text-shadow:0 0 18px rgba(255,145,35,.03);
+  }
+  to{
+    -webkit-text-stroke-color:rgba(255,165,55,.23);
+    text-shadow:0 0 34px rgba(255,145,35,.10);
+  }
+}
+
+/* Logo đội */
+.mvp-team-logo{
+  transition:
+    transform .32s ease,
+    box-shadow .32s ease,
+    filter .32s ease;
+  animation:mvpLogoGlow 3s ease-in-out infinite;
+}
+
+.mvp-team-logo:hover{
+  transform:translateY(-5px) scale(1.07) rotate(-2deg);
+  filter:saturate(1.13);
+}
+
+@keyframes mvpLogoGlow{
+  0%,100%{
+    box-shadow:
+      0 0 0 4px rgba(8,9,13,.86),
+      0 0 20px rgba(255,145,35,.28);
+  }
+  50%{
+    box-shadow:
+      0 0 0 4px rgba(8,9,13,.92),
+      0 0 36px rgba(255,160,45,.54),
+      0 0 62px rgba(255,110,20,.18);
+  }
+}
+
+/* Shine chạy qua khung nhân vật */
+.mvp-character-stage .mvp-corner-top::after{
+  content:"";
+  position:absolute;
+  top:-4px;
+  left:0;
+  width:66px;
+  height:4px;
+  background:linear-gradient(90deg,transparent,#fff4c7,transparent);
+  filter:blur(.4px);
+  animation:mvpCornerShine 2.9s linear infinite;
+}
+
+@keyframes mvpCornerShine{
+  from{transform:translateX(-80px);opacity:0}
+  25%{opacity:1}
+  to{transform:translateX(165px);opacity:0}
+}
+
+/* Giảm hiệu ứng khi người dùng ưu tiên ít chuyển động */
+@media(prefers-reduced-motion:reduce){
+  .mvp-ffws::after,
+  .mvp-star,
+  .mvp-kill-number,
+  .mvp-character-stage::before,
+  .mvp-stage-light,
+  .mvp-stage-platform,
+  .mvp-character-image,
+  .mvp-background-word,
+  .mvp-team-logo,
+  .mvp-character-stage .mvp-corner-top::after{
+    animation:none !important;
+  }
+}
+
+/* Mobile: hiệu ứng nhẹ hơn để không lag */
+@media(max-width:600px){
+  .mvp-ffws{
+    box-shadow:
+      0 14px 34px rgba(0,0,0,.38),
+      0 0 18px rgba(255,125,20,.07);
+  }
+
+  .mvp-character-stage::before{
+    opacity:.52;
+  }
+
+  .mvp-character-image{
+    animation-duration:4.8s;
+  }
+
+  .mvp-stage-platform{
+    height:56px;
+  }
+}
