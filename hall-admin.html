@@ -15,7 +15,7 @@
       <a href="admin.html" class="hall-back-link">← Trang quản trị</a>
       <p class="eyebrow">PHOENIX ADMIN</p>
       <h1>Hall of Champions</h1>
-      <p class="subtitle">Lưu lịch sử nhà vô địch sau khi giải đấu kết thúc.</p>
+      <p class="subtitle">Lưu đội vô địch và MVP của từng mùa giải.</p>
     </header>
 
     <p id="hallAdminMessage" class="message" aria-live="polite"></p>
@@ -23,16 +23,28 @@
     <section class="panel">
       <p class="eyebrow">LƯU MÙA GIẢI</p>
       <h2>Tạo bản ghi vô địch</h2>
-      <p class="muted">
-        Hệ thống tự lấy đội hạng 1 và MVP hiện tại. Bạn chỉ cần nhập tên mùa và ngày.
-      </p>
+      <p class="muted">Chọn đội vô địch và MVP, sau đó bấm lưu.</p>
 
       <form id="saveSeasonForm" class="hall-admin-form">
         <label for="seasonLabel">Tên mùa</label>
-        <input id="seasonLabel" value="2026 — Lần 2" maxlength="60" required>
+        <input id="seasonLabel" value="Mùa 1" maxlength="60" required>
 
         <label for="tournamentName">Tên giải</label>
         <input id="tournamentName" value="Phoenix Summer Cup 2026" maxlength="100" required>
+
+        <label for="championTeamSelect">🏆 Đội vô địch</label>
+        <select id="championTeamSelect" class="hall-select" required>
+          <option value="">Đang tải danh sách đội...</option>
+        </select>
+
+        <div id="selectedChampionPreview" class="hall-selection-preview"></div>
+
+        <label for="seasonMvpSelect">👑 MVP mùa giải</label>
+        <select id="seasonMvpSelect" class="hall-select" required>
+          <option value="">Đang tải danh sách tuyển thủ...</option>
+        </select>
+
+        <div id="selectedMvpPreview" class="hall-selection-preview"></div>
 
         <label for="seasonDate">Ngày kết thúc</label>
         <input id="seasonDate" type="date" required>

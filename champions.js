@@ -5,8 +5,7 @@ function hallEsc(value){
 }
 
 function trophyMarkup(count){
-  const capped=Math.min(Number(count||0),5);
-  return `<span class="champion-trophies">${"🏆".repeat(capped)}</span>`;
+  return `<span class="champion-trophies">${"🏆".repeat(Math.min(Number(count||0),5))}</span>`;
 }
 
 async function loadHallOfChampions(){
@@ -42,8 +41,8 @@ async function loadHallOfChampions(){
     :'<p class="muted">Chưa có dữ liệu vô địch.</p>';
 
   history.innerHTML=(seasons||[]).length
-    ?seasons.map((season,index)=>`
-      <article class="champion-season-card">
+    ?seasons.map(season=>`
+      <article class="champion-season-card champion-season-simple">
         <div class="champion-season-line"></div>
 
         <div class="champion-season-banner">
@@ -58,7 +57,7 @@ async function loadHallOfChampions(){
         <div class="champion-season-content">
           <div class="champion-season-title">
             <div>
-              <p class="eyebrow">NHÀ VÔ ĐỊCH</p>
+              <p class="eyebrow">LỊCH SỬ VÔ ĐỊCH</p>
               <h2>${hallEsc(season.tournament_name)}</h2>
             </div>
             <span class="champion-season-date">
@@ -72,23 +71,23 @@ async function loadHallOfChampions(){
                 ?`<img src="${hallEsc(season.team_logo_url)}" alt="" class="champion-season-logo">`
                 :`<div class="champion-season-logo champion-season-placeholder">PHX</div>`
             }
+
             <div>
-              <span class="champion-label">CHAMPION</span>
+              <span class="champion-label">🏆 ĐỘI VÔ ĐỊCH</span>
               <h3>${hallEsc(season.team_name)}</h3>
-              <p>${season.total_points} điểm • ${season.total_kills} kill • ${season.booyahs} Booyah</p>
             </div>
           </div>
 
-          <div class="season-mvp-box">
+          <div class="season-mvp-box season-mvp-simple">
             <div>
-              <p class="eyebrow">MVP OF THE SEASON</p>
+              <p class="eyebrow">👑 MVP MÙA GIẢI</p>
               <strong>${hallEsc(season.mvp_name||"Chưa cập nhật")}</strong>
-              <span>${Number(season.mvp_kills||0)} Kill</span>
             </div>
+
             ${
               season.mvp_character_url
                 ?`<img src="${hallEsc(season.mvp_character_url)}" alt="" class="season-mvp-character">`
-                :""
+                :`<div class="season-mvp-crown">👑</div>`
             }
           </div>
         </div>

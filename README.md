@@ -1,15 +1,18 @@
-# Phoenix V24 — Hall of Champions
+# Phoenix V25 — Hall of Champions đơn giản
 
-## Tính năng
-- Trang `champions.html` hiển thị lịch sử vô địch.
-- Top đội nhiều chức vô địch nhất.
-- MVP từng mùa.
-- Banner riêng từng mùa.
-- Trang `hall-admin.html` để lưu mùa giải.
-- Tự lấy đội hạng 1 và MVP hiện tại.
-- Không xóa hoặc sửa bảng dữ liệu cũ.
+## Thay đổi
+- Admin chọn thủ công đội vô địch.
+- Admin chọn thủ công MVP.
+- Không cần lưu điểm, Kill hoặc Booyah.
+- Hall of Champions chỉ hiển thị:
+  - Tên mùa
+  - Tên giải
+  - Đội vô địch
+  - MVP
+  - Ngày kết thúc
+  - Banner nếu có
 
 ## Cập nhật
-1. Upload toàn bộ file V24 lên GitHub.
-2. Chạy `repair_v24_hall_of_champions.sql` trong Supabase.
-3. Mở `hall-admin.html` để lưu mùa giải.
+1. Upload ghi đè toàn bộ file V25 lên GitHub.
+2. Chạy `repair_v25_hall_simple.sql` trong Supabase.
+3. Mở `hall-admin.html`.
