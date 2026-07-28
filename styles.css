@@ -1957,139 +1957,333 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 
 
 /* =======================================================
-   V22.1 - FIX KHUNG ẢNH MVP
-   Ảnh vừa khung, không cắt đầu/chân, phong cách esports
+   V23 - MVP FFWS STYLE
 ======================================================= */
 
-.mvp-honor-panel{
-  grid-template-columns:minmax(0,1fr) minmax(300px,44%);
-  min-height:430px;
-}
-
-.mvp-character-stage{
+.mvp-ffws{
   position:relative;
-  width:100%;
-  min-height:390px;
-  align-self:stretch;
-  display:flex;
-  align-items:flex-end;
-  justify-content:center;
   overflow:hidden;
-  border:1px solid rgba(255,170,60,.28);
-  border-radius:22px;
+  min-height:500px;
+  display:grid;
+  grid-template-columns:minmax(0,46%) minmax(360px,54%);
+  align-items:stretch;
+  gap:28px;
+  padding:34px;
+  border:1px solid rgba(255,147,38,.68);
+  border-radius:26px;
   background:
-    radial-gradient(circle at 50% 15%,rgba(255,170,60,.20),transparent 48%),
-    linear-gradient(180deg,rgba(255,138,31,.04),rgba(5,6,9,.42)),
-    #101218;
+    radial-gradient(circle at 82% 34%,rgba(255,133,25,.18),transparent 34%),
+    linear-gradient(135deg,rgba(255,255,255,.015),transparent 34%),
+    #0b0d12;
   box-shadow:
-    inset 0 0 38px rgba(255,145,35,.06),
-    0 14px 34px rgba(0,0,0,.22);
+    0 0 0 1px rgba(255,147,38,.05),
+    0 18px 50px rgba(0,0,0,.35);
 }
 
-.mvp-character-stage::before{
+.mvp-ffws::before{
   content:"";
   position:absolute;
   inset:0;
   pointer-events:none;
-  border-radius:inherit;
   background:
-    linear-gradient(135deg,rgba(255,190,82,.18),transparent 28%,transparent 72%,rgba(255,102,40,.12));
-  z-index:1;
+    linear-gradient(135deg,rgba(255,147,38,.08),transparent 22%),
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 16px,
+      rgba(255,255,255,.012) 16px 17px
+    );
 }
 
-.mvp-character-stage::after{
+.mvp-ffws::after{
   content:"";
   position:absolute;
-  left:50%;
-  bottom:-24px;
-  width:210px;
-  height:72px;
-  transform:translateX(-50%);
-  border-radius:50%;
-  background:rgba(255,150,35,.25);
-  filter:blur(27px);
+  left:0;
+  top:0;
+  bottom:0;
+  width:5px;
+  background:linear-gradient(#ffd25a,#ff8a1f,#ef3d32);
+}
+
+.mvp-honor-copy{
+  position:relative;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-width:0;
+}
+
+.mvp-eyebrow{
+  margin-bottom:14px;
+  font-size:13px;
+  letter-spacing:3px;
+}
+
+.mvp-main-title{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin:0 0 18px;
+  font-size:clamp(42px,7vw,78px);
+  font-style:italic;
+  font-weight:950;
+  line-height:.95;
+  letter-spacing:-2px;
+  text-transform:uppercase;
+}
+
+.mvp-main-title span:not(.mvp-star){
+  color:#fff;
+}
+
+.mvp-main-title b{
+  color:#ff8a1f;
+}
+
+.mvp-star{
+  color:#ffc83d;
+  font-size:.78em;
+  font-style:normal;
+  filter:drop-shadow(0 0 12px rgba(255,200,61,.30));
+}
+
+.mvp-description{
+  max-width:520px;
+  margin:0 0 30px;
+  font-size:17px;
+  line-height:1.6;
+}
+
+.mvp-player-info{
+  display:grid;
+  gap:10px;
+  margin-top:0;
+}
+
+.mvp-player-name{
+  font-size:clamp(32px,5vw,54px);
+  font-weight:950;
+  line-height:1;
+  letter-spacing:-1px;
+}
+
+.mvp-team-name{
+  color:#ff9d31;
+  font-size:18px;
+  font-weight:900;
+}
+
+.mvp-kill-number{
+  display:flex;
+  align-items:flex-end;
+  gap:14px;
+  margin-top:14px;
+  color:#ffc83d;
+  font-size:clamp(72px,11vw,118px);
+  font-weight:950;
+  line-height:.82;
+}
+
+.mvp-kill-number small{
+  margin-bottom:8px;
+  color:#ffb347;
+  font-size:22px;
+  letter-spacing:2px;
+}
+
+.mvp-match-count{
+  color:var(--muted);
+  font-size:16px;
+}
+
+.mvp-character-stage{
+  position:relative;
+  min-height:430px;
+  overflow:hidden;
+  border:1px solid rgba(255,147,38,.55);
+  border-radius:26px;
+  background:
+    radial-gradient(circle at 50% 72%,rgba(255,139,28,.36),transparent 28%),
+    radial-gradient(circle at 50% 30%,rgba(255,139,28,.12),transparent 48%),
+    linear-gradient(180deg,#111319,#08090d 78%);
+  box-shadow:
+    inset 0 0 42px rgba(255,145,35,.08),
+    0 16px 42px rgba(0,0,0,.28);
+}
+
+.mvp-background-word{
+  position:absolute;
+  inset:54px 14px auto;
+  z-index:0;
+  color:transparent;
+  font-size:clamp(110px,18vw,210px);
+  font-weight:950;
+  font-style:italic;
+  line-height:.75;
+  text-align:center;
+  -webkit-text-stroke:2px rgba(255,145,35,.14);
+  text-shadow:0 0 28px rgba(255,145,35,.05);
   pointer-events:none;
+}
+
+.mvp-corner{
+  position:absolute;
+  z-index:3;
+  width:84px;
+  height:18px;
+  border-top:4px solid #ff9a27;
+  border-left:4px solid #ff9a27;
+  filter:drop-shadow(0 0 9px rgba(255,145,35,.35));
+}
+
+.mvp-corner-top{
+  left:18px;
+  top:18px;
+  transform:skewX(-28deg);
+}
+
+.mvp-corner-bottom{
+  right:18px;
+  bottom:18px;
+  transform:rotate(180deg) skewX(-28deg);
+}
+
+.mvp-stage-light{
+  position:absolute;
+  left:50%;
+  bottom:52px;
   z-index:1;
+  width:72%;
+  height:44%;
+  transform:translateX(-50%);
+  clip-path:polygon(50% 0,100% 100%,0 100%);
+  background:linear-gradient(to top,rgba(255,134,23,.46),transparent 72%);
+  filter:blur(8px);
+}
+
+.mvp-stage-platform{
+  position:absolute;
+  left:50%;
+  bottom:20px;
+  z-index:2;
+  width:72%;
+  height:54px;
+  transform:translateX(-50%);
+  border:2px solid rgba(255,147,38,.72);
+  border-radius:50%;
+  background:
+    radial-gradient(ellipse at center,rgba(255,151,31,.28),rgba(8,9,13,.94) 68%);
+  box-shadow:
+    0 0 24px rgba(255,140,30,.28),
+    inset 0 0 20px rgba(255,140,30,.16);
 }
 
 .mvp-character-image{
   position:absolute;
-  inset:12px 12px 0;
-  z-index:2;
-  width:calc(100% - 24px);
-  height:calc(100% - 12px);
+  left:50%;
+  bottom:34px;
+  z-index:4;
+  width:92%;
+  height:92%;
+  transform:translateX(-50%);
   object-fit:contain;
   object-position:center bottom;
-  display:block;
-  transform:none;
   filter:
-    drop-shadow(0 14px 20px rgba(0,0,0,.58))
-    saturate(1.04);
+    drop-shadow(0 18px 24px rgba(0,0,0,.62))
+    saturate(1.05)
+    contrast(1.03);
   transition:transform .32s ease,filter .32s ease;
 }
 
 .mvp-character-stage:hover .mvp-character-image{
-  transform:scale(1.025) translateY(-3px);
+  transform:translateX(-50%) scale(1.025) translateY(-4px);
   filter:
-    drop-shadow(0 17px 24px rgba(0,0,0,.62))
-    saturate(1.08);
+    drop-shadow(0 20px 28px rgba(0,0,0,.68))
+    saturate(1.10)
+    contrast(1.05);
 }
 
 .mvp-character-placeholder{
-  position:relative;
-  z-index:2;
-  width:min(230px,80%);
-  height:310px;
-  margin-bottom:18px;
+  position:absolute;
+  inset:50% auto auto 50%;
+  z-index:4;
+  width:230px;
+  height:300px;
+  transform:translate(-50%,-46%);
   display:grid;
   place-items:center;
   border:1px dashed rgba(255,170,55,.42);
   border-radius:20px;
-  color:rgba(255,255,255,.34);
+  color:rgba(255,255,255,.30);
   text-align:center;
   font-weight:900;
-  background:rgba(0,0,0,.10);
+  background:rgba(0,0,0,.12);
 }
 
 .mvp-team-logo{
   position:absolute;
-  right:14px;
-  bottom:14px;
-  z-index:5;
-  width:74px;
-  height:74px;
-  padding:5px;
+  right:18px;
+  bottom:16px;
+  z-index:6;
+  width:92px;
+  height:92px;
+  padding:6px;
   object-fit:contain;
-  border-radius:18px;
-  border:2px solid #ffad42;
-  background:#090a0e;
-  box-shadow:0 0 22px rgba(255,150,35,.34);
+  border-radius:22px;
+  border:2px solid #ff9d2f;
+  background:#08090d;
+  box-shadow:
+    0 0 0 4px rgba(8,9,13,.86),
+    0 0 26px rgba(255,145,35,.42);
 }
 
-@media(max-width:760px){
-  .mvp-honor-panel{
+@media(max-width:900px){
+  .mvp-ffws{
     grid-template-columns:1fr;
     min-height:0;
   }
 
-  .mvp-character-stage{
-    min-height:430px;
+  .mvp-honor-copy{
+    padding:4px 2px 0;
   }
 
-  .mvp-character-image{
-    inset:10px 8px 0;
-    width:calc(100% - 16px);
-    height:calc(100% - 10px);
+  .mvp-character-stage{
+    min-height:520px;
   }
 }
 
-@media(max-width:480px){
+@media(max-width:600px){
+  .mvp-ffws{
+    padding:22px 18px;
+    border-radius:22px;
+  }
+
+  .mvp-main-title{
+    gap:9px;
+    letter-spacing:-1px;
+  }
+
+  .mvp-description{
+    font-size:15px;
+  }
+
   .mvp-character-stage{
-    min-height:360px;
+    min-height:420px;
+  }
+
+  .mvp-character-image{
+    width:100%;
+    height:92%;
   }
 
   .mvp-team-logo{
-    width:64px;
-    height:64px;
+    width:72px;
+    height:72px;
+    right:12px;
+    bottom:12px;
+  }
+
+  .mvp-stage-platform{
+    width:82%;
   }
 }
