@@ -1,7 +1,11 @@
-# Phoenix V25.1 — Hall of Champions tối giản
+# Phoenix V26 — MVP Upgrade
 
-- Xóa hoàn toàn phần Top Champions.
-- Chỉ giữ lịch sử đội vô địch, MVP, ngày và banner.
-- Không cần chạy SQL mới.
+- Bỏ dòng `0/4 trận đã nhập`.
+- Khi Kill bằng 0: chỉ hiện `MVP đang được cập nhật`.
+- Logo đội nằm cạnh tên MVP.
+- Nhân vật lớn hơn.
+- Số Kill chạy tăng nhẹ.
+- Khi MVP đổi người: card phát sáng và hiện `NEW MVP`.
 
-Upload ghi đè toàn bộ file V25.1 lên GitHub.
+Upload toàn bộ file V26 lên GitHub.
+Không cần chạy SQL mới.

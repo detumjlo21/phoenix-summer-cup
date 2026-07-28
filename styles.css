@@ -3154,3 +3154,121 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   font-size:48px;
   filter:drop-shadow(0 0 18px rgba(255,190,70,.25));
 }
+
+
+/* =======================================================
+   V26 - MVP UPGRADE
+======================================================= */
+
+.mvp-match-count{
+  display:none !important;
+}
+
+.mvp-waiting-state{
+  display:grid;
+  gap:7px;
+  max-width:420px;
+  padding:16px 18px;
+  border:1px solid rgba(255,166,55,.25);
+  border-radius:16px;
+  background:rgba(255,138,31,.055);
+}
+
+.mvp-waiting-state strong{
+  color:#ffb05a;
+  font-size:22px;
+}
+
+.mvp-waiting-state span{
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.mvp-player-topline{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.mvp-player-topline>div{
+  display:grid;
+  gap:5px;
+}
+
+.mvp-inline-team-logo{
+  width:68px;
+  height:68px;
+  flex:0 0 auto;
+  padding:5px;
+  object-fit:contain;
+  border:1px solid rgba(255,170,55,.42);
+  border-radius:16px;
+  background:#090a0e;
+  box-shadow:0 0 22px rgba(255,145,35,.17);
+}
+
+.mvp-player-label{
+  color:#ffc05f;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:1.4px;
+}
+
+.mvp-player-name{
+  font-size:clamp(30px,5vw,52px);
+}
+
+.mvp-team-name{
+  font-size:16px;
+}
+
+.mvp-character-image{
+  width:108% !important;
+  height:98% !important;
+  bottom:30px !important;
+}
+
+.mvp-new-leader{
+  animation:mvpLeaderFlash 2.2s ease both;
+}
+
+.mvp-new-leader::before{
+  content:"NEW MVP";
+  position:absolute;
+  top:18px;
+  right:18px;
+  z-index:20;
+  padding:8px 12px;
+  border:1px solid rgba(255,220,120,.70);
+  border-radius:999px;
+  color:#1b1206;
+  background:linear-gradient(135deg,#ffe07a,#ff9d2f);
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:1px;
+  box-shadow:0 0 24px rgba(255,175,55,.42);
+  animation:newMvpBadge 2.2s ease both;
+}
+
+@keyframes mvpLeaderFlash{
+  0%{box-shadow:0 0 0 rgba(255,150,35,0)}
+  20%{box-shadow:0 0 58px rgba(255,150,35,.52)}
+  100%{box-shadow:0 18px 54px rgba(0,0,0,.44)}
+}
+
+@keyframes newMvpBadge{
+  0%{opacity:0;transform:translateY(-10px) scale(.9)}
+  15%,78%{opacity:1;transform:none}
+  100%{opacity:0;transform:translateY(-6px)}
+}
+
+@media(max-width:600px){
+  .mvp-player-topline{align-items:flex-start}
+  .mvp-inline-team-logo{width:58px;height:58px}
+  .mvp-character-image{
+    width:114% !important;
+    height:99% !important;
+    bottom:26px !important;
+  }
+  .mvp-new-leader::before{top:12px;right:12px}
+}
