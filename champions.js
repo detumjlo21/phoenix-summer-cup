@@ -4,41 +4,19 @@ function hallEsc(value){
   }[char]));
 }
 
-function trophyMarkup(count){
-  return `<span class="champion-trophies">${"🏆".repeat(Math.min(Number(count||0),5))}</span>`;
-}
-
 async function loadHallOfChampions(){
-  const [{data:seasons,error},{data:topTeams}]=await Promise.all([
-    sb.from("champion_seasons")
-      .select("*")
-      .order("season_date",{ascending:false}),
-    sb.rpc("get_top_champion_teams")
-  ]);
+  const {data:seasons,error}=await sb
+    .from("champion_seasons")
+    .select("*")
+    .order("season_date",{ascending:false});
 
   const history=document.querySelector("#championHistory");
-  const topBox=document.querySelector("#topChampionTeams");
+  if(!history)return;
 
   if(error){
     history.innerHTML=`<div class="validation-error">${hallEsc(error.message)}</div>`;
     return;
   }
-
-  topBox.innerHTML=(topTeams||[]).length
-    ?topTeams.slice(0,3).map((team,index)=>`
-      <article class="top-champion-card top-champion-${index+1}">
-        <span class="top-champion-rank">${["🥇","🥈","🥉"][index]||index+1}</span>
-        ${
-          team.logo_url
-            ?`<img src="${hallEsc(team.logo_url)}" alt="" class="top-champion-logo">`
-            :`<div class="top-champion-logo top-champion-placeholder">PHX</div>`
-        }
-        <strong>${hallEsc(team.team_name)}</strong>
-        ${trophyMarkup(team.championships)}
-        <span>${team.championships} chức vô địch</span>
-      </article>
-    `).join("")
-    :'<p class="muted">Chưa có dữ liệu vô địch.</p>';
 
   history.innerHTML=(seasons||[]).length
     ?seasons.map(season=>`
@@ -71,7 +49,6 @@ async function loadHallOfChampions(){
                 ?`<img src="${hallEsc(season.team_logo_url)}" alt="" class="champion-season-logo">`
                 :`<div class="champion-season-logo champion-season-placeholder">PHX</div>`
             }
-
             <div>
               <span class="champion-label">🏆 ĐỘI VÔ ĐỊCH</span>
               <h3>${hallEsc(season.team_name)}</h3>
@@ -83,7 +60,6 @@ async function loadHallOfChampions(){
               <p class="eyebrow">👑 MVP MÙA GIẢI</p>
               <strong>${hallEsc(season.mvp_name||"Chưa cập nhật")}</strong>
             </div>
-
             ${
               season.mvp_character_url
                 ?`<img src="${hallEsc(season.mvp_character_url)}" alt="" class="season-mvp-character">`
@@ -93,7 +69,13 @@ async function loadHallOfChampions(){
         </div>
       </article>
     `).join("")
-    :'<p class="muted">Chưa lưu mùa giải nào.</p>';
+    :`
+      <div class="hall-empty-state">
+        <div class="hall-empty-icon">🏆</div>
+        <h3>Chưa có lịch sử vô địch</h3>
+        <p class="muted">Mùa giải đã lưu sẽ xuất hiện tại đây.</p>
+      </div>
+    `;
 }
 
 loadHallOfChampions();

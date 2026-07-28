@@ -3118,3 +3118,39 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     align-items:flex-start;
   }
 }
+
+
+/* V25.1 - Chỉ giữ lịch sử đội vô địch và MVP */
+.hall-summary-panel,
+.top-champion-grid{
+  display:none !important;
+}
+
+.hall-page .champion-history{
+  margin-top:20px;
+}
+
+.hall-empty-state{
+  min-height:240px;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  gap:8px;
+  padding:28px;
+  border:1px dashed rgba(255,180,70,.30);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 50% 0,rgba(255,180,70,.08),transparent 38%),
+    rgba(255,255,255,.015);
+  text-align:center;
+}
+
+.hall-empty-state h3,
+.hall-empty-state p{
+  margin:0;
+}
+
+.hall-empty-icon{
+  font-size:48px;
+  filter:drop-shadow(0 0 18px rgba(255,190,70,.25));
+}
