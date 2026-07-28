@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#08090d">
+  <title>Quản lý Hall of Champions</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="background-grid"></div>
+
+  <main class="page">
+    <header class="hero compact">
+      <a href="admin.html" class="hall-back-link">← Trang quản trị</a>
+      <p class="eyebrow">PHOENIX ADMIN</p>
+      <h1>Hall of Champions</h1>
+      <p class="subtitle">Lưu lịch sử nhà vô địch sau khi giải đấu kết thúc.</p>
+    </header>
+
+    <p id="hallAdminMessage" class="message" aria-live="polite"></p>
+
+    <section class="panel">
+      <p class="eyebrow">LƯU MÙA GIẢI</p>
+      <h2>Tạo bản ghi vô địch</h2>
+      <p class="muted">
+        Hệ thống tự lấy đội hạng 1 và MVP hiện tại. Bạn chỉ cần nhập tên mùa và ngày.
+      </p>
+
+      <form id="saveSeasonForm" class="hall-admin-form">
+        <label for="seasonLabel">Tên mùa</label>
+        <input id="seasonLabel" value="2026 — Lần 2" maxlength="60" required>
+
+        <label for="tournamentName">Tên giải</label>
+        <input id="tournamentName" value="Phoenix Summer Cup 2026" maxlength="100" required>
+
+        <label for="seasonDate">Ngày kết thúc</label>
+        <input id="seasonDate" type="date" required>
+
+        <label for="seasonBanner">Banner mùa giải (không bắt buộc)</label>
+        <input id="seasonBanner" type="file" accept="image/png,image/jpeg,image/webp">
+
+        <button id="saveSeasonBtn" type="submit">🏆 Lưu mùa giải</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="section-row">
+        <div>
+          <p class="eyebrow">DỮ LIỆU ĐÃ LƯU</p>
+          <h2>Các mùa giải</h2>
+        </div>
+      </div>
+
+      <div id="seasonAdminList" class="season-admin-list"></div>
+    </section>
+
+    <footer>
+      <a href="champions.html">Xem Hall of Champions</a>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="toast.js"></script>
+  <script src="hall-admin.js"></script>
+</body>
+</html>
