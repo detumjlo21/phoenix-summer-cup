@@ -281,6 +281,69 @@
         </div>
       </section>
 
+
+      <section class="panel season-manager-panel">
+        <div class="section-row">
+          <div>
+            <p class="eyebrow">AN TOÀN DỮ LIỆU</p>
+            <h2>Sao lưu & mùa giải mới</h2>
+            <p class="muted">
+              Tải bản sao dữ liệu trước khi reset. Hall of Champions sẽ luôn được giữ lại.
+            </p>
+          </div>
+          <span id="seasonManagerStatus" class="status-badge open">Sẵn sàng</span>
+        </div>
+
+        <div class="season-manager-grid">
+          <article class="season-tool-card">
+            <span class="season-tool-icon">💾</span>
+            <h3>Sao lưu dữ liệu</h3>
+            <p class="muted">Tải đội, thành viên, lịch, kết quả, MVP và lịch sử vô địch thành file JSON.</p>
+            <button id="downloadBackupBtn" type="button">Tải bản sao lưu</button>
+          </article>
+
+          <article class="season-tool-card">
+            <span class="season-tool-icon">♻️</span>
+            <h3>Khôi phục dữ liệu</h3>
+            <p class="muted">Chọn file JSON do website đã xuất trước đó.</p>
+            <input id="restoreBackupFile" type="file" accept="application/json,.json">
+            <button id="restoreBackupBtn" type="button" class="secondary danger-outline">
+              Khôi phục bản sao
+            </button>
+          </article>
+        </div>
+
+        <div class="new-season-box">
+          <div>
+            <p class="eyebrow">TẠO MÙA GIẢI MỚI</p>
+            <h3>Reset dữ liệu giải hiện tại</h3>
+            <p class="muted">
+              Xóa kết quả, BXH, Kill cá nhân, lịch đấu và trạng thái công bố.
+              Lịch sử vô địch không bị xóa.
+            </p>
+          </div>
+
+          <label class="season-keep-option">
+            <input id="keepTeamsForNewSeason" type="checkbox" checked>
+            <span>
+              <strong>Giữ đội và thành viên hiện tại</strong>
+              <small>Bỏ chọn nếu mùa mới đăng ký lại từ đầu.</small>
+            </span>
+          </label>
+
+          <label for="seasonResetConfirmation">Nhập chính xác để xác nhận</label>
+          <input
+            id="seasonResetConfirmation"
+            placeholder="TAO MUA MOI"
+            autocomplete="off"
+          >
+
+          <button id="createNewSeasonBtn" type="button" class="season-reset-button" disabled>
+            🔄 Tạo mùa giải mới
+          </button>
+        </div>
+      </section>
+
 <section class="panel leaderboard-panel">
         <div class="leaderboard-header">
           <div>
@@ -322,5 +385,6 @@
   <script src="toast.js"></script>
   <script src="admin-results-control.js"></script>
   <script src="admin-poster.js"></script>
+  <script src="admin-season-manager.js"></script>
 </body>
 </html>

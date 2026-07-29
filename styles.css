@@ -3555,3 +3555,107 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     height:42px;
   }
 }
+
+
+/* =======================================================
+   V28 - SEASON MANAGER & BACKUP
+======================================================= */
+
+.season-manager-panel{
+  border-color:rgba(89,159,255,.28);
+  background:
+    radial-gradient(circle at 92% 10%,rgba(89,159,255,.10),transparent 30%),
+    var(--panel);
+}
+
+.season-manager-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  margin-top:18px;
+}
+
+.season-tool-card{
+  display:grid;
+  align-content:start;
+  gap:10px;
+  padding:17px;
+  border:1px solid var(--border);
+  border-radius:17px;
+  background:var(--panel2);
+}
+
+.season-tool-card h3,
+.new-season-box h3{
+  margin:0;
+}
+
+.season-tool-card p,
+.new-season-box p{
+  margin:0;
+  line-height:1.6;
+}
+
+.season-tool-icon{
+  font-size:30px;
+}
+
+.season-tool-card input{
+  margin-top:auto;
+}
+
+.new-season-box{
+  display:grid;
+  gap:13px;
+  margin-top:16px;
+  padding:18px;
+  border:1px solid rgba(255,91,83,.30);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 92% 12%,rgba(255,91,83,.09),transparent 28%),
+    rgba(255,91,83,.035);
+}
+
+.season-keep-option{
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+  margin:0;
+  padding:13px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:rgba(0,0,0,.12);
+  cursor:pointer;
+}
+
+.season-keep-option input{
+  width:20px;
+  height:20px;
+  flex:0 0 auto;
+  margin:1px 0 0;
+  accent-color:var(--orange);
+}
+
+.season-keep-option span{
+  display:grid;
+  gap:4px;
+}
+
+.season-keep-option small{
+  color:var(--muted);
+  font-weight:500;
+}
+
+.season-reset-button{
+  background:linear-gradient(135deg,#9d2525,#ef3d32);
+}
+
+.season-reset-button:not(:disabled){
+  box-shadow:0 0 24px rgba(239,61,50,.18);
+}
+
+@media(max-width:720px){
+  .season-manager-grid{
+    grid-template-columns:1fr;
+  }
+}
