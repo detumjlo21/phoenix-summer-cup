@@ -71,46 +71,21 @@
       </section>
 
       
-      <section class="panel quick-admin-panel">
-        <div class="quick-admin-heading">
+      
+      <section class="panel admin-pro-panel">
+        <div class="admin-pro-header">
           <div>
-            <p class="eyebrow">THAO TÁC NHANH</p>
-            <h2>Quản lý đội & Kill</h2>
-            <p class="muted">Chuyển đội và nhập Kill ngay tại một chỗ, không cần kéo qua nhiều mục.</p>
-          </div>
-          <span id="quickAdminStatus" class="status-badge open">Sẵn sàng</span>
-        </div>
-
-        <div class="quick-admin-tabs" role="tablist">
-          <button class="quick-admin-tab active" type="button" data-quick-tab="teams">
-            👥 Chuyển đội nhanh
-          </button>
-          <button class="quick-admin-tab" type="button" data-quick-tab="kills">
-            🔥 Nhập Kill nhanh
-          </button>
-        </div>
-
-        <div id="quickTeamsPane" class="quick-admin-pane active">
-          <div class="quick-filter-row">
-            <label>
-              Đội đang xem
-              <select id="quickSourceTeam" class="match-select"></select>
-            </label>
-            <label>
-              Tìm tuyển thủ
-              <input id="quickPlayerSearch" type="search" placeholder="Nhập tên game...">
-            </label>
+            <p class="eyebrow">TEAM MANAGER</p>
+            <h2>Quản lý đội kéo thả</h2>
+            <p class="muted">
+              Kéo thẻ tuyển thủ sang đội khác, đổi tên/logo ngay trên cột đội và nhập Kill trực tiếp.
+            </p>
           </div>
 
-          <div id="quickTeamSummary" class="quick-team-summary"></div>
-          <div id="quickMoveList" class="quick-move-list"></div>
-        </div>
-
-        <div id="quickKillsPane" class="quick-admin-pane">
-          <div class="quick-filter-row">
+          <div class="admin-pro-controls">
             <label>
-              Trận
-              <select id="quickKillMatch" class="match-select">
+              Trận nhập Kill
+              <select id="adminProMatch" class="match-select">
                 <option value="1">Trận 1</option>
                 <option value="2">Trận 2</option>
                 <option value="3">Trận 3</option>
@@ -119,27 +94,24 @@
             </label>
 
             <label>
-              Lọc đội
-              <select id="quickKillTeamFilter" class="match-select">
-                <option value="all">Tất cả đội</option>
-              </select>
+              Tìm tuyển thủ
+              <input id="adminProSearch" type="search" placeholder="Tên game hoặc Facebook...">
             </label>
           </div>
+        </div>
 
-          <div class="quick-kill-help">
-            <span>💡 Nhập Kill cho các thành viên rồi bấm <strong>Lưu tất cả Kill</strong> một lần.</span>
-            <button id="clearQuickKillsBtn" type="button" class="secondary">Đặt tất cả về 0</button>
+        <div id="adminProBoard" class="admin-pro-board">
+          <p class="muted">Đang tải đội...</p>
+        </div>
+
+        <div class="admin-pro-sticky-bar">
+          <div>
+            <strong id="adminProChangeCount">Chưa có thay đổi Kill</strong>
+            <span id="adminProSaveState" class="muted">Chuyển đội và sửa tên/logo được lưu ngay.</span>
           </div>
-
-          <div id="quickKillGrid" class="quick-kill-grid"></div>
-
-          <div class="quick-sticky-actions">
-            <div id="quickKillChangedCount" class="muted">Chưa có thay đổi</div>
-            <button id="saveAllQuickKillsBtn" type="button">🔥 Lưu tất cả Kill</button>
-          </div>
+          <button id="adminProSaveKills" type="button">🔥 Lưu tất cả Kill</button>
         </div>
       </section>
-
 <section class="panel">
         <div class="section-row">
           <div>
@@ -450,6 +422,6 @@
   <script src="admin-results-control.js"></script>
   <script src="admin-poster.js"></script>
   <script src="admin-season-manager.js"></script>
-  <script src="admin-quick.js"></script>
+  <script src="admin-pro.js"></script>
 </body>
 </html>

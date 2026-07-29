@@ -4654,3 +4654,349 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     height:132px;
   }
 }
+
+
+/* =======================================================
+   V32 - ADMIN PRO KANBAN
+======================================================= */
+
+.admin-pro-panel{
+  border-color:rgba(255,145,35,.44);
+  background:
+    radial-gradient(circle at 94% 8%,rgba(255,145,35,.12),transparent 28%),
+    var(--panel);
+}
+
+.admin-pro-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.admin-pro-controls{
+  display:grid;
+  grid-template-columns:160px 240px;
+  gap:10px;
+}
+
+.admin-pro-controls label{
+  display:grid;
+  gap:6px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.admin-pro-controls input,
+.admin-pro-controls select{
+  margin:0;
+}
+
+.admin-pro-board{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(280px,1fr));
+  gap:12px;
+  margin-top:18px;
+}
+
+.admin-pro-team{
+  overflow:hidden;
+  min-height:310px;
+  border:1px solid var(--border);
+  border-radius:17px;
+  background:var(--panel2);
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+.admin-pro-team.is-full{
+  border-color:rgba(77,222,139,.26);
+}
+
+.admin-pro-team.drag-over{
+  transform:translateY(-3px);
+  border-color:#ff9d2f;
+  box-shadow:
+    0 0 0 2px rgba(255,157,47,.18),
+    0 16px 36px rgba(255,125,20,.16);
+}
+
+.admin-pro-team.drag-blocked{
+  border-color:rgba(255,91,83,.72);
+  box-shadow:0 0 0 2px rgba(255,91,83,.12);
+}
+
+.admin-pro-team-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:11px;
+  border-bottom:1px solid var(--border);
+  background:
+    linear-gradient(135deg,rgba(255,138,31,.06),transparent 55%);
+}
+
+.admin-pro-team-identity{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+
+.admin-pro-logo-picker{
+  position:relative;
+  width:52px;
+  height:52px;
+  flex:0 0 auto;
+  margin:0;
+  cursor:pointer;
+}
+
+.admin-pro-team-logo{
+  width:52px;
+  height:52px;
+  object-fit:contain;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:#090a0e;
+}
+
+.admin-pro-logo-placeholder{
+  display:grid;
+  place-items:center;
+  color:var(--orange);
+  font-size:10px;
+  font-weight:950;
+}
+
+.admin-pro-logo-picker>span{
+  position:absolute;
+  right:-4px;
+  bottom:-4px;
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,170,55,.38);
+  border-radius:7px;
+  background:#12141b;
+  font-size:11px;
+}
+
+.admin-pro-logo-picker input{
+  display:none;
+}
+
+.admin-pro-team-identity>div{
+  display:grid;
+  gap:3px;
+  min-width:0;
+}
+
+.admin-pro-team-number{
+  color:var(--orange);
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:1px;
+}
+
+.adminProTeamName{
+  width:100%;
+  min-width:0;
+  padding:5px 7px;
+  border:1px solid transparent;
+  border-radius:8px;
+  background:transparent;
+  color:#fff;
+  font-size:16px;
+  font-weight:950;
+}
+
+.adminProTeamName:hover,
+.adminProTeamName:focus{
+  border-color:rgba(255,145,35,.34);
+  background:rgba(255,145,35,.05);
+}
+
+.admin-pro-team-meta{
+  display:grid;
+  justify-items:end;
+  gap:3px;
+  flex:0 0 auto;
+}
+
+.admin-pro-team-meta strong{
+  font-size:18px;
+}
+
+.admin-pro-team-meta span{
+  font-size:9px;
+  font-weight:950;
+  text-transform:uppercase;
+}
+
+.admin-pro-team-meta .full{
+  color:#75efaa;
+}
+
+.admin-pro-team-meta .partial{
+  color:#ffbe69;
+}
+
+.admin-pro-dropzone{
+  min-height:238px;
+  display:grid;
+  align-content:start;
+  gap:7px;
+  padding:9px;
+}
+
+.admin-pro-player{
+  display:grid;
+  grid-template-columns:26px minmax(0,1fr) 62px;
+  align-items:center;
+  gap:8px;
+  padding:9px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:rgba(8,9,13,.42);
+  cursor:grab;
+  transition:
+    opacity .18s ease,
+    transform .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+.admin-pro-player:hover{
+  transform:translateY(-1px);
+  border-color:rgba(255,145,35,.34);
+  box-shadow:0 8px 18px rgba(0,0,0,.18);
+}
+
+.admin-pro-player.is-dragging{
+  opacity:.40;
+  transform:rotate(1.5deg) scale(.98);
+}
+
+.admin-pro-player.search-muted{
+  opacity:.16;
+}
+
+.admin-pro-player-grip{
+  color:rgba(255,255,255,.34);
+  font-size:17px;
+  line-height:1;
+  letter-spacing:-3px;
+  cursor:grab;
+}
+
+.admin-pro-player-info{
+  display:grid;
+  gap:3px;
+  min-width:0;
+}
+
+.admin-pro-player-info strong,
+.admin-pro-player-info small{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.admin-pro-player-info strong{
+  font-size:13px;
+}
+
+.admin-pro-player-info small{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.admin-pro-kill-box{
+  display:grid;
+  gap:3px;
+  margin:0;
+  color:var(--muted);
+  font-size:9px;
+  text-align:center;
+}
+
+.admin-pro-kill-box input{
+  width:62px;
+  margin:0;
+  padding:7px 5px;
+  text-align:center;
+  font-size:16px;
+  font-weight:950;
+}
+
+.admin-pro-empty-team{
+  min-height:84px;
+  display:grid;
+  place-items:center;
+  border:1px dashed rgba(255,170,55,.22);
+  border-radius:12px;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.admin-pro-sticky-bar{
+  position:sticky;
+  bottom:10px;
+  z-index:30;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:14px;
+  padding:11px 12px;
+  border:1px solid rgba(255,145,35,.38);
+  border-radius:15px;
+  background:rgba(12,14,20,.95);
+  backdrop-filter:blur(16px);
+  box-shadow:0 16px 42px rgba(0,0,0,.44);
+}
+
+.admin-pro-sticky-bar>div{
+  display:grid;
+  gap:3px;
+}
+
+.admin-pro-sticky-bar span{
+  font-size:10px;
+}
+
+.admin-pro-sticky-bar button{
+  width:auto;
+}
+
+@media(max-width:1120px){
+  .admin-pro-board{
+    grid-template-columns:repeat(2,minmax(270px,1fr));
+  }
+}
+
+@media(max-width:760px){
+  .admin-pro-header,
+  .admin-pro-sticky-bar{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .admin-pro-controls{
+    grid-template-columns:1fr;
+    width:100%;
+  }
+
+  .admin-pro-board{
+    grid-template-columns:1fr;
+  }
+
+  .admin-pro-sticky-bar button{
+    width:100%;
+  }
+}
