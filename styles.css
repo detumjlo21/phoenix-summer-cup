@@ -4502,3 +4502,155 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     width:100%;
   }
 }
+
+
+/* =======================================================
+   V31.1 - FAST ADMIN CLEANUP
+======================================================= */
+
+/* Khu thao tác nhanh nổi bật và sát đầu hơn */
+.quick-admin-panel{
+  scroll-margin-top:12px;
+}
+
+.quick-admin-panel .quick-admin-heading{
+  position:relative;
+}
+
+.quick-admin-panel .quick-admin-heading::after{
+  content:"KHU CHÍNH";
+  position:absolute;
+  top:0;
+  right:110px;
+  padding:5px 8px;
+  border:1px solid rgba(255,190,75,.34);
+  border-radius:999px;
+  color:#ffc05f;
+  background:rgba(255,190,75,.07);
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:1px;
+}
+
+/* Ảnh MVP dạng gọn */
+.mvp-image-only-panel{
+  border-color:rgba(255,145,35,.24);
+}
+
+.mvp-image-compact{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(240px,36%);
+  gap:16px;
+  align-items:start;
+}
+
+.mvp-image-compact>div:first-child{
+  display:grid;
+  gap:10px;
+}
+
+.mvp-image-compact input{
+  margin:0;
+}
+
+.mvp-image-only-panel .mvp-admin-preview{
+  min-height:190px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 120px;
+  align-items:center;
+  gap:12px;
+  padding:13px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:var(--panel2);
+}
+
+.mvp-image-preview-info{
+  display:grid;
+  gap:5px;
+}
+
+.mvp-image-preview-info span{
+  color:var(--orange);
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:1px;
+}
+
+.mvp-image-preview-info strong{
+  font-size:22px;
+}
+
+.mvp-image-preview-info small{
+  color:var(--muted);
+  line-height:1.45;
+}
+
+.mvp-image-only-panel .mvp-admin-character{
+  width:120px;
+  height:165px;
+  object-fit:contain;
+  object-position:center bottom;
+  border-radius:12px;
+  background:rgba(0,0,0,.14);
+}
+
+.mvp-image-empty{
+  width:120px;
+  height:165px;
+  display:grid;
+  place-items:center;
+  padding:10px;
+  border:1px dashed rgba(255,170,55,.28);
+  border-radius:12px;
+  color:var(--muted);
+  text-align:center;
+  font-size:11px;
+}
+
+/* Giảm khoảng cách giữa các panel trong Admin */
+#adminArea{
+  gap:14px;
+}
+
+#adminArea>.panel{
+  margin-bottom:14px;
+}
+
+/* Các panel cũ khi thu gọn chỉ chiếm một hàng nhỏ */
+.legacy-admin-panel.legacy-collapsed{
+  max-height:58px;
+  padding-top:60px;
+}
+
+.legacy-panel-toggle{
+  top:10px;
+  left:10px;
+  right:10px;
+  width:calc(100% - 20px);
+  padding:10px 12px;
+}
+
+/* Trên mobile thao tác nhanh hiện trước, ảnh MVP gọn một cột */
+@media(max-width:700px){
+  .quick-admin-panel .quick-admin-heading::after{
+    position:static;
+    width:max-content;
+    margin-top:5px;
+  }
+
+  .mvp-image-compact{
+    grid-template-columns:1fr;
+  }
+
+  .mvp-image-only-panel .mvp-admin-preview{
+    grid-template-columns:minmax(0,1fr) 96px;
+    min-height:150px;
+  }
+
+  .mvp-image-only-panel .mvp-admin-character,
+  .mvp-image-empty{
+    width:96px;
+    height:132px;
+  }
+}

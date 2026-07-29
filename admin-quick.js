@@ -41,6 +41,10 @@ async function quickLoadData(){
   quickTeams=teams||[];
   quickPlayers=players||[];
 
+  if(!quickTeams.some(team=>Number(team.team_number)===quickSelectedSourceTeam)){
+    quickSelectedSourceTeam=Number(quickTeams[0]?.team_number||1);
+  }
+
   renderQuickTeamOptions();
   renderQuickMoveList();
   await loadQuickKills();
@@ -304,7 +308,6 @@ function collapseLegacyPanels(){
     ["#teamNameEditor","Đổi tên và logo đội"],
     ["#adminPlayers","Danh sách thành viên kiểu cũ"],
     ["#adminTeams","Danh sách đội chi tiết"],
-    ["#mvpKillEditor","Nhập Kill kiểu cũ"]
   ];
 
   targets.forEach(([selector,label])=>{

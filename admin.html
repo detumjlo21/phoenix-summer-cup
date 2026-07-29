@@ -246,39 +246,33 @@
         </div>
       </section>
 
-      
-      <section class="panel">
+      <section class="panel mvp-image-only-panel">
         <div class="section-row">
           <div>
-            <p class="eyebrow">MVP KILL</p>
-            <h2>Kill cá nhân từng trận</h2>
-            <p class="muted">Nhập Kill của từng thành viên. Website tự cộng và chọn MVP.</p>
+            <p class="eyebrow">ẢNH MVP</p>
+            <h2>Nhân vật vinh danh</h2>
+            <p class="muted">Kill cá nhân đã chuyển sang mục Nhập Kill nhanh phía trên.</p>
           </div>
-          <select id="mvpMatchSelect" class="match-select">
-            <option value="1">Trận 1</option>
-            <option value="2">Trận 2</option>
-            <option value="3">Trận 3</option>
-            <option value="4">Trận 4</option>
-          </select>
         </div>
 
-        <div id="mvpKillEditor" class="mvp-kill-editor"></div>
-        <button id="saveMvpKillsBtn" type="button">Lưu Kill cá nhân</button>
+        <div class="mvp-image-compact">
+          <div>
+            <label for="mvpCharacterFile">Chọn ảnh nhân vật</label>
+            <input id="mvpCharacterFile" type="file" accept="image/png,image/jpeg,image/webp">
 
-        <hr class="mvp-divider">
+            <div class="actions">
+              <button id="uploadMvpCharacterBtn" type="button">Tải ảnh nhân vật</button>
+              <button id="removeMvpCharacterBtn" type="button" class="secondary danger-outline">
+                Xóa ảnh
+              </button>
+            </div>
+          </div>
 
-        <h3>Ảnh nhân vật vinh danh</h3>
-        <p class="muted">Upload ảnh PNG/JPG nhân vật game để đặt cạnh MVP.</p>
-        <input id="mvpCharacterFile" type="file" accept="image/png,image/jpeg,image/webp">
-        <div class="actions">
-          <button id="uploadMvpCharacterBtn" type="button">Tải ảnh nhân vật</button>
-          <button id="removeMvpCharacterBtn" type="button" class="secondary danger-outline">Xóa ảnh</button>
+          <div id="mvpAdminPreview" class="mvp-admin-preview"></div>
         </div>
-        <div id="mvpAdminPreview" class="mvp-admin-preview"></div>
       </section>
 
-
-      <section class="panel">
+<section class="panel">
         <p class="eyebrow">ĐỘI HÌNH VÔ ĐỊCH</p>
         <h2>Ảnh nhân vật từng thành viên</h2>
         <p class="muted">
