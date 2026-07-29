@@ -263,6 +263,24 @@
         <div id="snapshotList" class="snapshot-list"></div>
       </section>
 
+
+      <section class="panel">
+        <div class="section-row">
+          <div>
+            <p class="eyebrow">CHIA SẺ KẾT QUẢ</p>
+            <h2>Tạo ảnh bảng xếp hạng</h2>
+            <p class="muted">Xuất bảng xếp hạng hiện tại thành ảnh PNG để đăng Messenger hoặc Facebook.</p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="downloadLeaderboardImageBtn" type="button">📸 Tải ảnh BXH</button>
+          <a class="secondary admin-results-page-link" href="results.html" target="_blank">
+            Xem kết quả từng trận
+          </a>
+        </div>
+      </section>
+
 <section class="panel leaderboard-panel">
         <div class="leaderboard-header">
           <div>
@@ -295,6 +313,7 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="config.js"></script>
   <script src="admin.js"></script>
   <script src="admin-tournament.js"></script>
@@ -302,5 +321,6 @@
   <script src="admin-champion.js"></script>
   <script src="toast.js"></script>
   <script src="admin-results-control.js"></script>
+  <script src="admin-poster.js"></script>
 </body>
 </html>

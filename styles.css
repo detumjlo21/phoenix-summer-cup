@@ -3272,3 +3272,286 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
   .mvp-new-leader::before{top:12px;right:12px}
 }
+
+
+/* =======================================================
+   V27 - KẾT QUẢ TỪNG TRẬN + ẢNH BXH
+======================================================= */
+
+.match-results-cta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  border-color:rgba(255,138,31,.38);
+  background:
+    radial-gradient(circle at 90% 20%,rgba(255,138,31,.12),transparent 30%),
+    var(--panel);
+}
+
+.match-results-link,
+.admin-results-page-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:13px 16px;
+  border:1px solid rgba(255,166,55,.42);
+  border-radius:12px;
+  color:#fff;
+  background:rgba(255,138,31,.10);
+  font-weight:900;
+  text-decoration:none;
+}
+
+.results-tabs{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+  margin-bottom:18px;
+}
+
+.result-tab{
+  background:var(--panel2);
+  border:1px solid var(--border);
+}
+
+.result-tab.active{
+  border-color:#ff9a31;
+  background:linear-gradient(135deg,#ef3d32,#ff8a1f);
+  box-shadow:0 0 22px rgba(255,138,31,.18);
+}
+
+.single-result-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  padding:18px;
+  border:1px solid rgba(255,138,31,.25);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 90% 20%,rgba(255,138,31,.12),transparent 32%),
+    var(--panel2);
+}
+
+.single-result-header h2{
+  margin-bottom:7px;
+  font-size:clamp(27px,5vw,42px);
+}
+
+.single-result-header p{
+  margin:0;
+}
+
+.single-result-mvp{
+  min-width:190px;
+  display:grid;
+  gap:5px;
+  padding:13px 15px;
+  border:1px solid rgba(255,196,75,.35);
+  border-radius:14px;
+  background:rgba(255,196,75,.06);
+}
+
+.single-result-mvp span{
+  color:#ffc45e;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:1px;
+}
+
+.single-result-mvp strong{
+  font-size:20px;
+}
+
+.single-result-mvp small{
+  color:var(--muted);
+}
+
+.match-result-list{
+  display:grid;
+  gap:9px;
+  margin-top:16px;
+}
+
+.match-result-row{
+  display:grid;
+  grid-template-columns:64px minmax(0,1fr) 90px 100px;
+  align-items:center;
+  gap:12px;
+  padding:13px 15px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:var(--panel2);
+}
+
+.match-result-rank-1{
+  border-color:rgba(255,199,54,.56);
+  background:linear-gradient(90deg,rgba(255,199,54,.09),var(--panel2) 48%);
+}
+
+.match-result-rank-2{
+  border-color:rgba(205,211,221,.38);
+}
+
+.match-result-rank-3{
+  border-color:rgba(205,112,45,.42);
+}
+
+.match-result-position{
+  font-size:23px;
+  font-weight:950;
+  text-align:center;
+}
+
+.match-result-team{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-width:0;
+}
+
+.match-result-team strong{
+  overflow-wrap:anywhere;
+}
+
+.match-result-logo{
+  width:48px;
+  height:48px;
+  flex:0 0 auto;
+  object-fit:cover;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:#090a0e;
+}
+
+.result-logo-placeholder{
+  display:grid;
+  place-items:center;
+  color:var(--orange);
+  font-size:11px;
+  font-weight:950;
+}
+
+.match-result-stat{
+  display:grid;
+  gap:3px;
+  text-align:center;
+}
+
+.match-result-stat span{
+  color:var(--muted);
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.match-result-stat strong{
+  font-size:20px;
+}
+
+.match-result-stat.points strong{
+  color:#ffc83d;
+}
+
+.match-result-empty{
+  min-height:260px;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  gap:7px;
+  text-align:center;
+}
+
+.match-result-empty>div{
+  font-size:45px;
+}
+
+.match-result-empty h2,
+.match-result-empty p{
+  margin:0;
+}
+
+/* Khung tạm dùng khi xuất ảnh */
+.leaderboard-export-wrap{
+  position:fixed;
+  left:-99999px;
+  top:0;
+  width:1160px;
+  padding:34px;
+  color:#fff8f2;
+  background:
+    radial-gradient(circle at 50% 0,rgba(239,61,50,.18),transparent 32%),
+    #08090d;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+.leaderboard-export-title{
+  display:grid;
+  gap:7px;
+  margin-bottom:18px;
+  text-align:center;
+}
+
+.leaderboard-export-title span{
+  color:#ff9a31;
+  font-size:14px;
+  font-weight:950;
+  letter-spacing:2px;
+}
+
+.leaderboard-export-title strong{
+  font-size:34px;
+}
+
+.leaderboard-export-title small{
+  color:#aaa9af;
+}
+
+.leaderboard-poster-export{
+  width:100%;
+  margin:0;
+  background:#11131a;
+}
+
+@media(max-width:700px){
+  .match-results-cta{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .match-results-link,
+  .admin-results-page-link{
+    width:100%;
+  }
+
+  .results-tabs{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .single-result-header{
+    flex-direction:column;
+  }
+
+  .single-result-mvp{
+    width:100%;
+  }
+
+  .match-result-row{
+    grid-template-columns:48px minmax(0,1fr) 70px;
+  }
+
+  .match-result-stat.points{
+    grid-column:2 / -1;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:9px;
+    border-top:1px solid var(--border);
+  }
+
+  .match-result-logo{
+    width:42px;
+    height:42px;
+  }
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#08090d">
+  <title>Kết quả từng trận — Phoenix Summer Cup 2026</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="background-grid"></div>
+
+  <main class="page results-page">
+    <header class="hero compact results-hero">
+      <a href="index.html" class="hall-back-link">← Trang chủ</a>
+      <p class="eyebrow">PHOENIX SUMMER CUP 2026</p>
+      <h1>Kết quả từng trận</h1>
+      <p class="subtitle">Thứ hạng, Kill, điểm và MVP của Trận 1–4.</p>
+    </header>
+
+    <section class="panel">
+      <div class="results-tabs" role="tablist">
+        <button class="result-tab active" type="button" data-match="1">Trận 1</button>
+        <button class="result-tab" type="button" data-match="2">Trận 2</button>
+        <button class="result-tab" type="button" data-match="3">Trận 3</button>
+        <button class="result-tab" type="button" data-match="4">Trận 4</button>
+      </div>
+
+      <div id="singleMatchResult" class="single-match-result">
+        <p class="muted">Đang tải kết quả...</p>
+      </div>
+    </section>
+
+    <footer><a href="index.html">Trang chủ</a></footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="results.js"></script>
+</body>
+</html>
