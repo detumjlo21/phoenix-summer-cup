@@ -171,32 +171,57 @@ syncRegistrationStatus();
 setInterval(syncRegistrationStatus,30000);
 
 async function loadPublicData(){
-  const {data,error}=await sb.from("public_players").select("*").order("created_at",{ascending:true});
+  const [playersResult,teamsResult]=await Promise.all([
+    sb.from("public_players").select("*").order("created_at",{ascending:true}),
+    sb.from("team_names").select("team_number,name,logo_url,captain_player_id").order("team_number")
+  ]);
+
+  const error=playersResult.error||teamsResult.error;
   if(error){
     teamsBox.innerHTML=`<p class="error">Không tải được danh sách đội: ${esc(error.message)}</p>`;
     return;
   }
-  publicPlayers=data||[];
+
+  const teamMap=new Map((teamsResult.data||[]).map(team=>[Number(team.team_number),team]));
+  publicPlayers=(playersResult.data||[]).map(player=>{
+    const team=teamMap.get(Number(player.team_number));
+    return {
+      ...player,
+      team_name:team?.name||player.team_name||`Đội ${player.team_number}`,
+      logo_url:team?.logo_url||player.logo_url||null,
+      captain_player_id:team?.captain_player_id||null
+    };
+  });
+
   count.textContent=publicPlayers.length;
   document.querySelector("#progressBar").style.width=`${Math.min(100,(publicPlayers.length/cfg.maxPlayers)*100)}%`;
   joinBtn.disabled=isClosed()||publicPlayers.length>=cfg.maxPlayers;
 
   if(playersBox) playersBox.innerHTML=publicPlayers.length
-    ?publicPlayers.map((p,i)=>`<div class="player"><strong>${i+1}. ${esc(p.game_name)}</strong><span class="badge team-badge">
+    ?publicPlayers.map((p,i)=>`<div class="player"><strong>${i+1}. ${esc(p.game_name)} ${p.captain_player_id===p.id?'<span class="public-captain-badge">👑 Đội trưởng</span>':""}</strong><span class="badge team-badge">
       ${p.logo_url?`<img src="${esc(p.logo_url)}" alt="" class="team-logo team-logo-small">`:""}
       ${esc(p.team_name)}
     </span></div>`).join("")
     :`<p class="muted">Chưa có ai đăng ký.</p>`;
 
-  const groups=publicPlayers.reduce((a,x)=>{
-    if(!a[x.team_number])a[x.team_number]={name:x.team_name,logo_url:x.logo_url,members:[]};
-    a[x.team_number].members.push(x);return a;
+  const groups=publicPlayers.reduce((acc,player)=>{
+    if(!acc[player.team_number]){
+      acc[player.team_number]={
+        name:player.team_name,
+        logo_url:player.logo_url,
+        captain_player_id:player.captain_player_id,
+        members:[]
+      };
+    }
+    acc[player.team_number].members.push(player);
+    return acc;
   },{});
+
   teamsBox.innerHTML=Object.keys(groups).length
     ?Object.entries(groups).map(([n,g])=>{
-      const count=g.members.length;
-      const statusClass=count===4?"team-full":count>0?"team-partial":"team-empty";
-      const statusText=count===4?"Đủ đội":`${count}/4 thành viên`;
+      const memberCount=g.members.length;
+      const statusClass=memberCount===4?"team-full":memberCount>0?"team-partial":"team-empty";
+      const statusText=memberCount===4?"Đủ đội":`${memberCount}/4 thành viên`;
 
       return `<article class="team-card-esports ${statusClass}">
         <div class="team-card-top">
@@ -211,8 +236,11 @@ async function loadPublicData(){
         </div>
 
         <ol class="team-member-list">
-          ${g.members.map(x=>`<li>${esc(x.game_name)}</li>`).join("")}
-          ${Array.from({length:Math.max(0,4-count)},()=>`<li class="empty-slot">Chưa có thành viên</li>`).join("")}
+          ${g.members.map(player=>`<li class="${g.captain_player_id===player.id?"captain-member":""}">
+            <span>${esc(player.game_name)}</span>
+            ${g.captain_player_id===player.id?'<span class="public-captain-badge">👑 Đội trưởng</span>':""}
+          </li>`).join("")}
+          ${Array.from({length:Math.max(0,4-memberCount)},()=>`<li class="empty-slot">Chưa có thành viên</li>`).join("")}
         </ol>
 
         <div class="team-card-footer">

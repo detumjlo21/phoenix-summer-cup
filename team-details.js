@@ -15,7 +15,7 @@ async function openTeamDetail(teamNumber){
 
   const [{data:team},{data:players},{data:results}]=await Promise.all([
     sb.from("team_names")
-      .select("team_number,name,logo_url")
+      .select("team_number,name,logo_url,captain_player_id")
       .eq("team_number",teamNumber)
       .maybeSingle(),
     sb.from("players")
@@ -48,7 +48,7 @@ async function openTeamDetail(teamNumber){
     </div>
 
     <div class="team-detail-members">
-      ${(players||[]).map(player=>`<span>${teamDetailEsc(player.game_name)}</span>`).join("")}
+      ${(players||[]).map(player=>`<span class="${team?.captain_player_id===player.id?"is-captain":""}">${teamDetailEsc(player.game_name)} ${team?.captain_player_id===player.id?'<b class="public-captain-badge">👑 Đội trưởng</b>':""}</span>`).join("")}
     </div>
 
     <div class="team-detail-match-grid">

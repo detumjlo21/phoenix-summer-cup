@@ -5318,3 +5318,90 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     opacity:1;
   }
 }
+
+/* PHOENIX V35 - TEAM CAPTAIN FIX */
+.admin-team-member-list{
+  display:grid;
+  gap:8px;
+  margin:14px 0 0;
+  padding-left:0;
+  list-style:none;
+}
+
+.admin-team-member-list li{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  background:rgba(255,255,255,.025);
+}
+
+.admin-team-member-list li.is-captain,
+.team-member-list li.captain-member,
+.team-detail-members .is-captain{
+  border-color:rgba(255,198,68,.5);
+  background:linear-gradient(135deg,rgba(255,198,68,.12),rgba(255,92,45,.06));
+  box-shadow:0 0 18px rgba(255,180,30,.08);
+}
+
+.admin-team-player-name{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:7px;
+  min-width:0;
+  font-weight:800;
+}
+
+.captainBtn{
+  flex:0 0 auto;
+  min-height:34px;
+  padding:7px 10px;
+  font-size:11px;
+}
+
+.captainBtn.active{
+  border-color:rgba(255,198,68,.65);
+  color:#ffd36f;
+  background:rgba(255,198,68,.12);
+}
+
+.captain-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:3px 7px;
+  border:1px solid rgba(255,198,68,.4);
+  border-radius:999px;
+  color:#ffd36f;
+  background:rgba(255,198,68,.09);
+  font-size:9px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.team-member-list li.captain-member{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+
+.team-detail-members .is-captain{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+@media(max-width:640px){
+  .admin-team-member-list li{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .captainBtn{
+    width:100%;
+  }
+}

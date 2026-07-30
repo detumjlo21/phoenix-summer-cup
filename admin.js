@@ -33,11 +33,15 @@ document.querySelector("#logoutBtn").addEventListener("click",async()=>{await sb
 
 async function loadAll(){
   const [{data:players,error:pError},{data:teams,error:tError}]=await Promise.all([
-    sb.from("players").select("*,team_names(name)").order("created_at"),
+    sb.from("players").select("id,game_name,facebook_name,team_number,registration_code,created_at").order("created_at"),
     sb.from("team_names").select("*").order("team_number")
   ]);
   if(pError||tError){msg(adminMessage,(pError||tError).message,"error");return}
-  currentPlayers=players||[];currentTeams=teams||[];
+  currentPlayers=(players||[]).map(player=>{
+    const team=(teams||[]).find(item=>Number(item.team_number)===Number(player.team_number));
+    return {...player,team_names:team?{name:team.name}:null};
+  });
+  currentTeams=teams||[];
 
   const fullTeams=new Set(
     currentTeams
@@ -94,9 +98,17 @@ function renderAdminPlayers(){
 
 function renderTeams(){
   const groups={};
-  for(const team of currentTeams)groups[team.team_number]={number:team.team_number,name:team.name,logo_url:team.logo_url,members:[]};
+  for(const team of currentTeams){
+    groups[team.team_number]={
+      number:team.team_number,
+      name:team.name,
+      logo_url:team.logo_url,
+      captain_player_id:team.captain_player_id||null,
+      members:[]
+    };
+  }
   for(const p of currentPlayers){
-    if(!groups[p.team_number])groups[p.team_number]={number:p.team_number,name:`Đội ${p.team_number}`,members:[]};
+    if(!groups[p.team_number])groups[p.team_number]={number:p.team_number,name:`Đội ${p.team_number}`,captain_player_id:null,members:[]};
     groups[p.team_number].members.push(p);
   }
 
@@ -110,9 +122,23 @@ function renderTeams(){
         </div>
         <button type="button" class="copyTeamBtn secondary" data-team="${n}">Copy đội</button>
       </div>
-      <ol>${g.members.map(x=>`<li>${esc(x.game_name)}</li>`).join("")}</ol>
+      <ol class="admin-team-member-list">
+        ${g.members.map(player=>{
+          const isCaptain=g.captain_player_id===player.id;
+          return `<li class="${isCaptain?"is-captain":""}">
+            <span class="admin-team-player-name">
+              ${esc(player.game_name)}
+              ${isCaptain?'<span class="captain-badge">👑 Đội trưởng</span>':""}
+            </span>
+            <button type="button" class="captainBtn secondary ${isCaptain?"active":""}" data-team="${n}" data-player-id="${player.id}">
+              ${isCaptain?"Bỏ đội trưởng":"Chọn đội trưởng"}
+            </button>
+          </li>`;
+        }).join("")}
+      </ol>
     </article>`).join("")||`<p class="muted">Chưa có đội nào.</p>`;
 }
+
 function renderEditor(){
   editor.innerHTML=currentTeams.map(t=>`
     <div class="team-editor-card" data-team="${t.team_number}">
@@ -282,7 +308,7 @@ adminPlayers.addEventListener("click",async e=>{
     moveButton.disabled=true;
     msg(adminMessage,"Đang chuyển đội...");
 
-    const {error}=await sb.rpc("admin_move_player",{
+    const {error}=await sb.rpc("admin_move_player_safe",{
       p_player_id:playerId,
       p_target_team:targetTeam
     });
@@ -311,7 +337,7 @@ adminPlayers.addEventListener("click",async e=>{
 
   if(!confirm("Xóa thành viên này?"))return;
 
-  const {error}=await sb.from("players").delete().eq("id",deleteButton.dataset.id);
+  const {error}=await sb.rpc("admin_delete_player_safe",{p_player_id:deleteButton.dataset.id});
   if(error)msg(adminMessage,error.message,"error");
   else await loadAll();
 });
@@ -344,6 +370,32 @@ document.querySelector("#playerSearch").addEventListener("input",e=>{
 });
 
 adminTeams.addEventListener("click",async e=>{
+  const captainButton=e.target.closest(".captainBtn");
+  if(captainButton){
+    const teamNumber=Number(captainButton.dataset.team);
+    const playerId=captainButton.dataset.playerId;
+    const team=currentTeams.find(item=>Number(item.team_number)===teamNumber);
+    const removeCaptain=team?.captain_player_id===playerId;
+
+    captainButton.disabled=true;
+    msg(adminMessage,removeCaptain?"Đang bỏ đội trưởng...":"Đang chọn đội trưởng...");
+
+    const {error}=await sb.rpc("admin_set_team_captain",{
+      p_team_number:teamNumber,
+      p_player_id:removeCaptain?null:playerId
+    });
+
+    captainButton.disabled=false;
+    if(error){
+      msg(adminMessage,error.message||"Không thể cập nhật đội trưởng.","error");
+      return;
+    }
+
+    msg(adminMessage,removeCaptain?"Đã bỏ đội trưởng.":"Đã chọn đội trưởng.","success");
+    await loadAll();
+    return;
+  }
+
   const button=e.target.closest(".copyTeamBtn");
   if(!button)return;
 
@@ -352,7 +404,7 @@ adminTeams.addEventListener("click",async e=>{
   const members=currentPlayers.filter(p=>Number(p.team_number)===teamNumber);
 
   const text=`${team?.name||`Đội ${teamNumber}`}\n\n`+
-    members.map((p,i)=>`${i+1}. ${p.game_name}`).join("\n");
+    members.map((p,i)=>`${i+1}. ${p.game_name}${team?.captain_player_id===p.id?" (Đội trưởng)":""}`).join("\n");
 
   await navigator.clipboard.writeText(text);
   msg(adminMessage,`Đã copy ${team?.name||`Đội ${teamNumber}`}.`,"success");
