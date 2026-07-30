@@ -5382,26 +5382,42 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   white-space:nowrap;
 }
 
+.team-member-list li{
+  position:relative;
+  padding-right:92px;
+  min-height:24px;
+}
+
 .team-member-list li.captain-member{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
+  display:list-item;
+  border-color:rgba(255,198,68,.5);
+  background:linear-gradient(
+    135deg,
+    rgba(255,198,68,.12),
+    rgba(255,92,45,.06)
+  );
+  box-shadow:0 0 18px rgba(255,180,30,.08);
 }
 
-.team-detail-members .is-captain{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
+.team-member-list li.captain-member .public-captain-badge{
+  position:absolute;
+  top:50%;
+  right:4px;
+  transform:translateY(-50%);
+  margin-left:0;
 }
 
-@media(max-width:640px){
-  .admin-team-member-list li{
-    align-items:flex-start;
-    flex-direction:column;
+@media(max-width:420px){
+  .team-member-list li{
+    padding-right:78px;
   }
 
-  .captainBtn{
-    width:100%;
+  .team-member-list li.captain-member .public-captain-badge{
+    right:2px;
+    max-width:70px;
+    justify-content:center;
+    text-align:center;
+    white-space:normal;
+    line-height:1.15;
   }
 }
