@@ -172,7 +172,7 @@ setInterval(syncRegistrationStatus,30000);
 
 async function loadPublicData(){
   const [playersResult,teamsResult]=await Promise.all([
-    sb.from("public_players").select("*").order("created_at",{ascending:true}),
+    sb.rpc("get_public_players_v35"),
     sb.from("team_names").select("team_number,name,logo_url,captain_player_id").order("team_number")
   ]);
 
@@ -183,7 +183,9 @@ async function loadPublicData(){
   }
 
   const teamMap=new Map((teamsResult.data||[]).map(team=>[Number(team.team_number),team]));
-  publicPlayers=(playersResult.data||[]).map(player=>{
+  publicPlayers=(playersResult.data||[])
+    .sort((a,b)=>new Date(a.created_at)-new Date(b.created_at))
+    .map(player=>{
     const team=teamMap.get(Number(player.team_number));
     return {
       ...player,
