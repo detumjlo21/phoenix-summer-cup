@@ -158,19 +158,22 @@ async function adminProMovePlayer(playerId,targetTeam){
   if(!player)return;
 
   const oldTeam=Number(player.team_number);
-  if(oldTeam===Number(targetTeam))return;
+  targetTeam=Number(targetTeam);
+
+  if(oldTeam===targetTeam)return;
 
   const targetMembers=adminProTeamMembers(targetTeam);
+
   if(targetMembers.length>=4){
-    adminProToast("Đội đích đã đủ 4 thành viên.","warning");
+    adminProToast("Đội đã đủ 4 người. Hãy thả lên một tuyển thủ để đổi chỗ.","warning");
     renderAdminProBoard();
     return;
   }
 
-  const {error}=await sb
-    .from("players")
-    .update({team_number:Number(targetTeam)})
-    .eq("id",playerId);
+  const {error}=await sb.rpc("admin_move_player_safe",{
+    p_player_id:playerId,
+    p_target_team:targetTeam
+  });
 
   if(error){
     adminProToast(error.message,"error");
@@ -178,23 +181,140 @@ async function adminProMovePlayer(playerId,targetTeam){
     return;
   }
 
-  player.team_number=Number(targetTeam);
-  adminProUndo={playerId,oldTeam,newTeam:Number(targetTeam),expires:Date.now()+7000};
+  player.team_number=targetTeam;
+  adminProUndo={
+    type:"move",
+    playerId,
+    oldTeam,
+    newTeam:targetTeam,
+    expires:Date.now()+8000
+  };
 
-  const target=adminProTeams.find(team=>Number(team.team_number)===Number(targetTeam));
-  adminProToast(`Đã chuyển ${player.game_name} sang ${target?.name||`Đội ${targetTeam}`}.`,"success");
+  const target=adminProTeams.find(team=>Number(team.team_number)===targetTeam);
+  showAdminProUndoToast(
+    `Đã chuyển ${player.game_name} → ${target?.name||`Đội ${targetTeam}`}`
+  );
 
   renderAdminProBoard();
-
   if(typeof loadAll==="function")loadAll();
 }
 
+async function adminProSwapPlayers(sourcePlayerId,targetPlayerId){
+  if(sourcePlayerId===targetPlayerId)return;
+
+  const source=adminProPlayers.find(item=>item.id===sourcePlayerId);
+  const target=adminProPlayers.find(item=>item.id===targetPlayerId);
+
+  if(!source||!target)return;
+
+  const sourceTeam=Number(source.team_number);
+  const targetTeam=Number(target.team_number);
+
+  if(sourceTeam===targetTeam){
+    adminProToast("Hai tuyển thủ đang ở cùng một đội.","info");
+    return;
+  }
+
+  const {error}=await sb.rpc("admin_swap_players",{
+    p_player_a:sourcePlayerId,
+    p_player_b:targetPlayerId
+  });
+
+  if(error){
+    adminProToast(error.message,"error");
+    renderAdminProBoard();
+    return;
+  }
+
+  source.team_number=targetTeam;
+  target.team_number=sourceTeam;
+
+  adminProUndo={
+    type:"swap",
+    playerA:sourcePlayerId,
+    playerB:targetPlayerId,
+    expires:Date.now()+8000
+  };
+
+  showAdminProUndoToast(`Đã đổi ${source.game_name} ↔ ${target.game_name}`);
+
+  renderAdminProBoard();
+  if(typeof loadAll==="function")loadAll();
+}
+
+function showAdminProUndoToast(message){
+  document.querySelector(".admin-pro-undo-toast")?.remove();
+
+  const box=document.createElement("div");
+  box.className="admin-pro-undo-toast";
+  box.innerHTML=`
+    <div>
+      <strong>✓ ${adminProEsc(message)}</strong>
+      <small>Có thể hoàn tác trong 8 giây.</small>
+    </div>
+    <button type="button" class="secondary adminProUndoBtn">Hoàn tác</button>
+  `;
+
+  document.body.appendChild(box);
+
+  setTimeout(()=>{
+    box.classList.add("leaving");
+    setTimeout(()=>box.remove(),250);
+  },8000);
+}
+
 async function adminProUndoMove(){
-  if(!adminProUndo||Date.now()>adminProUndo.expires)return;
+  if(!adminProUndo||Date.now()>adminProUndo.expires){
+    adminProUndo=null;
+    adminProToast("Đã hết thời gian hoàn tác.","warning");
+    return;
+  }
 
   const undo=adminProUndo;
   adminProUndo=null;
-  await adminProMovePlayer(undo.playerId,undo.oldTeam);
+
+  if(undo.type==="swap"){
+    const {error}=await sb.rpc("admin_swap_players",{
+      p_player_a:undo.playerA,
+      p_player_b:undo.playerB
+    });
+
+    if(error){
+      adminProToast(error.message,"error");
+      return;
+    }
+
+    const a=adminProPlayers.find(item=>item.id===undo.playerA);
+    const b=adminProPlayers.find(item=>item.id===undo.playerB);
+
+    if(a&&b){
+      const team=a.team_number;
+      a.team_number=b.team_number;
+      b.team_number=team;
+    }
+
+    adminProToast("Đã hoàn tác đổi người.","success");
+  }else{
+    const {error}=await sb.rpc("admin_move_player_safe",{
+      p_player_id:undo.playerId,
+      p_target_team:undo.oldTeam
+    });
+
+    if(error){
+      adminProToast(error.message,"error");
+      return;
+    }
+
+    const player=adminProPlayers.find(item=>item.id===undo.playerId);
+    if(player)player.team_number=undo.oldTeam;
+
+    adminProToast("Đã hoàn tác chuyển đội.","success");
+  }
+
+  document.querySelector(".admin-pro-undo-toast")?.remove();
+  renderAdminProBoard();
+
+  if(typeof loadAll==="function")loadAll();
 }
 
 async function saveAdminProTeamName(input){
@@ -333,23 +453,48 @@ document.addEventListener("dragend",event=>{
 });
 
 document.addEventListener("dragover",event=>{
+  const playerCard=event.target.closest(".admin-pro-player");
   const zone=event.target.closest(".admin-pro-dropzone");
   if(!zone)return;
 
   event.preventDefault();
+  event.dataTransfer.dropEffect="move";
+
+  document.querySelectorAll(".admin-pro-team").forEach(team=>{
+    team.classList.remove("drag-over","drag-blocked","swap-ready");
+  });
+  document.querySelectorAll(".admin-pro-player").forEach(card=>{
+    card.classList.remove("swap-target");
+  });
+
   const teamNumber=Number(zone.dataset.team);
   const teamCard=zone.closest(".admin-pro-team");
-  const count=adminProTeamMembers(teamNumber).length;
+  const source=adminProPlayers.find(item=>item.id===adminProDraggingPlayer);
 
-  teamCard.classList.toggle("drag-blocked",count>=4);
-  teamCard.classList.toggle("drag-over",count<4);
+  if(playerCard&&playerCard.dataset.player!==adminProDraggingPlayer){
+    const target=adminProPlayers.find(item=>item.id===playerCard.dataset.player);
+
+    if(source&&target&&Number(source.team_number)!==Number(target.team_number)){
+      teamCard.classList.add("swap-ready");
+      playerCard.classList.add("swap-target");
+      return;
+    }
+  }
+
+  const count=adminProTeamMembers(teamNumber).length;
+  const sameTeam=source&&Number(source.team_number)===teamNumber;
+
+  teamCard.classList.toggle("drag-blocked",count>=4&&!sameTeam);
+  teamCard.classList.toggle("drag-over",count<4||sameTeam);
 });
 
 document.addEventListener("dragleave",event=>{
   const card=event.target.closest(".admin-pro-team");
   if(card&&!card.contains(event.relatedTarget)){
-    card.classList.remove("drag-over","drag-blocked");
+    card.classList.remove("drag-over","drag-blocked","swap-ready");
   }
+
+  event.target.closest(".admin-pro-player")?.classList.remove("swap-target");
 });
 
 document.addEventListener("drop",event=>{
@@ -357,9 +502,31 @@ document.addEventListener("drop",event=>{
   if(!zone)return;
 
   event.preventDefault();
-  const playerId=event.dataTransfer.getData("text/plain")||adminProDraggingPlayer;
-  const teamNumber=Number(zone.dataset.team);
-  adminProMovePlayer(playerId,teamNumber);
+
+  const sourcePlayerId=
+    event.dataTransfer.getData("text/plain")||
+    adminProDraggingPlayer;
+
+  const targetCard=event.target.closest(".admin-pro-player");
+  const targetTeam=Number(zone.dataset.team);
+
+  document.querySelectorAll(".admin-pro-team").forEach(team=>{
+    team.classList.remove("drag-over","drag-blocked","swap-ready");
+  });
+  document.querySelectorAll(".admin-pro-player").forEach(card=>{
+    card.classList.remove("swap-target");
+  });
+
+  if(
+    targetCard &&
+    targetCard.dataset.player &&
+    targetCard.dataset.player!==sourcePlayerId
+  ){
+    adminProSwapPlayers(sourcePlayerId,targetCard.dataset.player);
+    return;
+  }
+
+  adminProMovePlayer(sourcePlayerId,targetTeam);
 });
 
 document.querySelector("#adminProMatch")?.addEventListener("change",async event=>{
@@ -397,6 +564,12 @@ document.querySelector("#adminProBoard")?.addEventListener("input",event=>{
 });
 
 document.querySelector("#adminProSaveKills")?.addEventListener("click",saveAdminProKills);
+
+document.addEventListener("click",event=>{
+  if(event.target.closest(".adminProUndoBtn")){
+    adminProUndoMove();
+  }
+});
 
 window.addEventListener("beforeunload",event=>{
   if(!adminProDirty)return;

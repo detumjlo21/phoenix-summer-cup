@@ -5000,3 +5000,132 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     width:100%;
   }
 }
+
+
+/* =======================================================
+   V33 - SMART SWAP
+======================================================= */
+
+.admin-pro-team.swap-ready{
+  transform:translateY(-3px);
+  border-color:#67d7ff;
+  box-shadow:
+    0 0 0 2px rgba(103,215,255,.16),
+    0 16px 38px rgba(40,160,255,.16);
+}
+
+.admin-pro-player.swap-target{
+  transform:scale(1.025);
+  border-color:#67d7ff;
+  background:
+    linear-gradient(135deg,rgba(79,181,255,.14),rgba(8,9,13,.46));
+  box-shadow:
+    0 0 0 2px rgba(103,215,255,.15),
+    0 10px 24px rgba(25,130,220,.20);
+}
+
+.admin-pro-player.swap-target::after{
+  content:"🔄 ĐỔI";
+  position:absolute;
+  right:6px;
+  top:5px;
+  padding:3px 5px;
+  border:1px solid rgba(103,215,255,.40);
+  border-radius:999px;
+  color:#a9e8ff;
+  background:rgba(10,40,58,.92);
+  font-size:7px;
+  font-weight:950;
+  letter-spacing:.5px;
+}
+
+.admin-pro-player{
+  position:relative;
+}
+
+.admin-pro-team.drag-blocked .admin-pro-dropzone::after{
+  content:"Đội đủ 4 người — thả lên một tuyển thủ để đổi";
+  display:grid;
+  place-items:center;
+  min-height:42px;
+  margin-top:4px;
+  padding:8px;
+  border:1px dashed rgba(255,91,83,.48);
+  border-radius:10px;
+  color:#ff8d86;
+  background:rgba(255,91,83,.07);
+  font-size:9px;
+  font-weight:900;
+  text-align:center;
+}
+
+.admin-pro-undo-toast{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:999999;
+  width:min(390px,calc(100vw - 28px));
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:13px 14px;
+  border:1px solid rgba(77,222,139,.38);
+  border-radius:15px;
+  color:#fff;
+  background:rgba(17,22,25,.97);
+  box-shadow:0 16px 42px rgba(0,0,0,.46);
+  backdrop-filter:blur(16px);
+  animation:adminProUndoIn .25s ease both;
+}
+
+.admin-pro-undo-toast>div{
+  display:grid;
+  gap:3px;
+}
+
+.admin-pro-undo-toast strong{
+  font-size:13px;
+}
+
+.admin-pro-undo-toast small{
+  color:var(--muted);
+}
+
+.admin-pro-undo-toast button{
+  width:auto;
+  flex:0 0 auto;
+  padding:8px 11px;
+}
+
+.admin-pro-undo-toast.leaving{
+  animation:adminProUndoOut .24s ease forwards;
+}
+
+@keyframes adminProUndoIn{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:none}
+}
+
+@keyframes adminProUndoOut{
+  to{opacity:0;transform:translateY(18px)}
+}
+
+.admin-pro-player.drop-pop{
+  animation:adminProDropPop .35s ease;
+}
+
+@keyframes adminProDropPop{
+  0%{transform:scale(.94)}
+  55%{transform:scale(1.035)}
+  100%{transform:none}
+}
+
+@media(max-width:650px){
+  .admin-pro-undo-toast{
+    left:14px;
+    right:14px;
+    bottom:14px;
+    width:auto;
+  }
+}
