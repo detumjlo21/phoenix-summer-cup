@@ -5460,3 +5460,71 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     line-height:1;
   }
 }
+/* ===== V35.3 Auto Resize Player Name ===== */
+
+.player-name,
+.player-name-md,
+.player-name-sm,
+.player-name-xs{
+    font-weight:700;
+    transition:.2s;
+    line-height:1.2;
+}
+
+.player-name{
+    font-size:16px;
+}
+
+.player-name-md{
+    font-size:15px;
+}
+
+.player-name-sm{
+    font-size:14px;
+}
+
+.player-name-xs{
+    font-size:12px;
+}
+
+/* Desktop */
+@media (min-width:769px){
+
+    .team-member-list li{
+        display:grid;
+        grid-template-columns:minmax(0,1fr) auto;
+        align-items:center;
+        gap:8px;
+    }
+
+    .team-member-list li>span:first-child{
+        min-width:0;
+    }
+
+    .public-captain-badge{
+        white-space:nowrap;
+        flex-shrink:0;
+    }
+
+}
+
+/* Mobile */
+@media (max-width:768px){
+
+    .player-name{
+        font-size:15px;
+    }
+
+    .player-name-md{
+        font-size:14px;
+    }
+
+    .player-name-sm{
+        font-size:13px;
+    }
+
+    .player-name-xs{
+        font-size:12px;
+    }
+
+}
