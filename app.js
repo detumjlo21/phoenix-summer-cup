@@ -254,8 +254,17 @@ async function loadPublicData(){
 
         <ol class="team-member-list">
           ${g.members.map(player=>`<li class="${g.captain_player_id===player.id?"captain-member":""}">
-            <span>${esc(player.game_name)}</span>
-            ${g.captain_player_id===player.id?'<span class="public-captain-badge">👑 Đội trưởng</span>':""}
+<span class="${
+  player.game_name.length >= 28
+    ? "player-name-xs"
+    : player.game_name.length >= 22
+    ? "player-name-sm"
+    : player.game_name.length >= 16
+    ? "player-name-md"
+    : "player-name"
+}">
+  ${esc(player.game_name)}
+</span>            ${g.captain_player_id===player.id?'<span class="public-captain-badge">👑 Đội trưởng</span>':""}
           </li>`).join("")}
           ${Array.from({length:Math.max(0,4-memberCount)},()=>`<li class="empty-slot">Chưa có thành viên</li>`).join("")}
         </ol>
