@@ -1,14 +1,8 @@
-PHOENIX V19.1 — SỬA ĐỒNG HỒ
+PHOENIX V35.2 - SỬA HUY HIỆU ĐỘI TRƯỞNG TRÊN MÁY TÍNH
 
-Đã sửa:
-- Gọi renderLiveBanner() sau khi tải lịch thi đấu.
-- Banner và đồng hồ đếm ngược sẽ hiện nếu trận có ngày và giờ.
+1. Upload đè file styles.css này lên thư mục gốc GitHub.
+2. Chờ Vercel deploy hoàn tất.
+3. Mở website và nhấn Ctrl + F5.
 
-Cập nhật GitHub:
-- Chỉ cần ghi đè scoreboard.js
-- Không cần sửa styles.css
-- Không cần chỉnh Supabase hoặc chạy SQL
-
-Lưu ý:
-- Trận phải có cả Ngày và Giờ.
-- Nếu ngày giờ đã qua, banner sẽ hiện LIVE hoặc ĐÃ XONG tùy trạng thái.
+Bản sửa giữ nguyên giao diện điện thoại.
+Trên máy tính, tên tuyển thủ không xuống dòng; tên quá dài sẽ hiện dấu ... và huy hiệu Đội trưởng nằm cùng hàng.
