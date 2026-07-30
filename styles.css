@@ -5422,109 +5422,125 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
 }
 
-/* PHOENIX V35.2 - DESKTOP CAPTAIN ROW FIX
-   Giữ số thứ tự của <ol>, tên tuyển thủ và huy hiệu đội trưởng trên cùng một hàng. */
-@media (min-width:769px){
-  .team-member-list li{
-    display:list-item;
-    position:relative;
-    min-width:0;
-    min-height:28px;
-    padding-right:76px;
-  }
-
-  .team-member-list li > span:first-child{
-    display:block;
-    min-width:0;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-  }
-
-  .team-member-list li.captain-member{
-    display:list-item;
-  }
-
-  .team-member-list li.captain-member .public-captain-badge{
-    position:absolute;
-    top:50%;
-    right:4px;
-    transform:translateY(-50%);
-    max-width:68px;
-    margin:0;
-    padding:2px 5px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    font-size:7px;
-    line-height:1;
-  }
-}
-/* ===== V35.3 Auto Resize Player Name ===== */
+/* =======================================================
+   PHOENIX V36 — CAPTAIN NAME RESPONSIVE FIX
+   - Giữ đánh số chuẩn của danh sách <ol>
+   - Đội trưởng luôn ở vị trí số 1 (xử lý trong app.js)
+   - Không cắt tên bằng dấu "..."
+   - Tên dài tự giảm cỡ chữ, huy hiệu luôn nằm gọn bên phải
+======================================================= */
 
 .player-name,
 .player-name-md,
 .player-name-sm,
-.player-name-xs{
-    font-weight:700;
-    transition:.2s;
-    line-height:1.2;
+.player-name-xs,
+.player-name-xxs{
+  display:block;
+  min-width:0;
+  max-width:100%;
+  overflow:visible;
+  text-overflow:clip;
+  white-space:nowrap;
+  font-weight:800;
+  line-height:1.15;
+  letter-spacing:-.1px;
 }
 
-.player-name{
-    font-size:16px;
+.player-name{font-size:15px}
+.player-name-md{font-size:13.5px}
+.player-name-sm{font-size:12px}
+.player-name-xs{font-size:10.5px}
+.player-name-xxs{font-size:9px}
+
+.team-member-list li{
+  position:relative;
+  display:list-item;
+  min-width:0;
+  min-height:29px;
+  margin:7px 0;
+  padding:6px 6px;
+  border-radius:9px;
 }
 
-.player-name-md{
-    font-size:15px;
+.team-member-list li.captain-member{
+  display:list-item;
+  padding-right:82px;
+  border:1px solid rgba(255,196,92,.40);
+  background:linear-gradient(135deg,rgba(255,196,92,.12),rgba(239,61,50,.06));
 }
 
-.player-name-sm{
-    font-size:14px;
+.team-member-list li.captain-member .public-captain-badge{
+  position:absolute;
+  top:50%;
+  right:5px;
+  transform:translateY(-50%);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:72px;
+  max-width:72px;
+  margin:0;
+  padding:4px 5px;
+  overflow:hidden;
+  white-space:nowrap;
+  border:1px solid rgba(255,196,92,.48);
+  border-radius:999px;
+  color:#ffd27d;
+  background:rgba(255,196,92,.12);
+  font-size:8px;
+  font-weight:950;
+  line-height:1;
+  letter-spacing:0;
 }
 
-.player-name-xs{
-    font-size:12px;
-}
-
-/* Desktop */
 @media (min-width:769px){
+  .team-card-esports{
+    min-width:0;
+  }
 
-    .team-member-list li{
-        display:grid;
-        grid-template-columns:minmax(0,1fr) auto;
-        align-items:center;
-        gap:8px;
-    }
+  .team-member-list{
+    padding-left:32px;
+    padding-right:10px;
+  }
 
-    .team-member-list li>span:first-child{
-        min-width:0;
-    }
-
-    .public-captain-badge{
-        white-space:nowrap;
-        flex-shrink:0;
-    }
-
+  .team-member-list li.captain-member{
+    padding-right:80px;
+  }
 }
 
-/* Mobile */
 @media (max-width:768px){
+  .player-name{font-size:15px}
+  .player-name-md{font-size:14px}
+  .player-name-sm{font-size:13px}
+  .player-name-xs{font-size:12px}
+  .player-name-xxs{font-size:11px}
 
-    .player-name{
-        font-size:15px;
-    }
+  .team-member-list li.captain-member{
+    padding-right:84px;
+  }
 
-    .player-name-md{
-        font-size:14px;
-    }
+  .team-member-list li.captain-member .public-captain-badge{
+    right:4px;
+    width:75px;
+    max-width:75px;
+    font-size:8px;
+  }
+}
 
-    .player-name-sm{
-        font-size:13px;
-    }
+@media (max-width:380px){
+  .team-member-list{
+    padding-left:30px;
+    padding-right:8px;
+  }
 
-    .player-name-xs{
-        font-size:12px;
-    }
+  .team-member-list li.captain-member{
+    padding-right:70px;
+  }
 
+  .team-member-list li.captain-member .public-captain-badge{
+    width:63px;
+    max-width:63px;
+    padding:4px 3px;
+    font-size:7px;
+  }
 }

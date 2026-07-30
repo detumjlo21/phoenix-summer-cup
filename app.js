@@ -29,6 +29,25 @@ function captainBadgeMarkup(player,team){
     :"";
 }
 
+function getPlayerNameClass(name,isCaptain=false){
+  const length=String(name||"").trim().length;
+
+  // Đội trưởng phải chừa chỗ cho huy hiệu nên co chữ sớm hơn.
+  if(isCaptain){
+    if(length>=24)return "player-name-xxs";
+    if(length>=20)return "player-name-xs";
+    if(length>=16)return "player-name-sm";
+    if(length>=13)return "player-name-md";
+    return "player-name";
+  }
+
+  if(length>=30)return "player-name-xxs";
+  if(length>=25)return "player-name-xs";
+  if(length>=20)return "player-name-sm";
+  if(length>=16)return "player-name-md";
+  return "player-name";
+}
+
 function setMsg(text,type=""){message.textContent=text;message.className=`message ${type}`}
 function isClosed(){return Date.now()>=new Date(cfg.closeAt).getTime()}
 function pad(v){return String(v).padStart(2,"0")}
@@ -253,19 +272,15 @@ async function loadPublicData(){
         </div>
 
         <ol class="team-member-list">
-          ${g.members.map(player=>`<li class="${g.captain_player_id===player.id?"captain-member":""}">
-<span class="${
-  player.game_name.length >= 28
-    ? "player-name-xs"
-    : player.game_name.length >= 22
-    ? "player-name-sm"
-    : player.game_name.length >= 16
-    ? "player-name-md"
-    : "player-name"
-}">
-  ${esc(player.game_name)}
-</span>            ${g.captain_player_id===player.id?'<span class="public-captain-badge">👑 Đội trưởng</span>':""}
-          </li>`).join("")}
+          ${g.members.map(player=>{
+            const isCaptain=g.captain_player_id===player.id;
+            const nameClass=getPlayerNameClass(player.game_name,isCaptain);
+
+            return `<li class="${isCaptain?"captain-member":""}">
+              <span class="${nameClass}">${esc(player.game_name)}</span>
+              ${isCaptain?'<span class="public-captain-badge">👑 Đội trưởng</span>':""}
+            </li>`;
+          }).join("")}
           ${Array.from({length:Math.max(0,4-memberCount)},()=>`<li class="empty-slot">Chưa có thành viên</li>`).join("")}
         </ol>
 
