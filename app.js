@@ -219,6 +219,21 @@ async function loadPublicData(){
     return acc;
   },{});
 
+  // Luôn đưa đội trưởng lên vị trí số 1 trong từng đội.
+  // Các thành viên còn lại vẫn giữ nguyên thứ tự đăng ký ban đầu.
+  Object.values(groups).forEach(group=>{
+    group.members.sort((a,b)=>{
+      const aIsCaptain=a.id===group.captain_player_id;
+      const bIsCaptain=b.id===group.captain_player_id;
+
+      if(aIsCaptain!==bIsCaptain){
+        return aIsCaptain?-1:1;
+      }
+
+      return 0;
+    });
+  });
+
   teamsBox.innerHTML=Object.keys(groups).length
     ?Object.entries(groups).map(([n,g])=>{
       const memberCount=g.members.length;
