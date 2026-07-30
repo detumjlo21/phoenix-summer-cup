@@ -22,6 +22,13 @@ const agreementStatus=document.querySelector("#agreementStatus");
 let publicPlayers=[];
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+
+function captainBadgeMarkup(player,team){
+  return player?.id&&team?.captain_player_id===player.id
+    ?'<span class="public-captain-badge">👑 Đội trưởng</span>'
+    :"";
+}
+
 function setMsg(text,type=""){message.textContent=text;message.className=`message ${type}`}
 function isClosed(){return Date.now()>=new Date(cfg.closeAt).getTime()}
 function pad(v){return String(v).padStart(2,"0")}

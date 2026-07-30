@@ -27,7 +27,7 @@ function adminProKillMap(){
 async function loadAdminPro(){
   const [{data:teams,error:teamError},{data:players,error:playerError}]=await Promise.all([
     sb.from("team_names")
-      .select("team_number,name,logo_url")
+      .select("team_number,name,logo_url,captain_player_id")
       .lte("team_number",12)
       .order("team_number"),
     sb.from("players")
@@ -71,8 +71,15 @@ function renderAdminProBoard(){
   const query=(document.querySelector("#adminProSearch")?.value||"").trim().toLowerCase();
 
   board.innerHTML=adminProTeams.map(team=>{
-    const members=adminProTeamMembers(team.team_number);
+    const members=adminProTeamMembers(team.team_number)
+      .sort((a,b)=>{
+        const aCaptain=a.id===team.captain_player_id?0:1;
+        const bCaptain=b.id===team.captain_player_id?0:1;
+        return aCaptain-bCaptain||
+          String(a.game_name||"").localeCompare(String(b.game_name||""),"vi");
+      });
     const isFull=members.length>=4;
+    const captain=members.find(player=>player.id===team.captain_player_id);
 
     return `
       <article
@@ -105,6 +112,9 @@ function renderAdminProBoard(){
           <div class="admin-pro-team-meta">
             <strong>${members.length}/4</strong>
             <span class="${isFull?"full":"partial"}">${isFull?"Đủ đội":"Còn "+(4-members.length)}</span>
+            <small class="admin-pro-captain-summary">
+              ${captain?`👑 ${adminProEsc(captain.game_name)}`:"Chưa có đội trưởng"}
+            </small>
           </div>
         </header>
 
@@ -117,7 +127,7 @@ function renderAdminProBoard(){
 
                 return `
                   <article
-                    class="admin-pro-player ${muted?"search-muted":""}"
+                    class="admin-pro-player ${muted?"search-muted":""} ${player.id===team.captain_player_id?"is-captain":""}"
                     draggable="true"
                     data-player="${player.id}"
                     data-team="${team.team_number}"
@@ -125,9 +135,29 @@ function renderAdminProBoard(){
                     <div class="admin-pro-player-grip" title="Kéo thẻ">⋮⋮</div>
 
                     <div class="admin-pro-player-info">
-                      <strong>${adminProEsc(player.game_name)}</strong>
+                      <div class="admin-pro-player-name-row">
+                        <strong>${adminProEsc(player.game_name)}</strong>
+                        ${player.id===team.captain_player_id?'<span class="captain-badge">👑 LEADER</span>':""}
+                      </div>
                       <small>${adminProEsc(player.facebook_name||"")}</small>
                     </div>
+
+                    <button
+                      class="admin-pro-captain-button adminProCaptainBtn"
+                      type="button"
+                      data-player="${player.id}"
+                      data-team="${team.team_number}"
+                      title="${player.id===team.captain_player_id?"Bỏ đội trưởng":"Đặt làm đội trưởng"}"
+                      aria-label="${player.id===team.captain_player_id?"Bỏ đội trưởng":"Đặt làm đội trưởng"}"
+                    >${player.id===team.captain_player_id?"👑":"☆"}</button>
+
+                    <button
+                      class="admin-pro-delete-player adminProDeletePlayerBtn"
+                      type="button"
+                      data-player="${player.id}"
+                      title="Xóa tuyển thủ"
+                      aria-label="Xóa ${adminProEsc(player.game_name)}"
+                    >×</button>
 
                     <label class="admin-pro-kill-box">
                       <span>Kill</span>
@@ -182,6 +212,14 @@ async function adminProMovePlayer(playerId,targetTeam){
   }
 
   player.team_number=targetTeam;
+
+  const oldTeamRecord=adminProTeams.find(
+    item=>Number(item.team_number)===oldTeam
+  );
+  if(oldTeamRecord?.captain_player_id===playerId){
+    oldTeamRecord.captain_player_id=null;
+  }
+
   adminProUndo={
     type:"move",
     playerId,
@@ -228,6 +266,20 @@ async function adminProSwapPlayers(sourcePlayerId,targetPlayerId){
 
   source.team_number=targetTeam;
   target.team_number=sourceTeam;
+
+  const sourceTeamRecord=adminProTeams.find(
+    item=>Number(item.team_number)===sourceTeam
+  );
+  const targetTeamRecord=adminProTeams.find(
+    item=>Number(item.team_number)===targetTeam
+  );
+
+  if(sourceTeamRecord?.captain_player_id===sourcePlayerId){
+    sourceTeamRecord.captain_player_id=null;
+  }
+  if(targetTeamRecord?.captain_player_id===targetPlayerId){
+    targetTeamRecord.captain_player_id=null;
+  }
 
   adminProUndo={
     type:"swap",
@@ -315,6 +367,83 @@ async function adminProUndoMove(){
   renderAdminProBoard();
 
   if(typeof loadAll==="function")loadAll();
+}
+
+async function adminProSetCaptain(playerId,teamNumber){
+  const team=adminProTeams.find(
+    item=>Number(item.team_number)===Number(teamNumber)
+  );
+  const player=adminProPlayers.find(item=>item.id===playerId);
+
+  if(!team||!player)return;
+
+  const removing=team.captain_player_id===playerId;
+
+  const {error}=await sb.rpc("admin_set_team_captain",{
+    p_team_number:Number(teamNumber),
+    p_player_id:removing?null:playerId
+  });
+
+  if(error){
+    adminProToast(error.message||"Không thể cập nhật đội trưởng.","error");
+    return;
+  }
+
+  team.captain_player_id=removing?null:playerId;
+
+  adminProToast(
+    removing
+      ?`Đã bỏ đội trưởng của ${team.name||`Đội ${teamNumber}`}.`
+      :`${player.game_name} đã trở thành đội trưởng.`,
+    "success"
+  );
+
+  renderAdminProBoard();
+
+  if(typeof loadAll==="function")loadAll();
+}
+
+async function adminProDeletePlayer(playerId){
+  const player=adminProPlayers.find(item=>item.id===playerId);
+  if(!player)return;
+
+  const team=adminProTeams.find(
+    item=>Number(item.team_number)===Number(player.team_number)
+  );
+
+  const confirmed=confirm(
+    `Xóa tuyển thủ "${player.game_name}" khỏi ${team?.name||`Đội ${player.team_number}`}?\n\n`+
+    `Dữ liệu Kill của tuyển thủ này cũng sẽ bị xóa.\n`+
+    `Thao tác này không thể hoàn tác.`
+  );
+
+  if(!confirmed)return;
+
+  const card=document.querySelector(
+    `.admin-pro-player[data-player="${CSS.escape(playerId)}"]`
+  );
+
+  card?.classList.add("is-deleting");
+
+  const {error}=await sb.rpc("admin_delete_player_safe",{
+    p_player_id:playerId
+  });
+
+  if(error){
+    card?.classList.remove("is-deleting");
+    adminProToast(error.message||"Không thể xóa tuyển thủ.","error");
+    return;
+  }
+
+  adminProPlayers=adminProPlayers.filter(item=>item.id!==playerId);
+  adminProKills=adminProKills.filter(item=>item.player_id!==playerId);
+
+  adminProToast(`Đã xóa ${player.game_name}.`,"success");
+  renderAdminProBoard();
+  updateAdminProChangedCount();
+
+  if(typeof loadAll==="function")loadAll();
+  if(typeof loadMvpAdmin==="function")loadMvpAdmin();
 }
 
 async function saveAdminProTeamName(input){
@@ -561,6 +690,28 @@ document.querySelector("#adminProBoard")?.addEventListener("input",event=>{
   if(event.target.closest(".adminProKillInput")){
     updateAdminProChangedCount();
   }
+});
+
+document.querySelector("#adminProBoard")?.addEventListener("click",event=>{
+  const button=event.target.closest(".adminProCaptainBtn");
+  if(!button)return;
+
+  event.preventDefault();
+  event.stopPropagation();
+
+  adminProSetCaptain(
+    button.dataset.player,
+    Number(button.dataset.team)
+  );
+});
+
+document.querySelector("#adminProBoard")?.addEventListener("click",event=>{
+  const button=event.target.closest(".adminProDeletePlayerBtn");
+  if(!button)return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  adminProDeletePlayer(button.dataset.player);
 });
 
 document.querySelector("#adminProSaveKills")?.addEventListener("click",saveAdminProKills);

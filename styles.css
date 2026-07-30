@@ -5129,3 +5129,192 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     width:auto;
   }
 }
+
+
+/* V33.2 - Xóa tuyển thủ + tối ưu thẻ */
+.admin-pro-player{
+  grid-template-columns:24px minmax(0,1fr) 32px 58px;
+  gap:7px;
+  min-height:58px;
+}
+
+.admin-pro-delete-player{
+  width:30px;
+  min-width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  margin:0;
+  padding:0;
+  border:1px solid rgba(255,91,83,.24);
+  border-radius:9px;
+  color:#ff8d86;
+  background:rgba(255,91,83,.055);
+  font-size:20px;
+  line-height:1;
+  opacity:.62;
+  transition:.18s ease;
+}
+
+.admin-pro-player:hover .admin-pro-delete-player{
+  opacity:1;
+}
+
+.admin-pro-delete-player:hover{
+  transform:scale(1.06);
+  border-color:rgba(255,91,83,.64);
+  background:rgba(255,91,83,.16);
+}
+
+.admin-pro-player.is-deleting{
+  pointer-events:none;
+  opacity:.36;
+  transform:scale(.97);
+}
+
+.admin-pro-player.is-deleting::after{
+  content:"Đang xóa...";
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  color:#fff;
+  background:rgba(8,9,13,.82);
+  font-size:11px;
+  font-weight:900;
+}
+
+.admin-pro-kill-box input{
+  width:58px;
+}
+
+.admin-pro-team{
+  min-height:286px;
+}
+
+.admin-pro-dropzone{
+  min-height:214px;
+}
+
+@media(max-width:760px){
+  .admin-pro-delete-player{
+    opacity:.92;
+  }
+
+  .admin-pro-player{
+    grid-template-columns:22px minmax(0,1fr) 34px 56px;
+  }
+}
+
+
+/* =======================================================
+   V34 - TEAM CAPTAIN
+======================================================= */
+
+.admin-pro-captain-summary{
+  max-width:130px;
+  overflow:hidden;
+  color:#ffc85a;
+  font-size:9px;
+  font-weight:900;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.admin-pro-player{
+  grid-template-columns:24px minmax(0,1fr) 32px 32px 58px;
+}
+
+.admin-pro-player.is-captain{
+  border-color:rgba(255,198,68,.52);
+  background:
+    linear-gradient(135deg,rgba(255,198,68,.105),rgba(8,9,13,.45));
+  box-shadow:
+    inset 3px 0 0 rgba(255,198,68,.80),
+    0 8px 20px rgba(255,160,20,.08);
+}
+
+.admin-pro-player-name-row{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+}
+
+.admin-pro-player-name-row strong{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.captain-badge{
+  flex:0 0 auto;
+  padding:3px 5px;
+  border:1px solid rgba(255,198,68,.38);
+  border-radius:999px;
+  color:#ffd265;
+  background:rgba(255,198,68,.08);
+  font-size:7px;
+  font-weight:950;
+  letter-spacing:.5px;
+}
+
+.admin-pro-captain-button{
+  width:30px;
+  min-width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  margin:0;
+  padding:0;
+  border:1px solid rgba(255,198,68,.24);
+  border-radius:9px;
+  color:#ffc85a;
+  background:rgba(255,198,68,.045);
+  font-size:16px;
+  line-height:1;
+  opacity:.72;
+  transition:.18s ease;
+}
+
+.admin-pro-player:hover .admin-pro-captain-button,
+.admin-pro-player.is-captain .admin-pro-captain-button{
+  opacity:1;
+}
+
+.admin-pro-captain-button:hover{
+  transform:translateY(-1px) scale(1.06);
+  border-color:rgba(255,198,68,.64);
+  background:rgba(255,198,68,.14);
+  box-shadow:0 0 18px rgba(255,180,30,.16);
+}
+
+.public-captain-badge{
+  display:inline-flex;
+  align-items:center;
+  margin-left:6px;
+  padding:2px 6px;
+  border:1px solid rgba(255,198,68,.32);
+  border-radius:999px;
+  color:#ffc85a;
+  background:rgba(255,198,68,.07);
+  font-size:9px;
+  font-weight:900;
+  vertical-align:middle;
+}
+
+@media(max-width:760px){
+  .admin-pro-player{
+    grid-template-columns:22px minmax(0,1fr) 34px 34px 56px;
+  }
+
+  .captain-badge{
+    display:none;
+  }
+
+  .admin-pro-captain-button{
+    opacity:1;
+  }
+}
