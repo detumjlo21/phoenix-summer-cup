@@ -29,27 +29,17 @@ function captainBadgeMarkup(player,team){
     :"";
 }
 
-function getPlayerNameClass(name,isCaptain=false){
-  const length=String(name||"").trim().length;
-
-  // Đội trưởng phải chừa chỗ cho huy hiệu nên co chữ sớm hơn.
-  if(isCaptain){
-    if(length>=24)return "player-name-xxs";
-    if(length>=20)return "player-name-xs";
-    if(length>=16)return "player-name-sm";
-    if(length>=13)return "player-name-md";
-    return "player-name";
-  }
-
-  if(length>=30)return "player-name-xxs";
-  if(length>=25)return "player-name-xs";
-  if(length>=20)return "player-name-sm";
-  if(length>=16)return "player-name-md";
-  return "player-name";
+function setMsg(text,type=""){message.textContent=text;message.className=`message ${type}`}
+function hasDeadlinePassed(){
+  return Date.now()>=new Date(cfg.closeAt).getTime();
 }
 
-function setMsg(text,type=""){message.textContent=text;message.className=`message ${type}`}
-function isClosed(){return Date.now()>=new Date(cfg.closeAt).getTime()}
+// Trạng thái đóng/mở do Admin quyết định.
+// Ngày closeAt chỉ dùng cho đồng hồ đếm ngược, không chặn đăng ký
+// khi Admin đã bấm "Mở đăng ký".
+function isClosed(){
+  return !registrationManuallyOpen;
+}
 function pad(v){return String(v).padStart(2,"0")}
 
 function updateUnit(id,value){
@@ -83,10 +73,18 @@ function updateCountdown(){
     return;
   }
 
-  if(titleEl)titleEl.textContent="Đăng ký kết thúc sau";
+  const deadlinePassed=hasDeadlinePassed();
+
+  if(titleEl){
+    titleEl.textContent=deadlinePassed
+      ?"Đăng ký đang được Admin mở"
+      :"Đăng ký kết thúc sau";
+  }
   if(notice)notice.hidden=true;
 
-  const diff=Math.max(0,new Date(cfg.closeAt).getTime()-Date.now());
+  const diff=deadlinePassed
+    ?0
+    :Math.max(0,new Date(cfg.closeAt).getTime()-Date.now());
   const days=Math.floor(diff/86400000);
   const hours=Math.floor(diff%86400000/3600000);
   const minutes=Math.floor(diff%3600000/60000);
@@ -272,15 +270,19 @@ async function loadPublicData(){
         </div>
 
         <ol class="team-member-list">
-          ${g.members.map(player=>{
-            const isCaptain=g.captain_player_id===player.id;
-            const nameClass=getPlayerNameClass(player.game_name,isCaptain);
-
-            return `<li class="${isCaptain?"captain-member":""}">
-              <span class="${nameClass}">${esc(player.game_name)}</span>
-              ${isCaptain?'<span class="public-captain-badge">👑 Đội trưởng</span>':""}
-            </li>`;
-          }).join("")}
+          ${g.members.map(player=>`<li class="${g.captain_player_id===player.id?"captain-member":""}">
+<span class="${
+  player.game_name.length >= 28
+    ? "player-name-xs"
+    : player.game_name.length >= 22
+    ? "player-name-sm"
+    : player.game_name.length >= 16
+    ? "player-name-md"
+    : "player-name"
+}">
+  ${esc(player.game_name)}
+</span>            ${g.captain_player_id===player.id?'<span class="public-captain-badge">👑 Đội trưởng</span>':""}
+          </li>`).join("")}
           ${Array.from({length:Math.max(0,4-memberCount)},()=>`<li class="empty-slot">Chưa có thành viên</li>`).join("")}
         </ol>
 
@@ -380,10 +382,15 @@ form.addEventListener("submit",async e=>{
     .maybeSingle();
 
   if(registrationSettings&&registrationSettings.registration_open===false){
+    registrationManuallyOpen=false;
+    updateCountdown();
     setMsg("Đăng ký đã được Ban tổ chức đóng.","error");
     joinBtn.disabled=true;
     return;
   }
+
+  registrationManuallyOpen=true;
+  updateCountdown();
   const {data,error}=await sb.rpc("register_player_random_team",{
     p_game_name:gameName,
     p_facebook_name:facebookName
