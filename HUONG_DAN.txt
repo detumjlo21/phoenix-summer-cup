@@ -1,14 +1,18 @@
-PHOENIX V36.6 - QUY ĐỊNH LUÔN HIỆN KHI VÀO/LOAD WEB
+PHOENIX V36.7 - ĐƯA THÔNG BÁO BTC LÊN ĐẦU KHI KHÓA ĐĂNG KÝ
 
-Đúng theo yêu cầu:
-- Dù Admin mở hay đóng đăng ký, khi vào web hoặc tải lại trang đều hiện bảng quy định.
-- Người dùng phải xem hết và tick xác nhận.
-- Admin mở: sau khi tick sẽ chuyển tới form đăng ký.
-- Admin đóng: sau khi tick sẽ chuyển tới lịch thi đấu.
-- Khi Admin đóng: chỉ ẩn form, đồng hồ và tiến độ đăng ký; bảng quy định không bị ẩn trước khi người dùng tick.
-- Trong cùng một lần mở trang, sau khi đã tick thì bảng quy định không tự bật lại.
+Hoạt động:
+- Lịch thi đấu luôn nằm ở đầu trang, ngay dưới logo.
+- Khi Admin đóng đăng ký:
+  1. Thông báo Ban tổ chức được đưa lên đầu.
+  2. Thông báo nằm ngay trên lịch thi đấu.
+  3. Form, đồng hồ và tiến độ đăng ký vẫn bị ẩn.
+  4. Bảng quy định vẫn hiện khi vào hoặc tải lại web để thành viên tick.
+- Khi Admin mở đăng ký:
+  1. Thông báo BTC trở về vị trí cũ.
+  2. Lịch thi đấu vẫn ở đầu trang.
+  3. Form đăng ký hiện lại.
 
 Cách dùng:
-1. Upload đè file app.js lên GitHub.
+1. Upload đè app.js ở thư mục gốc GitHub.
 2. Chờ Vercel Deployment báo Ready.
-3. Mở cửa sổ ẩn danh hoặc Ctrl + Shift + R để kiểm tra.
+3. Nhấn Ctrl + Shift + R hoặc thử bằng cửa sổ ẩn danh.

@@ -28,6 +28,15 @@ const joinPanel=document.querySelector("#joinPanel");
 const countdownWrap=document.querySelector(".countdown-wrap");
 const progressCard=document.querySelector(".progress-card");
 const schedulePanel=document.querySelector("#publicSchedule")?.closest(".panel");
+const announcementPanel=document.querySelector(".tournament-info");
+const announcementHome=document.createComment("announcement-home");
+
+if(announcementPanel?.parentNode){
+  announcementPanel.parentNode.insertBefore(
+    announcementHome,
+    announcementPanel
+  );
+}
 
 // Luôn hiện bảng quy định khi người dùng vừa vào hoặc tải lại trang.
 // Trạng thái Admin chỉ quyết định có hiện form đăng ký hay không.
@@ -49,10 +58,27 @@ function isClosed(){
   return !registrationManuallyOpen;
 }
 
-function moveScheduleToTop(){
+function updateTopLayout(){
   const hero=document.querySelector(".hero");
-  if(hero&&schedulePanel&&hero.nextElementSibling!==schedulePanel){
-    hero.insertAdjacentElement("afterend",schedulePanel);
+  if(!hero||!schedulePanel)return;
+
+  // Lịch thi đấu luôn nằm ngay dưới logo/tiêu đề.
+  hero.insertAdjacentElement("afterend",schedulePanel);
+
+  if(registrationManuallyOpen===false&&announcementPanel){
+    // Khi Admin khóa đăng ký:
+    // Thông báo BTC nằm trên lịch thi đấu ở đầu trang.
+    schedulePanel.insertAdjacentElement("beforebegin",announcementPanel);
+  }else if(
+    announcementPanel&&
+    announcementHome.parentNode
+  ){
+    // Khi Admin mở đăng ký:
+    // Đưa thông báo về vị trí ban đầu trong trang.
+    announcementHome.parentNode.insertBefore(
+      announcementPanel,
+      announcementHome.nextSibling
+    );
   }
 }
 
@@ -118,6 +144,7 @@ function setRegistrationVisibility(isOpen,updatedAt=null){
 
     previousRegistrationOpen=false;
     if(updatedAt)lastRegistrationUpdatedAt=updatedAt;
+    updateTopLayout();
     return;
   }
 
@@ -138,6 +165,7 @@ function setRegistrationVisibility(isOpen,updatedAt=null){
 
   previousRegistrationOpen=true;
   if(updatedAt)lastRegistrationUpdatedAt=updatedAt;
+  updateTopLayout();
 }
 function pad(v){return String(v).padStart(2,"0")}
 
@@ -301,11 +329,12 @@ async function syncRegistrationStatus(){
       showRulesGate();
     }
 
+    updateTopLayout();
     updateCountdown();
   }
 }
 
-moveScheduleToTop();
+updateTopLayout();
 setInterval(updateCountdown,1000);
 updateCountdown();
 syncRegistrationStatus();
