@@ -62,19 +62,14 @@ function updateTopLayout(){
   const hero=document.querySelector(".hero");
   if(!hero||!schedulePanel)return;
 
-  // Lịch thi đấu luôn nằm ngay dưới logo/tiêu đề.
+  // Lịch thi đấu luôn nằm ngay dưới phần logo/tiêu đề.
   hero.insertAdjacentElement("afterend",schedulePanel);
 
   if(registrationManuallyOpen===false&&announcementPanel){
-    // Khi Admin khóa đăng ký:
-    // Thông báo BTC nằm trên lịch thi đấu ở đầu trang.
+    // Khi Admin khóa đăng ký, đưa thông báo BTC lên trên lịch thi đấu.
     schedulePanel.insertAdjacentElement("beforebegin",announcementPanel);
-  }else if(
-    announcementPanel&&
-    announcementHome.parentNode
-  ){
-    // Khi Admin mở đăng ký:
-    // Đưa thông báo về vị trí ban đầu trong trang.
+  }else if(announcementPanel&&announcementHome.parentNode){
+    // Khi mở đăng ký, đưa thông báo về vị trí ban đầu.
     announcementHome.parentNode.insertBefore(
       announcementPanel,
       announcementHome.nextSibling

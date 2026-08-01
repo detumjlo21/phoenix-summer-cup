@@ -1,18 +1,24 @@
-PHOENIX V36.7 - ĐƯA THÔNG BÁO BTC LÊN ĐẦU KHI KHÓA ĐĂNG KÝ
+PHOENIX V36.8 - FIX THEO ĐÚNG APP.JS ĐANG CÓ TRÊN GITHUB
 
-Hoạt động:
-- Lịch thi đấu luôn nằm ở đầu trang, ngay dưới logo.
-- Khi Admin đóng đăng ký:
-  1. Thông báo Ban tổ chức được đưa lên đầu.
-  2. Thông báo nằm ngay trên lịch thi đấu.
-  3. Form, đồng hồ và tiến độ đăng ký vẫn bị ẩn.
-  4. Bảng quy định vẫn hiện khi vào hoặc tải lại web để thành viên tick.
-- Khi Admin mở đăng ký:
-  1. Thông báo BTC trở về vị trí cũ.
-  2. Lịch thi đấu vẫn ở đầu trang.
-  3. Form đăng ký hiện lại.
+Lý do bản trước chưa chạy:
+GitHub hiện vẫn dùng app.js cũ, chỉ có moveScheduleToTop() và chưa có announcementPanel.
 
-Cách dùng:
-1. Upload đè app.js ở thư mục gốc GitHub.
-2. Chờ Vercel Deployment báo Ready.
-3. Nhấn Ctrl + Shift + R hoặc thử bằng cửa sổ ẩn danh.
+Cách thay:
+1. Mở repo GitHub.
+2. Mở file app.js ở thư mục gốc.
+3. Chọn Delete file hoặc Edit, xóa toàn bộ nội dung cũ.
+4. Upload/chép đè app.js trong gói này.
+5. Commit changes vào nhánh main.
+6. Chờ Vercel Deployment báo Ready.
+7. Mở trang bằng Ctrl + Shift + R hoặc cửa sổ ẩn danh.
+
+Kiểm tra đã thay đúng:
+Trong app.js trên GitHub phải tìm thấy:
+- const announcementPanel=document.querySelector(".tournament-info");
+- function updateTopLayout()
+- schedulePanel.insertAdjacentElement("beforebegin",announcementPanel);
+
+Kết quả:
+- Admin đóng đăng ký: Thông báo BTC ở đầu, trên Lịch thi đấu.
+- Admin mở đăng ký: Thông báo BTC về vị trí cũ.
+- Lịch thi đấu luôn ở đầu.
