@@ -21,6 +21,7 @@ const agreementLabel=document.querySelector("#agreementLabel");
 const agreementStatus=document.querySelector("#agreementStatus");
 let publicPlayers=[];
 let rulesGateDismissed=false;
+let previousRegistrationOpen=null;
 
 const joinPanel=document.querySelector("#joinPanel");
 const countdownWrap=document.querySelector(".countdown-wrap");
@@ -48,26 +49,62 @@ function moveScheduleToTop(){
   }
 }
 
+function resetRulesGate(){
+  rulesGateDismissed=false;
+
+  if(agreeRules){
+    agreeRules.checked=false;
+    agreeRules.disabled=!rulesUnlocked;
+  }
+
+  if(continueButton)continueButton.disabled=true;
+
+  if(agreementStatus){
+    agreementStatus.textContent=rulesUnlocked
+      ?"✓ Có thể xác nhận và tiếp tục đăng ký"
+      :"Hãy xem hết nội dung quy định";
+  }
+
+  if(rulesGate){
+    rulesGate.classList.remove("is-closing");
+    rulesGate.hidden=false;
+  }
+
+  document.body.style.overflow="hidden";
+}
+
 function setRegistrationVisibility(isOpen){
+  const justOpened=previousRegistrationOpen===false&&isOpen===true;
+  const firstOpenLoad=previousRegistrationOpen===null&&isOpen===true;
+
   if(joinPanel)joinPanel.hidden=!isOpen;
   if(countdownWrap)countdownWrap.hidden=!isOpen;
   if(progressCard)progressCard.hidden=!isOpen;
 
   if(!isOpen){
     if(resultCard)resultCard.hidden=true;
+
     if(rulesGate){
       rulesGate.hidden=true;
       rulesGate.classList.remove("is-closing");
     }
+
     document.body.style.overflow="";
+    previousRegistrationOpen=false;
     return;
   }
 
-  // Khi Admin mở đăng ký, người chưa xác nhận quy định vẫn phải xem quy định.
-  if(rulesGate&&!rulesGateDismissed){
+  // Khi trang vừa tải trong trạng thái mở, hoặc Admin vừa chuyển từ đóng sang mở,
+  // luôn yêu cầu người xem đọc và tick quy định trước khi vào phần đăng ký.
+  if(firstOpenLoad||justOpened){
+    resetRulesGate();
+  }else if(!rulesGateDismissed&&rulesGate){
     rulesGate.hidden=false;
+    rulesGate.classList.remove("is-closing");
     document.body.style.overflow="hidden";
   }
+
+  previousRegistrationOpen=true;
 }
 function pad(v){return String(v).padStart(2,"0")}
 
@@ -187,7 +224,7 @@ setTimeout(()=>{
   }
 },8000);
 
-document.body.style.overflow="hidden";
+document.body.style.overflow="";
 
 async function syncRegistrationStatus(){
   try{

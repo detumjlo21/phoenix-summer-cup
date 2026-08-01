@@ -1,13 +1,11 @@
-PHOENIX V36.2 - LỊCH THI ĐẤU LÊN ĐẦU + ẨN ĐĂNG KÝ KHI ADMIN ĐÓNG
+PHOENIX V36.3 - SỬA QUY ĐỊNH KHI ĐÓNG/MỞ ĐĂNG KÝ
 
-Thay file app.js ở thư mục gốc GitHub bằng file app.js trong gói này.
+Thay file app.js ở thư mục gốc GitHub.
 Sau khi Vercel deploy xong, nhấn Ctrl + F5.
 
-Đã sửa:
-- Lịch thi đấu tự chuyển lên ngay dưới phần tiêu đề/logo.
-- Khi Admin đóng đăng ký: ẩn đồng hồ, tiến độ và form đăng ký.
-- Khi Admin mở đăng ký: các phần đăng ký hiện lại.
-- Đóng/mở chỉ phụ thuộc Admin, không còn bị ngày 30/07 chặn ở frontend.
-- Khi đóng đăng ký, màn hình quy định không che trang.
-
-LƯU Ý: Supabase cũng phải dùng function register_player_random_team đã bỏ điều kiện ngày 30/07.
+Hoạt động mới:
+- Admin đóng đăng ký: ẩn form, đồng hồ và bảng quy định.
+- Admin mở đăng ký: người vào web phải xem và tick quy định trước.
+- Nếu Admin chuyển từ đóng sang mở khi trang đang mở, bảng quy định tự hiện lại.
+- Sau khi đã tick và tiếp tục trong cùng phiên trang, bảng quy định không bật lại mỗi 30 giây.
+- Lịch thi đấu vẫn ở đầu trang.
