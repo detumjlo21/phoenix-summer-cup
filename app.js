@@ -1,5 +1,5 @@
 const cfg=window.PHOENIX_CONFIG;
-let registrationManuallyOpen=true;
+let registrationManuallyOpen=null;
 const sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseKey);
 
 const form=document.querySelector("#joinForm");
@@ -22,11 +22,18 @@ const agreementStatus=document.querySelector("#agreementStatus");
 let publicPlayers=[];
 let rulesGateDismissed=false;
 let previousRegistrationOpen=null;
+let lastRegistrationUpdatedAt=null;
 
 const joinPanel=document.querySelector("#joinPanel");
 const countdownWrap=document.querySelector(".countdown-wrap");
 const progressCard=document.querySelector(".progress-card");
 const schedulePanel=document.querySelector("#publicSchedule")?.closest(".panel");
+
+// Chờ Supabase trả về trạng thái rồi mới hiện form hoặc bảng quy định.
+if(rulesGate)rulesGate.hidden=true;
+if(joinPanel)joinPanel.hidden=true;
+if(countdownWrap)countdownWrap.hidden=true;
+if(progressCard)progressCard.hidden=true;
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 
@@ -73,15 +80,21 @@ function resetRulesGate(){
   document.body.style.overflow="hidden";
 }
 
-function setRegistrationVisibility(isOpen){
-  const justOpened=previousRegistrationOpen===false&&isOpen===true;
-  const firstOpenLoad=previousRegistrationOpen===null&&isOpen===true;
+function setRegistrationVisibility(isOpen,updatedAt=null){
+  const wasOpen=previousRegistrationOpen;
+  const firstLoad=wasOpen===null;
+  const settingsChanged=
+    Boolean(updatedAt)&&
+    Boolean(lastRegistrationUpdatedAt)&&
+    updatedAt!==lastRegistrationUpdatedAt;
 
-  if(joinPanel)joinPanel.hidden=!isOpen;
-  if(countdownWrap)countdownWrap.hidden=!isOpen;
-  if(progressCard)progressCard.hidden=!isOpen;
+  registrationManuallyOpen=isOpen===true;
 
-  if(!isOpen){
+  if(joinPanel)joinPanel.hidden=!registrationManuallyOpen;
+  if(countdownWrap)countdownWrap.hidden=!registrationManuallyOpen;
+  if(progressCard)progressCard.hidden=!registrationManuallyOpen;
+
+  if(!registrationManuallyOpen){
     if(resultCard)resultCard.hidden=true;
 
     if(rulesGate){
@@ -91,12 +104,20 @@ function setRegistrationVisibility(isOpen){
 
     document.body.style.overflow="";
     previousRegistrationOpen=false;
+    if(updatedAt)lastRegistrationUpdatedAt=updatedAt;
     return;
   }
 
-  // Khi trang vừa tải trong trạng thái mở, hoặc Admin vừa chuyển từ đóng sang mở,
-  // luôn yêu cầu người xem đọc và tick quy định trước khi vào phần đăng ký.
-  if(firstOpenLoad||justOpened){
+  // Hiện lại quy định khi:
+  // 1. Vừa vào trang và đăng ký đang mở.
+  // 2. Trang đã nhận trạng thái đóng rồi chuyển sang mở.
+  // 3. Admin vừa thay đổi trạng thái/cài đặt đăng ký.
+  const mustShowRules=
+    firstLoad||
+    wasOpen===false||
+    settingsChanged;
+
+  if(mustShowRules){
     resetRulesGate();
   }else if(!rulesGateDismissed&&rulesGate){
     rulesGate.hidden=false;
@@ -105,6 +126,7 @@ function setRegistrationVisibility(isOpen){
   }
 
   previousRegistrationOpen=true;
+  if(updatedAt)lastRegistrationUpdatedAt=updatedAt;
 }
 function pad(v){return String(v).padStart(2,"0")}
 
@@ -228,13 +250,17 @@ document.body.style.overflow="";
 
 async function syncRegistrationStatus(){
   try{
-    const {data}=await sb.from("tournament_settings")
-      .select("registration_open")
+    const {data,error}=await sb.from("tournament_settings")
+      .select("registration_open,updated_at")
       .eq("id",1)
       .maybeSingle();
 
-    registrationManuallyOpen=data?.registration_open!==false;
-    setRegistrationVisibility(registrationManuallyOpen);
+    if(error)throw error;
+
+    setRegistrationVisibility(
+      data?.registration_open===true,
+      data?.updated_at||null
+    );
     updateCountdown();
 
     if(joinBtn){
@@ -451,13 +477,13 @@ form.addEventListener("submit",async e=>{
   joinBtn.disabled=true;setMsg("Đang gửi đăng ký...");
 
   const {data:registrationSettings}=await sb.from("tournament_settings")
-    .select("registration_open")
+    .select("registration_open,updated_at")
     .eq("id",1)
     .maybeSingle();
 
   if(registrationSettings&&registrationSettings.registration_open===false){
     registrationManuallyOpen=false;
-    setRegistrationVisibility(false);
+    setRegistrationVisibility(false,registrationSettings?.updated_at||null);
     updateCountdown();
     setMsg("Đăng ký đã được Ban tổ chức đóng.","error");
     joinBtn.disabled=true;
@@ -465,7 +491,7 @@ form.addEventListener("submit",async e=>{
   }
 
   registrationManuallyOpen=true;
-  setRegistrationVisibility(true);
+  setRegistrationVisibility(true,registrationSettings?.updated_at||null);
   updateCountdown();
   const {data,error}=await sb.rpc("register_player_random_team",{
     p_game_name:gameName,
