@@ -20,6 +20,12 @@ const scrollHint=document.querySelector("#scrollHint");
 const agreementLabel=document.querySelector("#agreementLabel");
 const agreementStatus=document.querySelector("#agreementStatus");
 let publicPlayers=[];
+let rulesGateDismissed=false;
+
+const joinPanel=document.querySelector("#joinPanel");
+const countdownWrap=document.querySelector(".countdown-wrap");
+const progressCard=document.querySelector(".progress-card");
+const schedulePanel=document.querySelector("#publicSchedule")?.closest(".panel");
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 
@@ -30,15 +36,38 @@ function captainBadgeMarkup(player,team){
 }
 
 function setMsg(text,type=""){message.textContent=text;message.className=`message ${type}`}
-function hasDeadlinePassed(){
-  return Date.now()>=new Date(cfg.closeAt).getTime();
+function isClosed(){
+  // Chỉ phụ thuộc vào nút Đóng/Mở của Admin.
+  return !registrationManuallyOpen;
 }
 
-// Trạng thái đóng/mở do Admin quyết định.
-// Ngày closeAt chỉ dùng cho đồng hồ đếm ngược, không chặn đăng ký
-// khi Admin đã bấm "Mở đăng ký".
-function isClosed(){
-  return !registrationManuallyOpen;
+function moveScheduleToTop(){
+  const hero=document.querySelector(".hero");
+  if(hero&&schedulePanel&&hero.nextElementSibling!==schedulePanel){
+    hero.insertAdjacentElement("afterend",schedulePanel);
+  }
+}
+
+function setRegistrationVisibility(isOpen){
+  if(joinPanel)joinPanel.hidden=!isOpen;
+  if(countdownWrap)countdownWrap.hidden=!isOpen;
+  if(progressCard)progressCard.hidden=!isOpen;
+
+  if(!isOpen){
+    if(resultCard)resultCard.hidden=true;
+    if(rulesGate){
+      rulesGate.hidden=true;
+      rulesGate.classList.remove("is-closing");
+    }
+    document.body.style.overflow="";
+    return;
+  }
+
+  // Khi Admin mở đăng ký, người chưa xác nhận quy định vẫn phải xem quy định.
+  if(rulesGate&&!rulesGateDismissed){
+    rulesGate.hidden=false;
+    document.body.style.overflow="hidden";
+  }
 }
 function pad(v){return String(v).padStart(2,"0")}
 
@@ -73,11 +102,11 @@ function updateCountdown(){
     return;
   }
 
-  const deadlinePassed=hasDeadlinePassed();
+  const deadlinePassed=Date.now()>=new Date(cfg.closeAt).getTime();
 
   if(titleEl){
     titleEl.textContent=deadlinePassed
-      ?"Đăng ký đang được Admin mở"
+      ?"Đăng ký đang mở theo Admin"
       :"Đăng ký kết thúc sau";
   }
   if(notice)notice.hidden=true;
@@ -142,11 +171,13 @@ agreeRules.addEventListener("change",()=>{
 
 continueButton.addEventListener("click",()=>{
   if(!agreeRules.checked)return;
+  rulesGateDismissed=true;
   rulesGate.classList.add("is-closing");
   document.body.style.overflow="";
   setTimeout(()=>{
     rulesGate.hidden=true;
-    document.querySelector("#joinPanel").scrollIntoView({behavior:"smooth",block:"start"});
+    const target=!joinPanel?.hidden?joinPanel:schedulePanel;
+    target?.scrollIntoView({behavior:"smooth",block:"start"});
   },320);
 });
 
@@ -166,6 +197,7 @@ async function syncRegistrationStatus(){
       .maybeSingle();
 
     registrationManuallyOpen=data?.registration_open!==false;
+    setRegistrationVisibility(registrationManuallyOpen);
     updateCountdown();
 
     if(joinBtn){
@@ -182,6 +214,7 @@ async function syncRegistrationStatus(){
   }catch{}
 }
 
+moveScheduleToTop();
 setInterval(updateCountdown,1000);
 updateCountdown();
 syncRegistrationStatus();
@@ -310,8 +343,12 @@ function showResult(data){
     resultLogo.removeAttribute("src");
   }
   document.querySelector("#resultCode").textContent=`Mã đăng ký: ${data.registration_code}`;
-  resultCard.hidden=false;
-  resultCard.scrollIntoView({behavior:"smooth",block:"center"});
+  if(registrationManuallyOpen){
+    resultCard.hidden=false;
+    resultCard.scrollIntoView({behavior:"smooth",block:"center"});
+  }else{
+    resultCard.hidden=true;
+  }
 }
 async function refreshSavedRegistration(){
   try{
@@ -383,6 +420,7 @@ form.addEventListener("submit",async e=>{
 
   if(registrationSettings&&registrationSettings.registration_open===false){
     registrationManuallyOpen=false;
+    setRegistrationVisibility(false);
     updateCountdown();
     setMsg("Đăng ký đã được Ban tổ chức đóng.","error");
     joinBtn.disabled=true;
@@ -390,6 +428,7 @@ form.addEventListener("submit",async e=>{
   }
 
   registrationManuallyOpen=true;
+  setRegistrationVisibility(true);
   updateCountdown();
   const {data,error}=await sb.rpc("register_player_random_team",{
     p_game_name:gameName,

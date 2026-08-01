@@ -1,9 +1,13 @@
-PHOENIX V36.1 - SỬA MỞ ĐĂNG KÝ
+PHOENIX V36.2 - LỊCH THI ĐẤU LÊN ĐẦU + ẨN ĐĂNG KÝ KHI ADMIN ĐÓNG
 
-1. Upload đè file app.js lên thư mục gốc GitHub.
-2. Chờ Vercel deploy hoàn tất.
-3. Mở trang bằng Ctrl + F5.
-4. Trong Admin bấm Mở đăng ký.
+Thay file app.js ở thư mục gốc GitHub bằng file app.js trong gói này.
+Sau khi Vercel deploy xong, nhấn Ctrl + F5.
 
-Nguyên nhân lỗi: config.js đặt closeAt là 30/07/2026, nên từ 31/07/2026 app.js vẫn chặn đăng ký dù Admin đã mở.
-Bản này cho phép nút Admin quyết định trạng thái đóng/mở; closeAt chỉ còn dùng cho đồng hồ.
+Đã sửa:
+- Lịch thi đấu tự chuyển lên ngay dưới phần tiêu đề/logo.
+- Khi Admin đóng đăng ký: ẩn đồng hồ, tiến độ và form đăng ký.
+- Khi Admin mở đăng ký: các phần đăng ký hiện lại.
+- Đóng/mở chỉ phụ thuộc Admin, không còn bị ngày 30/07 chặn ở frontend.
+- Khi đóng đăng ký, màn hình quy định không che trang.
+
+LƯU Ý: Supabase cũng phải dùng function register_player_random_team đã bỏ điều kiện ngày 30/07.
