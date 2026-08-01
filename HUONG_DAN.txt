@@ -1,24 +1,53 @@
-PHOENIX V36.8 - FIX THEO ĐÚNG APP.JS ĐANG CÓ TRÊN GITHUB
+PHOENIX V37 - ADMIN TỰ ĐIỀU CHỈNH VỊ TRÍ KHU VỰC
 
-Lý do bản trước chưa chạy:
-GitHub hiện vẫn dùng app.js cũ, chỉ có moveScheduleToTop() và chưa có announcementPanel.
+TÍNH NĂNG
+- Kéo thả thứ tự khu vực ngay trong trang Admin.
+- Có nút ↑ ↓ để dùng tốt trên điện thoại.
+- Bật/tắt hiển thị từng khu vực.
+- Lưu vào Supabase và áp dụng cho tất cả người xem.
+- Trang đang mở sẽ tự cập nhật khi Admin lưu.
+- Bảng quy định vẫn nằm ngoài hệ thống bố cục và luôn hiện theo logic hiện tại.
 
-Cách thay:
-1. Mở repo GitHub.
-2. Mở file app.js ở thư mục gốc.
-3. Chọn Delete file hoặc Edit, xóa toàn bộ nội dung cũ.
-4. Upload/chép đè app.js trong gói này.
-5. Commit changes vào nhánh main.
-6. Chờ Vercel Deployment báo Ready.
-7. Mở trang bằng Ctrl + Shift + R hoặc cửa sổ ẩn danh.
+CÁC KHU VỰC ĐIỀU CHỈNH ĐƯỢC
+1. Thông báo Ban tổ chức
+2. Lịch thi đấu
+3. Đăng ký giải đấu
+4. Danh sách đội
+5. Kết quả từng trận
+6. Bảng xếp hạng
+7. MVP Kill
+8. Nhà vô địch
+9. Hall of Champions
 
-Kiểm tra đã thay đúng:
-Trong app.js trên GitHub phải tìm thấy:
-- const announcementPanel=document.querySelector(".tournament-info");
-- function updateTopLayout()
-- schedulePanel.insertAdjacentElement("beforebegin",announcementPanel);
+CÁCH CÀI
 
-Kết quả:
-- Admin đóng đăng ký: Thông báo BTC ở đầu, trên Lịch thi đấu.
-- Admin mở đăng ký: Thông báo BTC về vị trí cũ.
-- Lịch thi đấu luôn ở đầu.
+BƯỚC 1 — SUPABASE
+Mở SQL Editor, chạy toàn bộ file:
+  v37_layout_manager.sql
+
+BƯỚC 2 — GITHUB
+Upload hai file này vào thư mục gốc:
+  admin-layout.js
+  public-layout.js
+
+BƯỚC 3 — ADMIN.HTML
+Ở cuối file, ngay trước </body>, thêm:
+  <script src="admin-layout.js"></script>
+
+Nên đặt sau:
+  <script src="admin-pro.js"></script>
+
+BƯỚC 4 — INDEX.HTML
+Ở cuối file, ngay trước </body>, thêm:
+  <script src="public-layout.js"></script>
+
+Nên đặt sau:
+  <script src="team-details.js"></script>
+
+BƯỚC 5
+Commit vào nhánh main, chờ Vercel báo Ready, rồi mở lại bằng Ctrl + Shift + R.
+
+LƯU Ý
+- V37 sẽ thay quyền quyết định vị trí cứng trong app.js.
+- Nếu app.js cũ tự đưa lịch/thông báo lên đầu, public-layout.js sẽ tự đưa về đúng thứ tự Admin đã lưu.
+- Khi bật mục Nhà vô địch nhưng giải chưa có nhà vô địch, script champion.js vẫn có thể giữ mục đó ẩn. Đây là hành vi đúng.
