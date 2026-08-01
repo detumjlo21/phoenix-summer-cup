@@ -29,8 +29,8 @@ const countdownWrap=document.querySelector(".countdown-wrap");
 const progressCard=document.querySelector(".progress-card");
 const schedulePanel=document.querySelector("#publicSchedule")?.closest(".panel");
 
-// Chờ Supabase trả về trạng thái rồi mới hiện form hoặc bảng quy định.
-if(rulesGate)rulesGate.hidden=true;
+// Luôn hiện bảng quy định khi người dùng vừa vào hoặc tải lại trang.
+// Trạng thái Admin chỉ quyết định có hiện form đăng ký hay không.
 if(joinPanel)joinPanel.hidden=true;
 if(countdownWrap)countdownWrap.hidden=true;
 if(progressCard)progressCard.hidden=true;
@@ -56,6 +56,24 @@ function moveScheduleToTop(){
   }
 }
 
+function hideRulesGate(){
+  if(!rulesGate)return;
+  rulesGate.hidden=true;
+  rulesGate.setAttribute("aria-hidden","true");
+  rulesGate.classList.remove("is-closing");
+  rulesGate.style.setProperty("display","none","important");
+  document.body.style.overflow="";
+}
+
+function showRulesGate(){
+  if(!rulesGate)return;
+  rulesGate.hidden=false;
+  rulesGate.setAttribute("aria-hidden","false");
+  rulesGate.classList.remove("is-closing");
+  rulesGate.style.removeProperty("display");
+  document.body.style.overflow="hidden";
+}
+
 function resetRulesGate(){
   rulesGateDismissed=false;
 
@@ -72,12 +90,7 @@ function resetRulesGate(){
       :"Hãy xem hết nội dung quy định";
   }
 
-  if(rulesGate){
-    rulesGate.classList.remove("is-closing");
-    rulesGate.hidden=false;
-  }
-
-  document.body.style.overflow="hidden";
+  showRulesGate();
 }
 
 function setRegistrationVisibility(isOpen,updatedAt=null){
@@ -97,12 +110,12 @@ function setRegistrationVisibility(isOpen,updatedAt=null){
   if(!registrationManuallyOpen){
     if(resultCard)resultCard.hidden=true;
 
-    if(rulesGate){
-      rulesGate.hidden=true;
-      rulesGate.classList.remove("is-closing");
+    // Admin đóng chỉ ẩn phần đăng ký.
+    // Bảng quy định vẫn hiện khi người dùng chưa xác nhận.
+    if(!rulesGateDismissed){
+      showRulesGate();
     }
 
-    document.body.style.overflow="";
     previousRegistrationOpen=false;
     if(updatedAt)lastRegistrationUpdatedAt=updatedAt;
     return;
@@ -120,9 +133,7 @@ function setRegistrationVisibility(isOpen,updatedAt=null){
   if(mustShowRules){
     resetRulesGate();
   }else if(!rulesGateDismissed&&rulesGate){
-    rulesGate.hidden=false;
-    rulesGate.classList.remove("is-closing");
-    document.body.style.overflow="hidden";
+    showRulesGate();
   }
 
   previousRegistrationOpen=true;
@@ -234,8 +245,12 @@ continueButton.addEventListener("click",()=>{
   rulesGate.classList.add("is-closing");
   document.body.style.overflow="";
   setTimeout(()=>{
-    rulesGate.hidden=true;
-    const target=!joinPanel?.hidden?joinPanel:schedulePanel;
+    hideRulesGate();
+
+    const target=registrationManuallyOpen===true
+      ?joinPanel
+      :schedulePanel;
+
     target?.scrollIntoView({behavior:"smooth",block:"start"});
   },320);
 });
@@ -246,20 +261,19 @@ setTimeout(()=>{
   }
 },8000);
 
-document.body.style.overflow="";
+resetRulesGate();
 
 async function syncRegistrationStatus(){
   try{
     const {data,error}=await sb.from("tournament_settings")
-      .select("registration_open,updated_at")
+      .select("registration_open")
       .eq("id",1)
       .maybeSingle();
 
     if(error)throw error;
 
     setRegistrationVisibility(
-      data?.registration_open===true,
-      data?.updated_at||null
+      data?.registration_open===true
     );
     updateCountdown();
 
@@ -274,7 +288,21 @@ async function syncRegistrationStatus(){
         joinBtn.textContent="THAM GIA & RANDOM ĐỘI";
       }
     }
-  }catch{}
+  }catch(error){
+    console.error("syncRegistrationStatus:",error);
+
+    registrationManuallyOpen=false;
+    if(joinPanel)joinPanel.hidden=true;
+    if(countdownWrap)countdownWrap.hidden=true;
+    if(progressCard)progressCard.hidden=true;
+    if(resultCard)resultCard.hidden=true;
+
+    if(!rulesGateDismissed){
+      showRulesGate();
+    }
+
+    updateCountdown();
+  }
 }
 
 moveScheduleToTop();

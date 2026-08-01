@@ -1,16 +1,14 @@
-PHOENIX V36.4 - SỬA BẢNG QUY ĐỊNH SAU KHI ADMIN ĐÓNG/MỞ
+PHOENIX V36.6 - QUY ĐỊNH LUÔN HIỆN KHI VÀO/LOAD WEB
 
-Thay file app.js trên GitHub bằng file này.
+Đúng theo yêu cầu:
+- Dù Admin mở hay đóng đăng ký, khi vào web hoặc tải lại trang đều hiện bảng quy định.
+- Người dùng phải xem hết và tick xác nhận.
+- Admin mở: sau khi tick sẽ chuyển tới form đăng ký.
+- Admin đóng: sau khi tick sẽ chuyển tới lịch thi đấu.
+- Khi Admin đóng: chỉ ẩn form, đồng hồ và tiến độ đăng ký; bảng quy định không bị ẩn trước khi người dùng tick.
+- Trong cùng một lần mở trang, sau khi đã tick thì bảng quy định không tự bật lại.
 
-Bản sửa:
-- Khi Admin đóng: ẩn form, đồng hồ, tiến độ và bảng quy định.
-- Khi Admin mở lại: bảng quy định tự hiện lại để người dùng tick.
-- Theo dõi updated_at của tournament_settings, nên vẫn nhận ra Admin vừa đổi trạng thái
-  kể cả trang không kịp thấy trạng thái đóng trước đó.
-- Khi mới vào trang và đăng ký đang mở: luôn hiện bảng quy định.
-- Lịch thi đấu vẫn ở đầu trang.
-
-Kiểm tra sau khi upload:
-1. GitHub app.js phải có dòng: select("registration_open,updated_at")
-2. Chờ Vercel deployment Ready.
-3. Mở cửa sổ ẩn danh để thử.
+Cách dùng:
+1. Upload đè file app.js lên GitHub.
+2. Chờ Vercel Deployment báo Ready.
+3. Mở cửa sổ ẩn danh hoặc Ctrl + Shift + R để kiểm tra.
