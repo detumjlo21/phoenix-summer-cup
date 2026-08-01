@@ -1,53 +1,33 @@
-PHOENIX V37 - ADMIN TỰ ĐIỀU CHỈNH VỊ TRÍ KHU VỰC
+PHOENIX V37.1 - ĐẾM NGƯỢC NẰM DƯỚI THÔNG BÁO VÀ TRÊN LỊCH
 
-TÍNH NĂNG
-- Kéo thả thứ tự khu vực ngay trong trang Admin.
-- Có nút ↑ ↓ để dùng tốt trên điện thoại.
-- Bật/tắt hiển thị từng khu vực.
-- Lưu vào Supabase và áp dụng cho tất cả người xem.
-- Trang đang mở sẽ tự cập nhật khi Admin lưu.
-- Bảng quy định vẫn nằm ngoài hệ thống bố cục và luôn hiện theo logic hiện tại.
-
-CÁC KHU VỰC ĐIỀU CHỈNH ĐƯỢC
+Thứ tự mặc định sau khi cài:
 1. Thông báo Ban tổ chức
-2. Lịch thi đấu
-3. Đăng ký giải đấu
-4. Danh sách đội
-5. Kết quả từng trận
-6. Bảng xếp hạng
-7. MVP Kill
-8. Nhà vô địch
-9. Hall of Champions
+2. Thời gian đếm ngược
+3. Lịch thi đấu
+4. Đăng ký giải đấu
+5. Danh sách đội
+6. Kết quả từng trận
+7. Bảng xếp hạng
+8. MVP Kill
+9. Nhà vô địch
+10. Hall of Champions
+
+Admin có thể tiếp tục kéo thả vị trí của phần đếm ngược như các khu vực khác.
 
 CÁCH CÀI
 
-BƯỚC 1 — SUPABASE
-Mở SQL Editor, chạy toàn bộ file:
-  v37_layout_manager.sql
+1. Supabase:
+   Chạy toàn bộ file v37_1_countdown_layout.sql.
 
-BƯỚC 2 — GITHUB
-Upload hai file này vào thư mục gốc:
-  admin-layout.js
-  public-layout.js
+2. GitHub:
+   Upload đè:
+   - admin-layout.js
+   - public-layout.js
 
-BƯỚC 3 — ADMIN.HTML
-Ở cuối file, ngay trước </body>, thêm:
-  <script src="admin-layout.js"></script>
+3. Không cần sửa lại admin.html hoặc index.html nếu bạn đã thêm script V37 trước đó.
 
-Nên đặt sau:
-  <script src="admin-pro.js"></script>
+4. Chờ Vercel báo Ready rồi nhấn Ctrl + Shift + R.
 
-BƯỚC 4 — INDEX.HTML
-Ở cuối file, ngay trước </body>, thêm:
-  <script src="public-layout.js"></script>
-
-Nên đặt sau:
-  <script src="team-details.js"></script>
-
-BƯỚC 5
-Commit vào nhánh main, chờ Vercel báo Ready, rồi mở lại bằng Ctrl + Shift + R.
-
-LƯU Ý
-- V37 sẽ thay quyền quyết định vị trí cứng trong app.js.
-- Nếu app.js cũ tự đưa lịch/thông báo lên đầu, public-layout.js sẽ tự đưa về đúng thứ tự Admin đã lưu.
-- Khi bật mục Nhà vô địch nhưng giải chưa có nhà vô địch, script champion.js vẫn có thể giữ mục đó ẩn. Đây là hành vi đúng.
+LƯU Ý:
+- Khi Admin đóng đăng ký, app.js hiện tại sẽ ẩn phần đếm ngược.
+- Khi Admin mở đăng ký, đếm ngược sẽ hiện đúng giữa Thông báo BTC và Lịch thi đấu.

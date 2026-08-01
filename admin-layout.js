@@ -3,6 +3,7 @@
 
   const SECTION_INFO = [
     {key:"announcement", label:"Thông báo Ban tổ chức", icon:"📢"},
+    {key:"countdown", label:"Thời gian đếm ngược", icon:"⏳"},
     {key:"schedule", label:"Lịch thi đấu", icon:"🗓️"},
     {key:"registration", label:"Đăng ký giải đấu", icon:"📝"},
     {key:"teams", label:"Danh sách đội", icon:"👥"},

@@ -3,6 +3,7 @@
 
   const DEFAULT_ORDER=[
     "announcement",
+    "countdown",
     "schedule",
     "registration",
     "teams",
@@ -25,6 +26,7 @@
   function getSections(){
     return {
       announcement:document.querySelector(".tournament-info"),
+      countdown:document.querySelector(".countdown-wrap"),
       schedule:document.querySelector("#publicSchedule")?.closest("section"),
       registration:document.querySelector("#joinPanel"),
       teams:document.querySelector("#teams")?.closest("section"),
