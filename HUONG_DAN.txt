@@ -1,33 +1,9 @@
-PHOENIX V37.1 - ĐẾM NGƯỢC NẰM DƯỚI THÔNG BÁO VÀ TRÊN LỊCH
+PHOENIX V37.2 - SỬA KHOẢNG TRỐNG QUY ĐỊNH TRÊN ĐIỆN THOẠI
 
-Thứ tự mặc định sau khi cài:
-1. Thông báo Ban tổ chức
-2. Thời gian đếm ngược
-3. Lịch thi đấu
-4. Đăng ký giải đấu
-5. Danh sách đội
-6. Kết quả từng trận
-7. Bảng xếp hạng
-8. MVP Kill
-9. Nhà vô địch
-10. Hall of Champions
+1. Upload đè styles.css ở thư mục gốc GitHub.
+2. Commit vào nhánh main.
+3. Chờ Vercel Deployment báo Ready.
+4. Mở trang bằng cửa sổ ẩn danh hoặc Ctrl + Shift + R.
 
-Admin có thể tiếp tục kéo thả vị trí của phần đếm ngược như các khu vực khác.
-
-CÁCH CÀI
-
-1. Supabase:
-   Chạy toàn bộ file v37_1_countdown_layout.sql.
-
-2. GitHub:
-   Upload đè:
-   - admin-layout.js
-   - public-layout.js
-
-3. Không cần sửa lại admin.html hoặc index.html nếu bạn đã thêm script V37 trước đó.
-
-4. Chờ Vercel báo Ready rồi nhấn Ctrl + Shift + R.
-
-LƯU Ý:
-- Khi Admin đóng đăng ký, app.js hiện tại sẽ ẩn phần đếm ngược.
-- Khi Admin mở đăng ký, đếm ngược sẽ hiện đúng giữa Thông báo BTC và Lịch thi đấu.
+Bản này được tạo từ đúng styles.css đang có trên GitHub.
+Nguyên nhân trước đó không hiệu lực: đoạn V37.2 chưa hề có trong styles.css trên GitHub.
