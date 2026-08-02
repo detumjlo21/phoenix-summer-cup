@@ -1,9 +1,28 @@
-PHOENIX V37.2 - SỬA KHOẢNG TRỐNG QUY ĐỊNH TRÊN ĐIỆN THOẠI
+PHOENIX V38 - KHU VỰC GIẢI THƯỞNG
 
-1. Upload đè styles.css ở thư mục gốc GitHub.
-2. Commit vào nhánh main.
-3. Chờ Vercel Deployment báo Ready.
-4. Mở trang bằng cửa sổ ẩn danh hoặc Ctrl + Shift + R.
+1. Supabase:
+   Chạy file v38_prizes.sql.
 
-Bản này được tạo từ đúng styles.css đang có trên GitHub.
-Nguyên nhân trước đó không hiệu lực: đoạn V37.2 chưa hề có trong styles.css trên GitHub.
+2. GitHub:
+   Upload vào thư mục gốc:
+   - prizes.css
+   - public-prizes.js
+   - admin-prizes.js
+
+3. index.html:
+   Trong <head>, thêm:
+   <link rel="stylesheet" href="prizes.css">
+
+   Trước </body>, thêm:
+   <script src="public-prizes.js"></script>
+
+4. admin.html:
+   Trong <head>, thêm:
+   <link rel="stylesheet" href="prizes.css">
+
+   Trước </body>, thêm:
+   <script src="admin-prizes.js"></script>
+
+5. Commit main, chờ Vercel Ready, rồi Ctrl + Shift + R.
+
+Khu vực giải thưởng sẽ nằm ngay dưới Lịch thi đấu.

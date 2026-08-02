@@ -1,0 +1,79 @@
+/* PHOENIX V38 - PRIZE CENTER */
+.prize-center{
+  position:relative;
+  overflow:hidden;
+  border-color:rgba(255,183,64,.52);
+  background:
+    radial-gradient(circle at 50% -12%,rgba(255,201,78,.20),transparent 34%),
+    radial-gradient(circle at 92% 18%,rgba(239,61,50,.14),transparent 28%),
+    linear-gradient(145deg,rgba(255,138,31,.08),transparent 58%),
+    rgba(17,19,26,.97);
+  box-shadow:0 22px 55px rgba(0,0,0,.26);
+}
+.prize-center::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:4px;
+  background:linear-gradient(90deg,#ef3d32,#ff8a1f,#ffd35a,#ff8a1f,#ef3d32);
+}
+.prize-center-head{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+}
+.prize-center-kicker{margin:0 0 6px;color:#ffb347;font-size:11px;font-weight:950;letter-spacing:2px}
+.prize-center-title{margin:0;font-size:clamp(28px,5vw,44px);line-height:1}
+.prize-center-subtitle{margin:9px 0 0;color:var(--muted)}
+.prize-total{
+  min-width:190px;padding:13px 16px;border:1px solid rgba(255,201,78,.42);
+  border-radius:16px;text-align:right;background:rgba(0,0,0,.20)
+}
+.prize-total span{display:block;color:var(--muted);font-size:11px;font-weight:850;letter-spacing:1px;text-transform:uppercase}
+.prize-total strong{display:block;margin-top:5px;color:#ffd45f;font-size:clamp(22px,3vw,30px)}
+.prize-podium{
+  display:grid;grid-template-columns:1fr 1.08fr 1fr;gap:14px;align-items:end;margin-top:24px
+}
+.prize-card{
+  position:relative;min-height:205px;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:18px;overflow:hidden;border:1px solid var(--border);border-radius:20px;
+  background:linear-gradient(165deg,rgba(255,255,255,.05),transparent 48%),rgba(0,0,0,.18)
+}
+.prize-card-rank{position:absolute;top:15px;right:15px;font-size:38px;font-weight:950;opacity:.22}
+.prize-medal{width:50px;height:50px;display:grid;place-items:center;margin-bottom:22px;border-radius:16px;font-size:25px}
+.prize-card h3{margin:0 0 7px;font-size:19px}
+.prize-card strong{font-size:clamp(19px,3vw,25px);overflow-wrap:anywhere}
+.prize-card small{display:block;margin-top:8px;color:var(--muted)}
+.prize-first{
+  min-height:245px;border-color:rgba(255,207,74,.62);
+  background:radial-gradient(circle at 50% 0,rgba(255,211,90,.20),transparent 42%),rgba(0,0,0,.20)
+}
+.prize-first .prize-medal{color:#251805;background:linear-gradient(135deg,#fff0a0,#ffc437)}
+.prize-second .prize-medal{color:#18202a;background:linear-gradient(135deg,#f5f7fa,#aeb8c5)}
+.prize-third .prize-medal{color:#25130a;background:linear-gradient(135deg,#f0b071,#b75f2c)}
+.prize-special{
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;
+  margin-top:14px;padding:15px 17px;border:1px solid rgba(255,98,88,.34);
+  border-radius:18px;background:linear-gradient(90deg,rgba(239,61,50,.11),rgba(255,138,31,.07))
+}
+.prize-special-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:rgba(255,91,73,.14);font-size:24px}
+.prize-special h3{margin:0 0 4px;font-size:18px}
+.prize-special p{margin:0;color:var(--muted);font-size:13px}
+.prize-special strong{color:#ffbf68;text-align:right;font-size:20px}
+.prize-note{margin:15px 0 0;padding-top:14px;border-top:1px solid var(--border);color:var(--muted);text-align:center}
+.prize-admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.prize-admin-grid label{display:grid;gap:7px}
+.prize-admin-grid .prize-admin-full{grid-column:1/-1}
+.prize-admin-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+@media(max-width:760px){
+  .prize-center-head{flex-direction:column}
+  .prize-total{width:100%;min-width:0;text-align:left}
+  .prize-podium{grid-template-columns:1fr}
+  .prize-first{order:-1;min-height:210px}
+  .prize-card{min-height:185px}
+  .prize-special{grid-template-columns:auto minmax(0,1fr)}
+  .prize-special strong{grid-column:1/-1;padding-top:10px;border-top:1px solid var(--border);text-align:left}
+  .prize-admin-grid{grid-template-columns:1fr}
+  .prize-admin-grid .prize-admin-full{grid-column:auto}
+}
