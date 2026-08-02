@@ -65,25 +65,77 @@ async function loadMatchMvps(){
   }
 
   const rows=data||[];
+  const highestKills=Math.max(
+    0,
+    ...rows.map(row=>Number(row.kills)||0)
+  );
 
   section.innerHTML=`
-    <p class="eyebrow">MVP TỪNG TRẬN</p>
-    <h2>🔥 Người chơi nổi bật</h2>
+    <div class="match-mvp-heading">
+      <div>
+        <p class="eyebrow">MVP TỪNG TRẬN</p>
+        <h2>🔥 Người chơi nổi bật</h2>
+        <p class="muted">Tuyển thủ có số hạ gục cao nhất trong từng trận đấu.</p>
+      </div>
+      <span class="match-mvp-heading-badge">PHOENIX MVP</span>
+    </div>
+
     <div class="match-mvp-grid">
       ${[1,2,3,4].map(matchNumber=>{
         const row=rows.find(item=>Number(item.match_number)===matchNumber);
+        const isBest=Boolean(
+          row&&highestKills>0&&Number(row.kills)===highestKills
+        );
 
         return `
-          <article class="match-mvp-card">
-            <span>TRẬN ${matchNumber}</span>
+          <article class="match-mvp-card ${row?"has-mvp":"is-empty"} ${isBest?"is-best":""}">
+            <div class="match-mvp-card-glow"></div>
+
+            <div class="match-mvp-card-top">
+              <span class="match-mvp-round">TRẬN ${matchNumber}</span>
+              ${
+                row
+                  ?`<span class="match-mvp-live">${isBest?"★ TOP MVP":"• MVP"}</span>`
+                  :`<span class="match-mvp-waiting">CHỜ KẾT QUẢ</span>`
+              }
+            </div>
+
             ${
               row
                 ?`
-                  <strong>${mvpEsc(row.game_name)}</strong>
-                  <small>${mvpEsc(row.team_name||"")}</small>
-                  <b>${row.kills} KILL</b>
+                  <div class="match-mvp-main">
+                    <div class="match-mvp-logo-wrap">
+                      ${
+                        row.logo_url
+                          ?`<img src="${mvpEsc(row.logo_url)}" alt="" class="match-mvp-logo">`
+                          :`<div class="match-mvp-logo match-mvp-logo-placeholder">PHX</div>`
+                      }
+                    </div>
+
+                    <div class="match-mvp-player">
+                      <span class="match-mvp-label">MVP MATCH</span>
+                      <strong>${mvpEsc(row.game_name)}</strong>
+                      <small>${mvpEsc(row.team_name||"Chưa có đội")}</small>
+                    </div>
+                  </div>
+
+                  <div class="match-mvp-kill">
+                    <strong>${Number(row.kills)||0}</strong>
+                    <div>
+                      <b>KILL</b>
+                      <span>TỔNG HẠ GỤC</span>
+                    </div>
+                  </div>
+
+                  <div class="match-mvp-accent"></div>
                 `
-                :`<strong class="muted">Chưa cập nhật</strong>`
+                :`
+                  <div class="match-mvp-empty-state">
+                    <span>🔥</span>
+                    <strong>Chưa cập nhật</strong>
+                    <small>Kết quả MVP sẽ hiển thị sau trận đấu.</small>
+                  </div>
+                `
             }
           </article>
         `;
