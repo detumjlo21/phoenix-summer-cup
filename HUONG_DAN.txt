@@ -1,18 +1,19 @@
-PHOENIX V39 - ĐỒNG BỘ MVP TỪNG TRẬN VỚI MVP KILL
+PHOENIX V39.1 - MVP TỪNG TRẬN ĐỒNG BỘ THẬT VỚI MVP KILL
 
-Đã sửa:
-- MVP từng trận theo phong cách FFWS.
-- Logo đội, tên tuyển thủ, tên đội và Kill hiển thị rõ.
-- Trận có Kill cao nhất được làm nổi bật bằng TOP MVP.
-- 4 cột trên PC, 2 cột tablet, 1 cột điện thoại.
-- Không cần chạy SQL.
+Bản trước vẫn là card nhỏ nên nhìn chưa giống.
+Bản này đổi hẳn sang bố cục hero:
+
+- Tiêu đề MVP MATCH lớn giống MVP KILL.
+- Tên tuyển thủ lớn.
+- Kill rất lớn ở góc trái.
+- Logo đội lớn ở bên phải như phần artwork.
+- Nền đen/cam, viền vàng và hiệu ứng ánh sáng.
+- PC hiển thị 2 card mỗi hàng.
+- Điện thoại hiển thị 1 card mỗi hàng.
 
 Cách cài:
-1. Upload đè mvp.js lên GitHub.
-2. Upload đè styles.css lên GitHub.
-3. Commit nhánh main.
+1. Upload đè mvp.js.
+2. Upload đè styles.css.
+3. Commit main.
 4. Chờ Vercel Ready.
-5. Nhấn Ctrl + Shift + R hoặc mở cửa sổ ẩn danh.
-
-Lưu ý:
-Nếu RPC get_public_match_mvps chưa trả logo_url, card sẽ dùng ô PHX thay thế.
+5. Ctrl + Shift + R hoặc mở cửa sổ ẩn danh.
