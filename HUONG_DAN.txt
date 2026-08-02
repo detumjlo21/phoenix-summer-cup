@@ -1,28 +1,38 @@
-PHOENIX V38 - KHU VỰC GIẢI THƯỞNG
+PHOENIX V38.1 - SỬA ĐẦY ĐỦ KHU VỰC GIẢI THƯỞNG
 
-1. Supabase:
-   Chạy file v38_prizes.sql.
+Nguyên nhân không hiện:
+- index.html chưa gọi public-prizes.js và prizes.css.
+- admin.html chưa gọi admin-prizes.js và prizes.css.
 
-2. GitHub:
-   Upload vào thư mục gốc:
-   - prizes.css
-   - public-prizes.js
-   - admin-prizes.js
+Bản này không cần sửa hai file HTML nữa.
+config.js sẽ tự nhận trang đang mở và tự tải đúng module.
 
-3. index.html:
-   Trong <head>, thêm:
-   <link rel="stylesheet" href="prizes.css">
+CÁCH CÀI
 
-   Trước </body>, thêm:
-   <script src="public-prizes.js"></script>
+Bước 1 - Supabase:
+Chạy toàn bộ file v38_prizes.sql một lần.
 
-4. admin.html:
-   Trong <head>, thêm:
-   <link rel="stylesheet" href="prizes.css">
+Bước 2 - GitHub:
+Upload đè hoặc thêm đủ 4 file vào thư mục gốc:
+- config.js
+- prizes.css
+- public-prizes.js
+- admin-prizes.js
 
-   Trước </body>, thêm:
-   <script src="admin-prizes.js"></script>
+Bước 3:
+Commit vào nhánh main, chờ Vercel Deployment báo Ready.
 
-5. Commit main, chờ Vercel Ready, rồi Ctrl + Shift + R.
+Bước 4:
+Mở cửa sổ ẩn danh hoặc nhấn Ctrl + Shift + R.
 
-Khu vực giải thưởng sẽ nằm ngay dưới Lịch thi đấu.
+KẾT QUẢ
+- Trang Admin có mục "Quản lý khu vực giải thưởng".
+- Trang chủ có khu vực giải thưởng ngay dưới lịch thi đấu.
+- Admin chỉnh nội dung và ẩn/hiện được.
+- Không cần thêm thẻ script/link vào index.html hoặc admin.html.
+
+KIỂM TRA
+Mở config.js trên GitHub và tìm:
+PHOENIX V38.1
+
+Nếu không thấy dòng đó thì file config.js mới chưa được upload đúng.
