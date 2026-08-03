@@ -6463,3 +6463,381 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
 }
 
+
+/* =======================================================
+   PHOENIX V40.6 - MVP MATCH COMPACT HORIZONTAL
+   Thu gọn khu MVP từng trận trên PC, giữ mobile hiện tại.
+======================================================= */
+@media (min-width: 901px){
+
+  .match-mvp-section{
+    padding:20px !important;
+    border-radius:22px !important;
+  }
+
+  .match-mvp-heading{
+    align-items:center !important;
+    margin-bottom:14px !important;
+  }
+
+  .match-mvp-heading .eyebrow{
+    margin-bottom:3px !important;
+  }
+
+  .match-mvp-heading h2{
+    margin:0 0 4px !important;
+    font-size:clamp(28px,3vw,40px) !important;
+    letter-spacing:-1.4px !important;
+  }
+
+  .match-mvp-heading .muted{
+    font-size:13px !important;
+  }
+
+  .match-mvp-heading-badge{
+    padding:7px 11px !important;
+    font-size:9px !important;
+  }
+
+  .match-mvp-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:10px !important;
+  }
+
+  .match-mvp-card{
+    min-height:156px !important;
+    grid-template-columns:minmax(0,1fr) 64px !important;
+    gap:8px !important;
+    padding:13px !important;
+    border-radius:16px !important;
+  }
+
+  .match-mvp-card h3{
+    margin:9px 0 8px !important;
+    font-size:24px !important;
+    line-height:.9 !important;
+    letter-spacing:-1px !important;
+  }
+
+  .match-mvp-card h3 span,
+  .match-mvp-card h3 b{
+    display:inline !important;
+  }
+
+  .match-mvp-card h3 b{
+    margin-left:5px !important;
+    font-size:15px !important;
+  }
+
+  .match-mvp-round{
+    font-size:9px !important;
+    letter-spacing:1px !important;
+  }
+
+  .match-mvp-player{
+    gap:3px !important;
+  }
+
+  .match-mvp-live{
+    padding:3px 6px !important;
+    font-size:7px !important;
+  }
+
+  .match-mvp-player strong{
+    font-size:18px !important;
+    line-height:1 !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  .match-mvp-player small{
+    font-size:10px !important;
+  }
+
+  .match-mvp-kill{
+    gap:7px !important;
+    padding-top:9px !important;
+  }
+
+  .match-mvp-kill>strong{
+    font-size:44px !important;
+    line-height:.78 !important;
+    letter-spacing:-2px !important;
+  }
+
+  .match-mvp-kill b{
+    font-size:12px !important;
+  }
+
+  .match-mvp-kill span{
+    font-size:6px !important;
+  }
+
+  .match-mvp-visual{
+    place-items:end center !important;
+  }
+
+  .match-mvp-logo{
+    width:58px !important;
+    height:58px !important;
+    border-radius:14px !important;
+    border-width:1px !important;
+    box-shadow:
+      0 0 0 4px rgba(255,138,31,.04),
+      0 0 16px rgba(255,138,31,.12) !important;
+  }
+
+  .match-mvp-logo-aura{
+    width:72px !important;
+    height:72px !important;
+    bottom:3px !important;
+  }
+
+  .match-mvp-logo-placeholder{
+    font-size:12px !important;
+  }
+
+  .match-mvp-empty-state{
+    min-height:64px !important;
+    gap:3px !important;
+  }
+
+  .match-mvp-empty-state>span{
+    font-size:18px !important;
+  }
+
+  .match-mvp-empty-state strong{
+    font-size:13px !important;
+  }
+
+  .match-mvp-empty-state small{
+    font-size:8px !important;
+    line-height:1.3 !important;
+  }
+
+  .match-mvp-card-lines{
+    opacity:.10 !important;
+  }
+}
+
+/* Tablet: 2 card ngang mỗi hàng */
+@media (min-width: 621px) and (max-width: 900px){
+  .match-mvp-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+
+  .match-mvp-card{
+    min-height:190px !important;
+    grid-template-columns:minmax(0,1fr) 92px !important;
+    padding:16px !important;
+  }
+
+  .match-mvp-card h3{
+    margin:12px 0 10px !important;
+    font-size:31px !important;
+  }
+
+  .match-mvp-logo{
+    width:76px !important;
+    height:76px !important;
+    border-radius:18px !important;
+  }
+
+  .match-mvp-kill>strong{
+    font-size:56px !important;
+  }
+}
+
+
+/* =======================================================
+   PHOENIX V40.7 - MVP MATCH MOBILE 2x2 COMPACT
+   Mobile chia 2 hàng, mỗi hàng 2 thẻ.
+======================================================= */
+@media (max-width:620px){
+
+  .match-mvp-section{
+    padding:14px !important;
+    border-radius:18px !important;
+  }
+
+  .match-mvp-heading{
+    gap:10px !important;
+    margin-bottom:12px !important;
+  }
+
+  .match-mvp-heading h2{
+    margin:0 0 4px !important;
+    font-size:29px !important;
+    letter-spacing:-1px !important;
+  }
+
+  .match-mvp-heading .muted{
+    font-size:11px !important;
+    line-height:1.35 !important;
+  }
+
+  .match-mvp-heading-badge{
+    padding:6px 9px !important;
+    font-size:8px !important;
+  }
+
+  .match-mvp-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:8px !important;
+  }
+
+  .match-mvp-card{
+    min-height:176px !important;
+    grid-template-columns:minmax(0,1fr) 48px !important;
+    gap:5px !important;
+    padding:11px !important;
+    border-radius:14px !important;
+  }
+
+  .match-mvp-card h3{
+    margin:8px 0 8px !important;
+    font-size:21px !important;
+    line-height:.9 !important;
+    letter-spacing:-.8px !important;
+  }
+
+  .match-mvp-card h3 span,
+  .match-mvp-card h3 b{
+    display:inline !important;
+  }
+
+  .match-mvp-card h3 b{
+    margin-left:4px !important;
+    font-size:12px !important;
+  }
+
+  .match-mvp-round{
+    font-size:8px !important;
+    letter-spacing:.8px !important;
+  }
+
+  .match-mvp-player{
+    gap:2px !important;
+  }
+
+  .match-mvp-live{
+    padding:3px 5px !important;
+    font-size:6px !important;
+  }
+
+  .match-mvp-player strong{
+    font-size:14px !important;
+    line-height:1 !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  .match-mvp-player small{
+    font-size:8px !important;
+    line-height:1.2 !important;
+  }
+
+  .match-mvp-kill{
+    gap:5px !important;
+    padding-top:8px !important;
+  }
+
+  .match-mvp-kill>strong{
+    font-size:38px !important;
+    line-height:.78 !important;
+    letter-spacing:-2px !important;
+  }
+
+  .match-mvp-kill b{
+    font-size:10px !important;
+  }
+
+  .match-mvp-kill span{
+    font-size:5px !important;
+  }
+
+  .match-mvp-logo{
+    width:44px !important;
+    height:44px !important;
+    border-radius:11px !important;
+    border-width:1px !important;
+    box-shadow:
+      0 0 0 3px rgba(255,138,31,.04),
+      0 0 12px rgba(255,138,31,.10) !important;
+  }
+
+  .match-mvp-logo-aura{
+    width:54px !important;
+    height:54px !important;
+    bottom:2px !important;
+  }
+
+  .match-mvp-logo-placeholder{
+    font-size:10px !important;
+  }
+
+  .match-mvp-empty-state{
+    min-height:70px !important;
+    gap:3px !important;
+  }
+
+  .match-mvp-empty-state>span{
+    font-size:16px !important;
+  }
+
+  .match-mvp-empty-state strong{
+    font-size:11px !important;
+  }
+
+  .match-mvp-empty-state small{
+    font-size:7px !important;
+    line-height:1.25 !important;
+  }
+
+  .match-mvp-card-lines{
+    opacity:.08 !important;
+  }
+}
+
+/* Máy rất nhỏ: vẫn giữ 2 cột nhưng thu thêm một chút */
+@media (max-width:390px){
+
+  .match-mvp-section{
+    padding:10px !important;
+  }
+
+  .match-mvp-grid{
+    gap:6px !important;
+  }
+
+  .match-mvp-card{
+    min-height:164px !important;
+    grid-template-columns:minmax(0,1fr) 42px !important;
+    padding:9px !important;
+  }
+
+  .match-mvp-card h3{
+    font-size:18px !important;
+  }
+
+  .match-mvp-card h3 b{
+    font-size:10px !important;
+  }
+
+  .match-mvp-player strong{
+    font-size:12px !important;
+  }
+
+  .match-mvp-logo{
+    width:38px !important;
+    height:38px !important;
+    border-radius:9px !important;
+  }
+
+  .match-mvp-kill>strong{
+    font-size:33px !important;
+  }
+}
+
