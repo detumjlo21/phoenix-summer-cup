@@ -7127,3 +7127,94 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
 }
 
+
+/* =======================================================
+   PHOENIX V40.9 - FIX MVP KILL DESKTOP
+   Thu tiêu đề để chữ L cuối không tràn và hạ nhân vật vừa khung.
+======================================================= */
+@media (min-width:901px){
+
+  .mvp-honor-panel{
+    grid-template-columns:minmax(0,46%) minmax(0,54%) !important;
+  }
+
+  .mvp-honor-copy{
+    min-width:0 !important;
+    padding-right:10px !important;
+  }
+
+  .mvp-main-title{
+    display:flex !important;
+    align-items:center !important;
+    flex-wrap:nowrap !important;
+    width:100% !important;
+    max-width:100% !important;
+    gap:9px !important;
+    font-size:clamp(42px,5.4vw,69px) !important;
+    line-height:.92 !important;
+    letter-spacing:-2.8px !important;
+    white-space:nowrap !important;
+  }
+
+  .mvp-main-title .mvp-star{
+    flex:0 0 auto !important;
+    font-size:.72em !important;
+  }
+
+  .mvp-main-title span:not(.mvp-star),
+  .mvp-main-title b{
+    display:inline-block !important;
+    flex:0 0 auto !important;
+    white-space:nowrap !important;
+  }
+
+  .mvp-main-title b{
+    padding-right:4px !important;
+  }
+
+  .mvp-main-title::after{
+    left:42px !important;
+    right:14px !important;
+  }
+
+  .mvp-character-stage{
+    min-height:470px !important;
+  }
+
+  .mvp-character-image{
+    width:100% !important;
+    height:88% !important;
+    bottom:30px !important;
+    object-fit:contain !important;
+    object-position:center bottom !important;
+  }
+
+  .mvp-premium-rings{
+    bottom:17px !important;
+    width:82% !important;
+  }
+
+  .mvp-team-logo{
+    width:78px !important;
+    height:78px !important;
+    right:14px !important;
+    bottom:12px !important;
+  }
+}
+
+/* PC nhỏ/laptop: thu thêm để không chạm khung nhân vật */
+@media (min-width:901px) and (max-width:1180px){
+
+  .mvp-main-title{
+    gap:7px !important;
+    font-size:clamp(38px,5vw,60px) !important;
+    letter-spacing:-2.5px !important;
+  }
+
+  .mvp-character-image{
+    width:96% !important;
+    height:85% !important;
+    bottom:31px !important;
+  }
+}
+
