@@ -1,7 +1,0 @@
-1. Vào Supabase > SQL Editor.
-2. Chạy file repair_v35_public_captain.sql đúng 1 lần.
-3. Upload đè app.js lên GitHub.
-4. Chờ Vercel deploy xong rồi nhấn Ctrl + F5.
-
-Nguyên nhân lỗi: view public_players không trả về cột id của tuyển thủ,
-trong khi app.js dùng id để so sánh với captain_player_id.

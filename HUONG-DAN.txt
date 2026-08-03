@@ -1,8 +1,0 @@
-PHOENIX V35.2 - SỬA HUY HIỆU ĐỘI TRƯỞNG TRÊN MÁY TÍNH
-
-1. Upload đè file styles.css này lên thư mục gốc GitHub.
-2. Chờ Vercel deploy hoàn tất.
-3. Mở website và nhấn Ctrl + F5.
-
-Bản sửa giữ nguyên giao diện điện thoại.
-Trên máy tính, tên tuyển thủ không xuống dòng; tên quá dài sẽ hiện dấu ... và huy hiệu Đội trưởng nằm cùng hàng.
