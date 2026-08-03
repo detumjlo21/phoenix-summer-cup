@@ -1,4 +1,8 @@
 let phoenixMatchTimer=null;
+let phoenixScheduleStatusTimer=null;
+let phoenixScheduleCache=[];
+
+const PHOENIX_MATCH_DURATION_MS=2*60*60*1000;
 
 function scoreEsc(value){
   return String(value ?? "").replace(/[&<>"']/g, char => ({
@@ -213,6 +217,82 @@ function renderPublicRanking(rows){
   renderFinishedScreen(rows);
 }
 
+function getPhoenixMatchStatus(match,now=Date.now()){
+  const start=getMatchDateTime(match)?.getTime();
+
+  if(!start){
+    return {
+      key:"upcoming",
+      label:"SẮP DIỄN RA"
+    };
+  }
+
+  if(match.is_current===true){
+    return {
+      key:"live",
+      label:"ĐANG THI ĐẤU"
+    };
+  }
+
+  const end=start+PHOENIX_MATCH_DURATION_MS;
+
+  if(now<start){
+    return {
+      key:"upcoming",
+      label:"SẮP DIỄN RA"
+    };
+  }
+
+  if(now<end){
+    return {
+      key:"live",
+      label:"ĐANG THI ĐẤU"
+    };
+  }
+
+  return {
+    key:"finished",
+    label:"ĐÃ KẾT THÚC"
+  };
+}
+
+function updateScheduleStatusBadges(){
+  const now=Date.now();
+
+  phoenixScheduleCache.forEach(match=>{
+    const card=document.querySelector(
+      `.schedule-card[data-match-number="${Number(match.match_number)}"]`
+    );
+
+    if(!card)return;
+
+    const status=getPhoenixMatchStatus(match,now);
+    const badge=card.querySelector(".schedule-status-badge");
+
+    card.classList.toggle("match-upcoming",status.key==="upcoming");
+    card.classList.toggle("match-live",status.key==="live");
+    card.classList.toggle("match-finished",status.key==="finished");
+
+    if(badge){
+      badge.className=`schedule-status-badge status-${status.key}`;
+      badge.textContent=status.label;
+    }
+  });
+}
+
+function startScheduleStatusTimer(){
+  if(phoenixScheduleStatusTimer){
+    clearInterval(phoenixScheduleStatusTimer);
+  }
+
+  updateScheduleStatusBadges();
+
+  phoenixScheduleStatusTimer=setInterval(
+    updateScheduleStatusBadges,
+    30000
+  );
+}
+
 function renderSchedule(schedule){
   const scheduleBox=document.querySelector("#publicSchedule");
   if(!scheduleBox)return;
@@ -234,6 +314,8 @@ function renderSchedule(schedule){
     }
   );
 
+  phoenixScheduleCache=all;
+
   scheduleBox.innerHTML=all.map(match=>{
     const image=getMapImage(match.map_name);
     const mapName=getMapDisplayName(match.map_name);
@@ -244,8 +326,13 @@ function renderSchedule(schedule){
       ?String(match.match_time).slice(0,5)
       :"--:--";
 
+    const matchStatus=getPhoenixMatchStatus(match);
+
     return `
-      <article class="schedule-card schedule-card-with-image ${match.is_current?"current":""}">
+      <article
+        class="schedule-card schedule-card-with-image ${match.is_current?"current":""} match-${matchStatus.key}"
+        data-match-number="${Number(match.match_number)}"
+      >
         <div class="schedule-map-visual ${image?"has-image":"no-image"}">
           ${
             image
@@ -257,11 +344,10 @@ function renderSchedule(schedule){
 
           <div class="schedule-map-content">
             <div class="schedule-round-badge">TRẬN ${match.match_number}</div>
-            ${
-              match.is_current
-                ?`<div class="next-match-badge">🔥 TRẬN TIẾP THEO</div>`
-                :""
-            }
+
+            <div class="schedule-status-badge status-${matchStatus.key}">
+              ${matchStatus.label}
+            </div>
           </div>
 
           <div class="schedule-map-name-overlay">
@@ -278,6 +364,8 @@ function renderSchedule(schedule){
       </article>
     `;
   }).join("");
+
+  startScheduleStatusTimer();
 }
 
 
@@ -303,6 +391,11 @@ function ensureV19Sections(){
         </div>
       </div>`;
     schedulePanel.parentNode.insertBefore(banner,schedulePanel);
+
+    // app.js có thể đã sắp bố cục trước khi banner này được tạo.
+    // Gọi lại để khi khóa đăng ký, banner luôn nằm giữa
+    // Thông báo BTC và Lịch thi đấu.
+    window.updatePhoenixTopLayout?.();
   }
 
   const leaderboardBody=document.querySelector("#leaderboardBody");
@@ -365,8 +458,15 @@ function renderLiveBanner(schedule){
 
   banner.hidden=false;
   const now=new Date();
-  const current=matches.find(match=>match.is_current);
-  const next=current||matches.find(match=>match.dateTime>now)||matches[matches.length-1];
+  const current=matches.find(match=>
+    getPhoenixMatchStatus(match,now.getTime()).key==="live"
+  );
+
+  const upcoming=matches.find(match=>
+    getPhoenixMatchStatus(match,now.getTime()).key==="upcoming"
+  );
+
+  const next=current||upcoming||matches[matches.length-1];
 
   const status=document.querySelector("#liveBannerStatus");
   const title=document.querySelector("#liveBannerTitle");
@@ -380,21 +480,22 @@ function renderLiveBanner(schedule){
   if(phoenixMatchTimer)clearInterval(phoenixMatchTimer);
 
   const update=()=>{
-    const diff=next.dateTime-Date.now();
+    const nowValue=Date.now();
+    const diff=next.dateTime-nowValue;
+    const matchStatus=getPhoenixMatchStatus(next,nowValue);
 
-    if(next.is_current||(diff<=0&&diff>-7200000)){
-      banner.classList.add("is-live");
-      status.textContent="ĐANG THI ĐẤU";
+    banner.classList.toggle("is-live",matchStatus.key==="live");
+    banner.classList.toggle("is-finished",matchStatus.key==="finished");
+
+    status.textContent=matchStatus.label;
+
+    if(matchStatus.key==="live"){
       label.textContent="Trạng thái";
       countdown.textContent="LIVE";
-    }else if(diff>0){
-      banner.classList.remove("is-live");
-      status.textContent="SẮP DIỄN RA";
+    }else if(matchStatus.key==="upcoming"){
       label.textContent="Bắt đầu sau";
       countdown.textContent=formatDuration(diff);
     }else{
-      banner.classList.remove("is-live");
-      status.textContent="ĐÃ KẾT THÚC";
       label.textContent="Trạng thái";
       countdown.textContent="ĐÃ XONG";
     }
@@ -402,6 +503,8 @@ function renderLiveBanner(schedule){
 
   update();
   phoenixMatchTimer=setInterval(update,1000);
+
+  window.updatePhoenixTopLayout?.();
 }
 
 function renderTopThree(rows){

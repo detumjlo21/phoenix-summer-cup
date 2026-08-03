@@ -6371,3 +6371,95 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
 }
 
+
+/* =======================================================
+   PHOENIX V40.2 - TRẠNG THÁI TỪNG TRẬN
+======================================================= */
+.schedule-status-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:27px;
+  padding:6px 10px;
+  border:1px solid transparent;
+  border-radius:999px;
+  color:#fff;
+  font-size:9px;
+  font-weight:950;
+  line-height:1;
+  letter-spacing:.7px;
+  white-space:nowrap;
+  backdrop-filter:blur(7px);
+  box-shadow:0 5px 14px rgba(0,0,0,.22);
+}
+
+.schedule-status-badge.status-upcoming{
+  color:#d9ffe5;
+  border-color:rgba(63,213,116,.46);
+  background:rgba(24,135,66,.75);
+}
+
+.schedule-status-badge.status-live{
+  color:#fff5d7;
+  border-color:rgba(255,184,55,.62);
+  background:rgba(218,101,12,.88);
+  animation:phoenixStatusPulse 1.45s ease-in-out infinite;
+}
+
+.schedule-status-badge.status-finished{
+  color:#ffe4e4;
+  border-color:rgba(255,92,92,.55);
+  background:rgba(151,32,37,.88);
+}
+
+.schedule-card.match-finished{
+  border-color:rgba(255,84,84,.28);
+}
+
+.schedule-card.match-finished .schedule-map-image{
+  filter:saturate(.58) brightness(.72);
+}
+
+.schedule-card.match-finished .schedule-map-overlay{
+  background:linear-gradient(
+    to top,
+    rgba(20,5,7,.91),
+    rgba(15,5,7,.36)
+  );
+}
+
+.live-tournament-banner.is-finished{
+  border-color:rgba(255,84,84,.34);
+  background:
+    linear-gradient(135deg,rgba(130,26,31,.16),transparent 58%),
+    var(--panel);
+}
+
+.live-tournament-banner.is-finished .live-indicator{
+  color:#ff9c9c;
+}
+
+.live-tournament-banner.is-finished .live-indicator span{
+  background:#ff5959;
+  box-shadow:0 0 12px rgba(255,89,89,.62);
+}
+
+@keyframes phoenixStatusPulse{
+  0%,100%{
+    box-shadow:0 5px 14px rgba(0,0,0,.22);
+  }
+  50%{
+    box-shadow:
+      0 5px 14px rgba(0,0,0,.22),
+      0 0 18px rgba(255,157,35,.36);
+  }
+}
+
+@media(max-width:650px){
+  .schedule-status-badge{
+    min-height:25px;
+    padding:5px 8px;
+    font-size:8px;
+  }
+}
+

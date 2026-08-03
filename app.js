@@ -29,12 +29,22 @@ const countdownWrap=document.querySelector(".countdown-wrap");
 const progressCard=document.querySelector(".progress-card");
 const schedulePanel=document.querySelector("#publicSchedule")?.closest(".panel");
 const announcementPanel=document.querySelector(".tournament-info");
+
 const announcementHome=document.createComment("announcement-home");
+const scheduleHome=document.createComment("schedule-home");
+let liveBannerHome=null;
 
 if(announcementPanel?.parentNode){
   announcementPanel.parentNode.insertBefore(
     announcementHome,
     announcementPanel
+  );
+}
+
+if(schedulePanel?.parentNode){
+  schedulePanel.parentNode.insertBefore(
+    scheduleHome,
+    schedulePanel
   );
 }
 
@@ -60,22 +70,61 @@ function isClosed(){
 
 function updateTopLayout(){
   const hero=document.querySelector(".hero");
+  const liveBanner=document.querySelector("#liveTournamentBanner");
+
   if(!hero||!schedulePanel)return;
 
-  // Lịch thi đấu luôn nằm ngay dưới phần logo/tiêu đề.
-  hero.insertAdjacentElement("afterend",schedulePanel);
+  // Ghi nhớ vị trí gốc của khối "Sắp diễn ra" ngay khi scoreboard tạo nó.
+  if(liveBanner&&!liveBannerHome&&liveBanner.parentNode){
+    liveBannerHome=document.createComment("live-banner-home");
+    liveBanner.parentNode.insertBefore(liveBannerHome,liveBanner);
+  }
 
-  if(registrationManuallyOpen===false&&announcementPanel){
-    // Khi Admin khóa đăng ký, đưa thông báo BTC lên trên lịch thi đấu.
-    schedulePanel.insertAdjacentElement("beforebegin",announcementPanel);
-  }else if(announcementPanel&&announcementHome.parentNode){
-    // Khi mở đăng ký, đưa thông báo về vị trí ban đầu.
+  if(registrationManuallyOpen===false){
+    // Khi Admin khóa đăng ký, cố định đúng thứ tự ở đầu trang:
+    // 1. Thông báo BTC
+    // 2. Sắp diễn ra / Đang thi đấu
+    // 3. Lịch thi đấu
+    let cursor=hero;
+
+    if(announcementPanel){
+      cursor.insertAdjacentElement("afterend",announcementPanel);
+      cursor=announcementPanel;
+    }
+
+    if(liveBanner){
+      cursor.insertAdjacentElement("afterend",liveBanner);
+      cursor=liveBanner;
+    }
+
+    cursor.insertAdjacentElement("afterend",schedulePanel);
+    return;
+  }
+
+  // Khi Admin mở đăng ký, đưa các khu vực về đúng vị trí gốc.
+  if(announcementPanel&&announcementHome.parentNode){
     announcementHome.parentNode.insertBefore(
       announcementPanel,
       announcementHome.nextSibling
     );
   }
+
+  if(liveBanner&&liveBannerHome?.parentNode){
+    liveBannerHome.parentNode.insertBefore(
+      liveBanner,
+      liveBannerHome.nextSibling
+    );
+  }
+
+  if(schedulePanel&&scheduleHome.parentNode){
+    scheduleHome.parentNode.insertBefore(
+      schedulePanel,
+      scheduleHome.nextSibling
+    );
+  }
 }
+
+window.updatePhoenixTopLayout=updateTopLayout;
 
 function hideRulesGate(){
   if(!rulesGate)return;
