@@ -7640,3 +7640,21 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
 }
 
+
+/* =======================================================
+   PHOENIX V41.1 - FIX NHÂN VẬT NHẢY SANG PHẢI KHI HOVER
+   Giữ lại translateX(-50%) khi thêm scale/translateY.
+======================================================= */
+.mvp-character-stage:hover .mvp-character-image{
+  transform:
+    translateX(-50%)
+    translateY(-3px)
+    scale(1.018) !important;
+}
+
+@media(max-width:620px){
+  .mvp-character-stage:hover .mvp-character-image{
+    transform:translateX(-50%) !important;
+  }
+}
+
