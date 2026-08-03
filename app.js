@@ -319,11 +319,13 @@ continueButton.addEventListener("click",()=>{
   setTimeout(()=>{
     hideRulesGate();
 
-    const target=registrationManuallyOpen===true
-      ?joinPanel
-      :schedulePanel;
-
-    target?.scrollIntoView({behavior:"smooth",block:"start"});
+    // Không tự cuộn xuống bất kỳ khu vực nào.
+    // Người dùng ở nguyên đầu trang để xem lần lượt:
+    // Thông báo BTC → Sắp diễn ra → Lịch thi đấu.
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
   },320);
 });
 
