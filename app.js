@@ -319,12 +319,15 @@ continueButton.addEventListener("click",()=>{
   setTimeout(()=>{
     hideRulesGate();
 
-    // Không tự cuộn xuống bất kỳ khu vực nào.
-    // Người dùng ở nguyên đầu trang để xem lần lượt:
-    // Thông báo BTC → Sắp diễn ra → Lịch thi đấu.
-    window.scrollTo({
-      top:0,
-      behavior:"smooth"
+    // Bỏ qua phần hero/logo phía trên và cuộn tới
+    // thẻ nội dung đầu tiên: Thông báo Ban tổ chức.
+    const firstContentCard=
+      announcementPanel||
+      document.querySelector("main.page > .panel");
+
+    firstContentCard?.scrollIntoView({
+      behavior:"smooth",
+      block:"start"
     });
   },320);
 });
