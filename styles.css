@@ -6253,3 +6253,40 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   .mvp-player-name.mvp-name-xxs{font-size:23px}
 }
 
+
+/* =======================================================
+   PHOENIX V39.5 - FORCE MVP NAME ONE LINE ON DESKTOP
+======================================================= */
+@media(min-width:621px){
+  .mvp-player-topline{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr);
+    align-items:center;
+    gap:14px;
+  }
+
+  .mvp-player-topline>div,
+  .mvp-player-info{
+    min-width:0;
+    width:100%;
+  }
+
+  .mvp-player-name,
+  .match-mvp-player strong{
+    white-space:nowrap !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+    word-break:normal !important;
+    overflow-wrap:normal !important;
+  }
+
+  .match-mvp-copy{
+    min-width:0;
+  }
+
+  .match-mvp-player{
+    min-width:0;
+    width:100%;
+  }
+}
+

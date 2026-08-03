@@ -15,6 +15,53 @@ function mvpNameSizeClass(name,prefix="mvp-name"){
   return `${prefix}-normal`;
 }
 
+function fitMvpName(element,minSize=14){
+  if(!element)return;
+
+  const parent=element.parentElement;
+  if(!parent)return;
+
+  element.style.removeProperty("font-size");
+  element.style.setProperty("white-space","nowrap","important");
+  element.style.setProperty("display","block","important");
+  element.style.setProperty("width","max-content");
+  element.style.setProperty("max-width","none");
+  element.style.setProperty("overflow","visible","important");
+  element.style.setProperty("text-overflow","clip","important");
+
+  let size=parseFloat(getComputedStyle(element).fontSize)||48;
+  const available=Math.max(0,parent.clientWidth-2);
+
+  while(size>minSize&&element.scrollWidth>available){
+    size-=1;
+    element.style.fontSize=`${size}px`;
+  }
+
+  if(element.scrollWidth>available&&available>0){
+    const ratio=Math.max(.72,available/element.scrollWidth);
+    element.style.transformOrigin="left center";
+    element.style.transform=`scaleX(${ratio})`;
+  }else{
+    element.style.removeProperty("transform");
+  }
+}
+
+function fitAllMvpNames(){
+  document.querySelectorAll(".mvp-player-name").forEach(element=>{
+    fitMvpName(element,18);
+  });
+
+  document.querySelectorAll(".match-mvp-player strong").forEach(element=>{
+    fitMvpName(element,13);
+  });
+}
+
+let mvpFitTimer=null;
+window.addEventListener("resize",()=>{
+  clearTimeout(mvpFitTimer);
+  mvpFitTimer=setTimeout(fitAllMvpNames,120);
+});
+
 async function loadPublicMvp(){
   const [{data:mvp,error},{data:settings}]=await Promise.all([
     sb.rpc("get_public_mvp"),
@@ -43,6 +90,8 @@ async function loadPublicMvp(){
       logo.src=row.logo_url;
       logo.hidden=false;
     }else logo.hidden=true;
+
+    requestAnimationFrame(fitAllMvpNames);
   }
 
   if(settings?.character_image_url){
@@ -158,6 +207,8 @@ async function loadMatchMvps(){
       }).join("")}
     </div>
   `;
+
+  requestAnimationFrame(fitAllMvpNames);
 }
 
 loadMatchMvps();
