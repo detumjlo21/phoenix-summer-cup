@@ -7658,3 +7658,110 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
 }
 
+
+/* =======================================================
+   PHOENIX V41.2 - HIỆU ỨNG NHÂN VẬT RÕ HƠN TRÊN PC
+   Căn aura/particle theo vị trí thật của nhân vật và tăng độ sáng.
+======================================================= */
+@media (min-width:901px){
+
+  /* Ảnh PNG có vùng trong suốt bên trái nên nhân vật thật nằm lệch phải.
+     Dịch tâm hiệu ứng sang phải để bao đúng quanh cơ thể. */
+  .mvp-premium-spotlight{
+    left:69% !important;
+    width:62% !important;
+    opacity:.72 !important;
+  }
+
+  .mvp-premium-aura{
+    left:69% !important;
+    top:48% !important;
+    width:60% !important;
+    opacity:1 !important;
+  }
+
+  .mvp-premium-aura span{
+    border-width:2px !important;
+    border-color:rgba(189,103,255,.58) !important;
+    box-shadow:
+      0 0 28px rgba(144,63,255,.42),
+      inset 0 0 26px rgba(196,80,255,.18) !important;
+  }
+
+  .mvp-premium-aura span:nth-child(2){
+    border-color:rgba(255,182,61,.48) !important;
+  }
+
+  .mvp-premium-aura span:nth-child(3){
+    border-color:rgba(204,99,255,.38) !important;
+  }
+
+  .mvp-premium-lightning{
+    left:43% !important;
+    right:2% !important;
+    top:4% !important;
+    bottom:12% !important;
+    opacity:.92 !important;
+  }
+
+  .mvp-premium-sparks{
+    left:39% !important;
+    right:1% !important;
+    top:5% !important;
+    bottom:8% !important;
+  }
+
+  .mvp-premium-sparks i{
+    width:5px !important;
+    height:5px !important;
+    box-shadow:
+      0 0 9px #ffbd45,
+      0 0 18px rgba(255,143,31,.9) !important;
+  }
+
+  .mvp-premium-sparks i:nth-child(3n){
+    width:4px !important;
+    height:4px !important;
+    box-shadow:
+      0 0 9px #c45cff,
+      0 0 18px rgba(146,65,255,.92) !important;
+  }
+
+  .mvp-premium-foot-glow{
+    left:69% !important;
+    width:48% !important;
+    height:19% !important;
+    opacity:.9 !important;
+    filter:blur(8px) !important;
+  }
+
+  .mvp-character-image{
+    z-index:7 !important;
+  }
+
+  .mvp-premium-lightning{
+    z-index:8 !important;
+  }
+
+  .mvp-premium-sparks{
+    z-index:9 !important;
+  }
+}
+
+/* Laptop/PC hẹp: tâm nhân vật hơi gần giữa hơn */
+@media (min-width:901px) and (max-width:1180px){
+  .mvp-premium-spotlight,
+  .mvp-premium-aura,
+  .mvp-premium-foot-glow{
+    left:66% !important;
+  }
+
+  .mvp-premium-lightning{
+    left:38% !important;
+  }
+
+  .mvp-premium-sparks{
+    left:35% !important;
+  }
+}
+
