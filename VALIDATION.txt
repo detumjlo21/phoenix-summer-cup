@@ -1,0 +1,64 @@
+OK JS: js/admin-champion.js
+OK JS: js/admin-mvp.js
+OK JS: js/admin-poster.js
+OK JS: js/admin-prizes.js
+OK JS: js/admin-pro.js
+OK JS: js/admin-results-control.js
+OK JS: js/admin-season-manager.js
+OK JS: js/admin-tournament.js
+OK JS: js/admin.js
+OK JS: js/app.js
+OK JS: js/champion.js
+OK JS: js/champions.js
+OK JS: js/config.js
+OK JS: js/hall-admin.js
+OK JS: js/mvp.js
+OK JS: js/public-prizes.js
+OK JS: js/results.js
+OK JS: js/scoreboard.js
+OK JS: js/team-details.js
+OK JS: js/toast.js
+
+OK REF: hall-admin.html -> css/styles.css
+OK REF: hall-admin.html -> admin.html
+OK REF: hall-admin.html -> champions.html
+OK REF: hall-admin.html -> js/config.js
+OK REF: hall-admin.html -> js/toast.js
+OK REF: hall-admin.html -> js/hall-admin.js
+OK REF: champions.html -> css/styles.css
+OK REF: champions.html -> index.html
+OK REF: champions.html -> index.html
+OK REF: champions.html -> hall-admin.html
+OK REF: champions.html -> js/config.js
+OK REF: champions.html -> js/champions.js
+OK REF: results.html -> css/styles.css
+OK REF: results.html -> index.html
+OK REF: results.html -> index.html
+OK REF: results.html -> js/config.js
+OK REF: results.html -> js/results.js
+OK REF: index.html -> css/styles.css
+OK REF: index.html -> assets/rules/rules-poster.png
+OK REF: index.html -> assets/logo.png
+OK REF: index.html -> results.html
+OK REF: index.html -> champions.html
+OK REF: index.html -> admin.html
+OK REF: index.html -> js/config.js
+OK REF: index.html -> js/app.js
+OK REF: index.html -> js/scoreboard.js
+OK REF: index.html -> js/mvp.js
+OK REF: index.html -> js/champion.js
+OK REF: index.html -> js/team-details.js
+OK REF: admin.html -> css/styles.css
+OK REF: admin.html -> assets/logo.png
+OK REF: admin.html -> results.html
+OK REF: admin.html -> index.html
+OK REF: admin.html -> js/config.js
+OK REF: admin.html -> js/admin.js
+OK REF: admin.html -> js/admin-tournament.js
+OK REF: admin.html -> js/admin-mvp.js
+OK REF: admin.html -> js/admin-champion.js
+OK REF: admin.html -> js/toast.js
+OK REF: admin.html -> js/admin-results-control.js
+OK REF: admin.html -> js/admin-poster.js
+OK REF: admin.html -> js/admin-season-manager.js
+OK REF: admin.html -> js/admin-pro.js
