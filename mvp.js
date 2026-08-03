@@ -149,6 +149,60 @@ loadPublicMvp();
 setInterval(loadPublicMvp,30000);
 
 
+
+function phoenixAnimateMatchMvpKills(section){
+  section.querySelectorAll(".match-mvp-kill-value").forEach(element=>{
+    const target=Math.max(0,Number(element.dataset.kills)||0);
+    const duration=720;
+    const started=performance.now();
+
+    function frame(now){
+      const progress=Math.min(1,(now-started)/duration);
+      const eased=1-Math.pow(1-progress,3);
+      element.textContent=Math.round(target*eased);
+
+      if(progress<1){
+        requestAnimationFrame(frame);
+      }else{
+        element.textContent=target;
+      }
+    }
+
+    requestAnimationFrame(frame);
+  });
+}
+
+function phoenixInitMatchMvpEffects(section){
+  if(!section)return;
+
+  const cards=[...section.querySelectorAll(".match-mvp-card")];
+
+  cards.forEach((card,index)=>{
+    card.style.setProperty("--mvp-delay",`${index*90}ms`);
+  });
+
+  const reveal=()=>{
+    section.classList.add("mvp-spotlight-visible");
+    phoenixAnimateMatchMvpKills(section);
+  };
+
+  if(!("IntersectionObserver" in window)){
+    reveal();
+    return;
+  }
+
+  const observer=new IntersectionObserver(entries=>{
+    if(entries.some(entry=>entry.isIntersecting)){
+      reveal();
+      observer.disconnect();
+    }
+  },{
+    threshold:.18
+  });
+
+  observer.observe(section);
+}
+
 async function loadMatchMvps(){
   const {data,error}=await sb.rpc("get_public_match_mvps");
   if(error)return;
@@ -174,7 +228,10 @@ async function loadMatchMvps(){
         <h2>🔥 MVP MATCH</h2>
         <p class="muted">Tuyển thủ có số hạ gục cao nhất trong từng trận đấu.</p>
       </div>
-      <span class="match-mvp-heading-badge">PHOENIX SUMMER CUP</span>
+      <div class="match-mvp-heading-side">
+        <span class="match-mvp-heading-badge">PHOENIX SUMMER CUP</span>
+        <span class="match-mvp-scan-label">LIVE HONOR BOARD</span>
+      </div>
     </div>
 
     <div class="match-mvp-grid">
@@ -184,6 +241,8 @@ async function loadMatchMvps(){
         return `
           <article class="match-mvp-card ${row?"has-mvp":"is-empty"}">
             <div class="match-mvp-card-lines"></div>
+            <div class="match-mvp-shimmer"></div>
+            <div class="match-mvp-corner"></div>
 
             <div class="match-mvp-copy">
               <span class="match-mvp-round">TRẬN ${matchNumber}</span>
@@ -191,7 +250,7 @@ async function loadMatchMvps(){
               ${
                 row
                   ?`
-                    <h3>
+                    <h3 class="match-mvp-title">
                       <span>MVP</span>
                       <b>MATCH</b>
                     </h3>
@@ -203,7 +262,10 @@ async function loadMatchMvps(){
                     </div>
 
                     <div class="match-mvp-kill">
-                      <strong>${Number(row.kills)||0}</strong>
+                      <strong
+                        class="match-mvp-kill-value"
+                        data-kills="${Number(row.kills)||0}"
+                      >0</strong>
                       <div>
                         <b>KILL</b>
                         <span>TỔNG HẠ GỤC</span>
@@ -211,7 +273,7 @@ async function loadMatchMvps(){
                     </div>
                   `
                   :`
-                    <h3>
+                    <h3 class="match-mvp-title">
                       <span>MVP</span>
                       <b>MATCH</b>
                     </h3>
@@ -250,6 +312,7 @@ async function loadMatchMvps(){
   `;
 
   scheduleMvpNameFit();
+  phoenixInitMatchMvpEffects(section);
 }
 
 loadMatchMvps();

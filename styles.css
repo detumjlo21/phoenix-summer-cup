@@ -6841,3 +6841,289 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
 }
 
+
+/* =======================================================
+   PHOENIX V40.8 - MVP SPOTLIGHT EFFECT
+   Bảng vinh danh điện tử, gọn nhưng có chiều sâu.
+======================================================= */
+.match-mvp-section{
+  isolation:isolate;
+}
+
+.match-mvp-section::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:.32;
+  background:
+    radial-gradient(circle at 15% 0,rgba(255,181,48,.16),transparent 30%),
+    linear-gradient(115deg,transparent 0 44%,rgba(255,137,31,.055) 44.5% 45%,transparent 45.5%);
+}
+
+.match-mvp-heading,
+.match-mvp-grid{
+  position:relative;
+  z-index:2;
+}
+
+.match-mvp-heading-side{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:7px;
+}
+
+.match-mvp-scan-label{
+  color:rgba(255,179,79,.58);
+  font-size:7px;
+  font-weight:950;
+  letter-spacing:1.8px;
+}
+
+.match-mvp-card{
+  isolation:isolate;
+  opacity:0;
+  transform:translateY(18px) scale(.985);
+  transition:
+    opacity .52s ease var(--mvp-delay,0ms),
+    transform .52s cubic-bezier(.2,.75,.25,1) var(--mvp-delay,0ms),
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.mvp-spotlight-visible .match-mvp-card{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+
+.match-mvp-card.has-mvp{
+  background:
+    radial-gradient(circle at 86% 72%,rgba(255,145,26,.18),transparent 34%),
+    linear-gradient(145deg,rgba(255,142,26,.075),transparent 52%),
+    #090b10;
+}
+
+.match-mvp-card.has-mvp::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  z-index:-1;
+  border-radius:inherit;
+  padding:1px;
+  opacity:.72;
+  background:linear-gradient(
+    115deg,
+    rgba(255,86,44,.3),
+    rgba(255,195,59,.9),
+    rgba(255,119,27,.25)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+}
+
+.match-mvp-card.has-mvp:hover{
+  transform:translateY(-4px) scale(1.012);
+  border-color:rgba(255,183,49,.76) !important;
+  box-shadow:
+    0 18px 30px rgba(0,0,0,.34),
+    0 0 26px rgba(255,139,28,.14) !important;
+}
+
+.match-mvp-shimmer{
+  position:absolute;
+  inset:-45% auto -45% -55%;
+  z-index:0;
+  width:38%;
+  pointer-events:none;
+  opacity:0;
+  transform:skewX(-18deg);
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,219,138,.16),
+    transparent
+  );
+}
+
+.mvp-spotlight-visible .match-mvp-card.has-mvp .match-mvp-shimmer{
+  animation:mvpSpotlightSweep 4.8s ease-in-out 1.1s infinite;
+}
+
+.match-mvp-corner{
+  position:absolute;
+  top:0;
+  right:0;
+  width:42px;
+  height:42px;
+  pointer-events:none;
+  opacity:.7;
+  background:
+    linear-gradient(135deg,transparent 48%,rgba(255,164,37,.7) 49% 51%,transparent 52%);
+}
+
+.match-mvp-title{
+  position:relative;
+  width:max-content;
+}
+
+.match-mvp-title::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:12%;
+  bottom:-5px;
+  height:2px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#ffcc4d,#ff8126,transparent);
+  transform:scaleX(0);
+  transform-origin:left;
+}
+
+.mvp-spotlight-visible .match-mvp-card.has-mvp .match-mvp-title::after{
+  animation:mvpTitleLine .65s ease calc(var(--mvp-delay,0ms) + 330ms) forwards;
+}
+
+.match-mvp-logo{
+  transition:
+    transform .28s ease,
+    filter .28s ease,
+    box-shadow .28s ease;
+}
+
+.match-mvp-card.has-mvp:hover .match-mvp-logo{
+  transform:scale(1.055) rotate(-1.5deg);
+  filter:saturate(1.12) contrast(1.05);
+}
+
+.match-mvp-logo-aura{
+  animation:mvpAuraPulse 2.8s ease-in-out infinite;
+}
+
+.match-mvp-kill-value{
+  background:linear-gradient(180deg,#fff09a 0%,#ffbd2f 48%,#ff8b1f 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent !important;
+  filter:drop-shadow(0 0 8px rgba(255,167,29,.15));
+}
+
+.match-mvp-live{
+  position:relative;
+  overflow:hidden;
+}
+
+.match-mvp-live::before{
+  content:"";
+  width:5px;
+  height:5px;
+  flex:0 0 auto;
+  border-radius:50%;
+  background:#ff5447;
+  box-shadow:0 0 8px rgba(255,84,71,.8);
+  animation:mvpLiveDot 1.2s ease-in-out infinite;
+}
+
+.match-mvp-card.is-empty{
+  opacity:0;
+}
+
+.mvp-spotlight-visible .match-mvp-card.is-empty{
+  opacity:.68;
+}
+
+.match-mvp-card.is-empty:hover{
+  opacity:.88;
+  transform:translateY(-2px);
+}
+
+@keyframes mvpSpotlightSweep{
+  0%,62%{
+    left:-55%;
+    opacity:0;
+  }
+  69%{
+    opacity:1;
+  }
+  86%{
+    left:125%;
+    opacity:0;
+  }
+  100%{
+    left:125%;
+    opacity:0;
+  }
+}
+
+@keyframes mvpTitleLine{
+  to{transform:scaleX(1)}
+}
+
+@keyframes mvpAuraPulse{
+  0%,100%{
+    opacity:.52;
+    transform:scale(.94);
+  }
+  50%{
+    opacity:.9;
+    transform:scale(1.08);
+  }
+}
+
+@keyframes mvpLiveDot{
+  0%,100%{
+    opacity:.6;
+    transform:scale(.82);
+  }
+  50%{
+    opacity:1;
+    transform:scale(1.18);
+  }
+}
+
+@media(max-width:620px){
+  .match-mvp-heading-side{
+    align-items:flex-start;
+  }
+
+  .match-mvp-scan-label{
+    display:none;
+  }
+
+  .match-mvp-card.has-mvp:hover{
+    transform:translateY(0) scale(1);
+  }
+
+  .match-mvp-shimmer{
+    display:none;
+  }
+
+  .match-mvp-logo-aura{
+    animation-duration:3.6s;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .match-mvp-card,
+  .match-mvp-shimmer,
+  .match-mvp-logo-aura,
+  .match-mvp-live::before,
+  .match-mvp-title::after{
+    animation:none !important;
+    transition:none !important;
+  }
+
+  .match-mvp-card{
+    opacity:1 !important;
+    transform:none !important;
+  }
+
+  .match-mvp-title::after{
+    transform:scaleX(1);
+  }
+}
+
