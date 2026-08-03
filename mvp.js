@@ -4,6 +4,13 @@ function mvpEsc(v){
   }[c]));
 }
 
+function cleanMvpName(value){
+  return String(value??"")
+    .replace(/[\r\n\t]+/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
 function mvpNameSizeClass(name,prefix="mvp-name"){
   const length=Array.from(String(name??"")).length;
 
@@ -18,31 +25,40 @@ function mvpNameSizeClass(name,prefix="mvp-name"){
 function fitMvpName(element,minSize=14){
   if(!element)return;
 
-  const parent=element.parentElement;
-  if(!parent)return;
+  const container=
+    element.closest(".mvp-player-info,.match-mvp-player")||
+    element.parentElement;
 
-  element.style.removeProperty("font-size");
-  element.style.setProperty("white-space","nowrap","important");
+  if(!container)return;
+
   element.style.setProperty("display","block","important");
-  element.style.setProperty("width","max-content");
-  element.style.setProperty("max-width","none");
-  element.style.setProperty("overflow","visible","important");
+  element.style.setProperty("white-space","nowrap","important");
+  element.style.setProperty("text-wrap","nowrap","important");
+  element.style.setProperty("word-break","keep-all","important");
+  element.style.setProperty("overflow-wrap","normal","important");
   element.style.setProperty("text-overflow","clip","important");
+  element.style.setProperty("overflow","visible","important");
+  element.style.setProperty("width","max-content","important");
+  element.style.setProperty("max-width","none","important");
+  element.style.setProperty("line-height",".98","important");
+  element.style.removeProperty("transform");
 
-  let size=parseFloat(getComputedStyle(element).fontSize)||48;
-  const available=Math.max(0,parent.clientWidth-2);
+  let size=element.classList.contains("mvp-player-name")?48:32;
+  const available=Math.max(80,container.getBoundingClientRect().width-4);
 
-  while(size>minSize&&element.scrollWidth>available){
+  element.style.setProperty("font-size",`${size}px`,"important");
+
+  while(size>minSize&&element.getBoundingClientRect().width>available){
     size-=1;
-    element.style.fontSize=`${size}px`;
+    element.style.setProperty("font-size",`${size}px`,"important");
   }
 
-  if(element.scrollWidth>available&&available>0){
-    const ratio=Math.max(.72,available/element.scrollWidth);
-    element.style.transformOrigin="left center";
-    element.style.transform=`scaleX(${ratio})`;
-  }else{
-    element.style.removeProperty("transform");
+  const actual=element.getBoundingClientRect().width;
+
+  if(actual>available){
+    const ratio=Math.max(.66,available/actual);
+    element.style.setProperty("transform-origin","left center","important");
+    element.style.setProperty("transform",`scaleX(${ratio})`,"important");
   }
 }
 
@@ -56,10 +72,25 @@ function fitAllMvpNames(){
   });
 }
 
+function scheduleMvpNameFit(){
+  requestAnimationFrame(()=>{
+    fitAllMvpNames();
+    setTimeout(fitAllMvpNames,80);
+    setTimeout(fitAllMvpNames,350);
+  });
+
+  if(document.fonts?.ready){
+    document.fonts.ready.then(()=>{
+      fitAllMvpNames();
+      setTimeout(fitAllMvpNames,100);
+    });
+  }
+}
+
 let mvpFitTimer=null;
 window.addEventListener("resize",()=>{
   clearTimeout(mvpFitTimer);
-  mvpFitTimer=setTimeout(fitAllMvpNames,120);
+  mvpFitTimer=setTimeout(scheduleMvpNameFit,120);
 });
 
 async function loadPublicMvp(){
@@ -80,7 +111,7 @@ async function loadPublicMvp(){
     info.innerHTML='<span class="mvp-status">MVP đang được cập nhật.</span>';
   }else{
     info.innerHTML=`
-      <strong class="mvp-player-name ${mvpNameSizeClass(row.game_name,"mvp-name")}">${mvpEsc(row.game_name)}</strong>
+      <strong class="mvp-player-name ${mvpNameSizeClass(row.game_name,"mvp-name")}">${mvpEsc(cleanMvpName(row.game_name))}</strong>
       <span class="mvp-team-name">${mvpEsc(row.team_name||"Chưa có đội")}</span>
       <div class="mvp-kill-number">${row.total_kills}<small>KILL</small></div>
       <span class="mvp-match-count">${row.matches_played}/4 trận đã nhập</span>
@@ -91,7 +122,7 @@ async function loadPublicMvp(){
       logo.hidden=false;
     }else logo.hidden=true;
 
-    requestAnimationFrame(fitAllMvpNames);
+    scheduleMvpNameFit();
   }
 
   if(settings?.character_image_url){
@@ -157,7 +188,7 @@ async function loadMatchMvps(){
 
                     <div class="match-mvp-player">
                       <span class="match-mvp-live">• LIVE MVP</span>
-                      <strong class="${mvpNameSizeClass(row.game_name,"match-name")}">${mvpEsc(row.game_name)}</strong>
+                      <strong class="${mvpNameSizeClass(row.game_name,"match-name")}">${mvpEsc(cleanMvpName(row.game_name))}</strong>
                       <small>${mvpEsc(row.team_name||"Chưa có đội")}</small>
                     </div>
 
@@ -208,7 +239,7 @@ async function loadMatchMvps(){
     </div>
   `;
 
-  requestAnimationFrame(fitAllMvpNames);
+  scheduleMvpNameFit();
 }
 
 loadMatchMvps();

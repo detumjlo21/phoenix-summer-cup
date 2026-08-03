@@ -6290,3 +6290,51 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
 }
 
+
+/* =======================================================
+   PHOENIX V39.6 - MVP DESKTOP ONE-LINE HARD FIX
+======================================================= */
+@media(min-width:621px){
+  #mvpPublicInfo{
+    min-width:0 !important;
+    width:100% !important;
+    overflow:visible !important;
+  }
+
+  #mvpPublicInfo .mvp-player-name{
+    display:block !important;
+    width:max-content !important;
+    max-width:none !important;
+    white-space:nowrap !important;
+    text-wrap:nowrap !important;
+    word-break:keep-all !important;
+    overflow-wrap:normal !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+    line-height:.98 !important;
+  }
+
+  .match-mvp-player{
+    min-width:0 !important;
+    width:100% !important;
+    overflow:visible !important;
+  }
+
+  .match-mvp-player>strong{
+    display:block !important;
+    width:max-content !important;
+    max-width:none !important;
+    white-space:nowrap !important;
+    text-wrap:nowrap !important;
+    word-break:keep-all !important;
+    overflow-wrap:normal !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+    line-height:1 !important;
+  }
+
+  .mvp-honor-panel{
+    grid-template-columns:minmax(0,46%) minmax(360px,54%) !important;
+  }
+}
+

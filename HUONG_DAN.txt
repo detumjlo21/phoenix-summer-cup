@@ -1,15 +1,23 @@
-PHOENIX V39.5 - ÉP TÊN MVP NẰM TRÊN 1 DÒNG Ở PC
+PHOENIX V39.6 - SỬA CỨNG TÊN MVP KHÔNG XUỐNG DÒNG TRÊN PC
+
+Bản này được sửa trực tiếp từ đúng mvp.js và styles.css hiện có trên GitHub.
 
 Đã sửa:
-- Tên MVP tổng không xuống dòng.
-- Tên MVP từng trận không hiện dấu ...
-- JavaScript đo đúng chiều rộng thực tế rồi tự giảm font từng pixel.
-- Nếu tên vẫn quá dài, chữ sẽ co nhẹ theo chiều ngang thay vì xuống dòng.
+- Xóa xuống dòng/tab/khoảng trắng thừa trong tên lấy từ database.
+- Ép nowrap bằng cả CSS và inline JavaScript.
+- Đo lại sau khi font tải xong.
+- Đo lại 3 lần sau khi giao diện render.
+- Tự giảm từng pixel; nếu vẫn dài thì co ngang nhẹ.
+- Nới cột bên trái MVP tổng trên PC.
 - Mobile giữ nguyên.
 
 Cách cài:
 1. Upload đè mvp.js.
 2. Upload đè styles.css.
 3. Commit nhánh main.
-4. Chờ Vercel Ready.
-5. Nhấn Ctrl + Shift + R hoặc mở cửa sổ ẩn danh.
+4. Chờ Vercel Deployment báo Ready.
+5. Mở cửa sổ ẩn danh hoặc Ctrl + Shift + R.
+
+Kiểm tra trên GitHub:
+- mvp.js phải có: function cleanMvpName
+- styles.css phải có: PHOENIX V39.6
