@@ -7218,3 +7218,64 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
 }
 
+
+/* =======================================================
+   PHOENIX V40.10 - THU GỌN NHÂN VẬT MVP KILL TRÊN MOBILE
+======================================================= */
+@media (max-width:620px){
+
+  .mvp-honor-panel{
+    padding:14px !important;
+    gap:14px !important;
+  }
+
+  .mvp-character-stage{
+    min-height:390px !important;
+    height:390px !important;
+    border-radius:18px !important;
+  }
+
+  .mvp-character-image{
+    width:92% !important;
+    height:78% !important;
+    max-height:305px !important;
+    bottom:45px !important;
+    object-fit:contain !important;
+    object-position:center bottom !important;
+  }
+
+  .mvp-premium-rings{
+    width:82% !important;
+    bottom:12px !important;
+  }
+
+  .mvp-team-logo{
+    width:62px !important;
+    height:62px !important;
+    right:10px !important;
+    bottom:10px !important;
+    border-radius:16px !important;
+  }
+}
+
+/* Máy nhỏ hơn tiếp tục thu gọn */
+@media (max-width:390px){
+
+  .mvp-character-stage{
+    min-height:350px !important;
+    height:350px !important;
+  }
+
+  .mvp-character-image{
+    width:90% !important;
+    height:75% !important;
+    max-height:265px !important;
+    bottom:42px !important;
+  }
+
+  .mvp-team-logo{
+    width:56px !important;
+    height:56px !important;
+  }
+}
+
