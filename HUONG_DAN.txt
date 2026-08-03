@@ -1,23 +1,20 @@
-PHOENIX V39.6 - SỬA CỨNG TÊN MVP KHÔNG XUỐNG DÒNG TRÊN PC
+PHOENIX V39.7 - SỬA ĐÚNG FILE GÂY LỖI TÊN MVP
 
-Bản này được sửa trực tiếp từ đúng mvp.js và styles.css hiện có trên GitHub.
-
-Đã sửa:
-- Xóa xuống dòng/tab/khoảng trắng thừa trong tên lấy từ database.
-- Ép nowrap bằng cả CSS và inline JavaScript.
-- Đo lại sau khi font tải xong.
-- Đo lại 3 lần sau khi giao diện render.
-- Tự giảm từng pixel; nếu vẫn dài thì co ngang nhẹ.
-- Nới cột bên trái MVP tổng trên PC.
-- Mobile giữ nguyên.
+Nguyên nhân thật:
+- index.html tải mvp.js trước.
+- Sau đó tiếp tục tải mvp-v26.js và mvp-v30.js.
+- mvp-v30.js ghi đè toàn bộ #mvpPublicInfo sau cùng.
+- Các bản trước chỉ sửa .mvp-player-name trong mvp.js,
+  nhưng giao diện thật đang dùng .mvp-premium-name từ mvp-v30.js.
 
 Cách cài:
-1. Upload đè mvp.js.
+1. Upload đè mvp-v30.js.
 2. Upload đè styles.css.
-3. Commit nhánh main.
-4. Chờ Vercel Deployment báo Ready.
-5. Mở cửa sổ ẩn danh hoặc Ctrl + Shift + R.
+3. Không cần thay mvp.js.
+4. Commit vào nhánh main.
+5. Chờ Vercel Ready.
+6. Mở cửa sổ ẩn danh hoặc Ctrl + Shift + R.
 
-Kiểm tra trên GitHub:
-- mvp.js phải có: function cleanMvpName
-- styles.css phải có: PHOENIX V39.6
+Kiểm tra:
+- mvp-v30.js phải có function cleanPremiumMvpName
+- styles.css phải có PHOENIX V39.7

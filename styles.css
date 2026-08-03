@@ -6338,3 +6338,36 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
 }
 
+
+/* =======================================================
+   PHOENIX V39.7 - FIX ĐÚNG MVP PREMIUM NAME
+   mvp-v30.js mới là file render cuối cùng của khối MVP tổng.
+======================================================= */
+@media(min-width:621px){
+  .mvp-premium-profile{
+    display:grid !important;
+    grid-template-columns:auto minmax(0,1fr) !important;
+    align-items:center !important;
+    gap:14px !important;
+  }
+
+  .mvp-premium-profile>div{
+    min-width:0 !important;
+    width:100% !important;
+    overflow:visible !important;
+  }
+
+  .mvp-premium-name{
+    display:block !important;
+    width:max-content !important;
+    max-width:none !important;
+    white-space:nowrap !important;
+    text-wrap:nowrap !important;
+    word-break:keep-all !important;
+    overflow-wrap:normal !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+    line-height:.98 !important;
+  }
+}
+
