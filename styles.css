@@ -7279,3 +7279,364 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
 }
 
+
+/* =======================================================
+   PHOENIX V41.0 - PREMIUM CHARACTER SHOWCASE
+   Aura tím, spotlight, tia điện và particle quanh nhân vật.
+======================================================= */
+.mvp-character-stage{
+  --mvp-purple:#8f4dff;
+  --mvp-violet:#c25cff;
+  --mvp-gold:#ffb536;
+}
+
+.mvp-premium-fx{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  overflow:hidden;
+  border-radius:inherit;
+  pointer-events:none;
+}
+
+.mvp-premium-spotlight{
+  position:absolute;
+  left:50%;
+  top:-22%;
+  width:72%;
+  height:112%;
+  transform:translateX(-50%);
+  opacity:.58;
+  clip-path:polygon(42% 0,58% 0,96% 100%,4% 100%);
+  background:linear-gradient(
+    to bottom,
+    rgba(255,230,175,.38),
+    rgba(255,173,59,.14) 46%,
+    transparent 86%
+  );
+  filter:blur(8px);
+  animation:mvpPremiumSpotlight 4.6s ease-in-out infinite;
+}
+
+.mvp-premium-aura{
+  position:absolute;
+  left:50%;
+  top:48%;
+  width:70%;
+  aspect-ratio:1;
+  transform:translate(-50%,-50%);
+  z-index:2;
+}
+
+.mvp-premium-aura span{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:1px solid rgba(170,89,255,.36);
+  box-shadow:
+    0 0 22px rgba(137,67,255,.24),
+    inset 0 0 22px rgba(184,74,255,.11);
+}
+
+.mvp-premium-aura span:nth-child(1){
+  animation:mvpPremiumAuraSpin 13s linear infinite;
+}
+
+.mvp-premium-aura span:nth-child(2){
+  inset:11%;
+  border-style:dashed;
+  border-color:rgba(255,175,62,.28);
+  animation:mvpPremiumAuraSpin 9s linear infinite reverse;
+}
+
+.mvp-premium-aura span:nth-child(3){
+  inset:25%;
+  border-width:2px;
+  border-color:rgba(196,86,255,.18);
+  animation:mvpPremiumAuraPulse 2.7s ease-in-out infinite;
+}
+
+.mvp-premium-aura span::before,
+.mvp-premium-aura span::after{
+  content:"";
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#cf7cff;
+  box-shadow:
+    0 0 7px #c45cff,
+    0 0 18px rgba(196,92,255,.85);
+}
+
+.mvp-premium-aura span::before{
+  left:8%;
+  top:25%;
+}
+
+.mvp-premium-aura span::after{
+  right:10%;
+  bottom:21%;
+  background:#ffbd45;
+  box-shadow:
+    0 0 7px #ffbd45,
+    0 0 18px rgba(255,157,39,.82);
+}
+
+.mvp-premium-lightning{
+  position:absolute;
+  inset:5% 8% 14%;
+  z-index:4;
+  opacity:.7;
+}
+
+.mvp-premium-lightning i{
+  position:absolute;
+  width:3px;
+  height:40%;
+  opacity:0;
+  border-radius:999px;
+  transform:rotate(22deg) skewY(-28deg);
+  transform-origin:top;
+  background:linear-gradient(
+    to bottom,
+    transparent,
+    rgba(224,174,255,.96) 14%,
+    rgba(126,53,255,.98) 50%,
+    transparent
+  );
+  box-shadow:
+    0 0 7px rgba(202,118,255,.9),
+    0 0 18px rgba(119,55,255,.62);
+  animation:mvpPremiumLightning 7.2s linear infinite;
+}
+
+.mvp-premium-lightning i:nth-child(1){
+  left:18%;
+  top:13%;
+}
+
+.mvp-premium-lightning i:nth-child(2){
+  right:19%;
+  top:20%;
+  height:34%;
+  transform:rotate(-24deg) skewY(24deg);
+  animation-delay:2.4s;
+}
+
+.mvp-premium-lightning i:nth-child(3){
+  left:48%;
+  top:4%;
+  height:25%;
+  animation-delay:4.8s;
+}
+
+.mvp-premium-sparks{
+  position:absolute;
+  inset:8% 8% 10%;
+  z-index:6;
+}
+
+.mvp-premium-sparks i{
+  --angle:calc(var(--spark-index) * 20deg);
+  --radius:calc(31% + (var(--spark-index) % 4) * 5%);
+  position:absolute;
+  left:50%;
+  top:52%;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  opacity:0;
+  background:#ffd16b;
+  box-shadow:
+    0 0 7px #ffb63c,
+    0 0 13px rgba(255,143,31,.7);
+  transform:
+    rotate(var(--angle))
+    translateX(var(--radius));
+  animation:mvpPremiumSpark 3.8s ease-in-out infinite;
+  animation-delay:calc(var(--spark-index) * -210ms);
+}
+
+.mvp-premium-sparks i:nth-child(3n){
+  width:3px;
+  height:3px;
+  background:#ca7cff;
+  box-shadow:
+    0 0 7px #c45cff,
+    0 0 13px rgba(146,65,255,.78);
+}
+
+.mvp-premium-foot-glow{
+  position:absolute;
+  left:50%;
+  bottom:43px;
+  z-index:3;
+  width:58%;
+  height:17%;
+  border-radius:50%;
+  transform:translateX(-50%);
+  opacity:.72;
+  background:radial-gradient(
+    ellipse,
+    rgba(255,183,56,.68),
+    rgba(151,69,255,.22) 48%,
+    transparent 72%
+  );
+  filter:blur(10px);
+  animation:mvpPremiumFootGlow 2.5s ease-in-out infinite;
+}
+
+.mvp-character-image{
+  transition:
+    transform .35s ease,
+    filter .35s ease;
+}
+
+.mvp-character-stage:hover .mvp-character-image{
+  transform:translateY(-3px) scale(1.018);
+  filter:
+    drop-shadow(0 22px 28px rgba(0,0,0,.76))
+    drop-shadow(0 0 28px rgba(166,74,255,.36))
+    drop-shadow(0 0 16px rgba(255,151,32,.23))
+    saturate(1.13)
+    contrast(1.07)
+    brightness(1.05);
+}
+
+@keyframes mvpPremiumSpotlight{
+  0%,100%{
+    opacity:.43;
+    transform:translateX(-50%) scaleX(.92);
+  }
+  50%{
+    opacity:.68;
+    transform:translateX(-50%) scaleX(1.07);
+  }
+}
+
+@keyframes mvpPremiumAuraSpin{
+  to{transform:rotate(360deg)}
+}
+
+@keyframes mvpPremiumAuraPulse{
+  0%,100%{
+    opacity:.42;
+    transform:scale(.9);
+  }
+  50%{
+    opacity:.9;
+    transform:scale(1.08);
+  }
+}
+
+@keyframes mvpPremiumLightning{
+  0%,83%,100%{
+    opacity:0;
+    filter:brightness(.7);
+  }
+  85%{
+    opacity:.95;
+    filter:brightness(1.8);
+  }
+  86%{
+    opacity:.18;
+  }
+  87%{
+    opacity:.88;
+  }
+  90%{
+    opacity:0;
+  }
+}
+
+@keyframes mvpPremiumSpark{
+  0%,100%{
+    opacity:0;
+    margin-top:20px;
+    filter:blur(1px);
+  }
+  24%{
+    opacity:.92;
+  }
+  68%{
+    opacity:.58;
+  }
+  82%{
+    opacity:0;
+    margin-top:-68px;
+    filter:blur(0);
+  }
+}
+
+@keyframes mvpPremiumFootGlow{
+  0%,100%{
+    opacity:.52;
+    transform:translateX(-50%) scale(.92);
+  }
+  50%{
+    opacity:.86;
+    transform:translateX(-50%) scale(1.08);
+  }
+}
+
+/* Cân lại nhân vật mobile: lớn hơn V40.10 khoảng 8–10% */
+@media(max-width:620px){
+  .mvp-character-image{
+    width:96% !important;
+    height:85% !important;
+    max-height:330px !important;
+    bottom:42px !important;
+  }
+
+  .mvp-premium-aura{
+    width:82%;
+    top:48%;
+  }
+
+  .mvp-premium-spotlight{
+    width:88%;
+    height:105%;
+  }
+
+  .mvp-premium-lightning{
+    inset:7% 4% 14%;
+  }
+
+  .mvp-premium-sparks{
+    inset:8% 3% 8%;
+  }
+
+  .mvp-premium-foot-glow{
+    width:68%;
+    bottom:37px;
+  }
+}
+
+@media(max-width:390px){
+  .mvp-character-image{
+    width:94% !important;
+    height:82% !important;
+    max-height:290px !important;
+    bottom:40px !important;
+  }
+
+  .mvp-premium-sparks i:nth-child(even){
+    display:none;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .mvp-premium-spotlight,
+  .mvp-premium-aura span,
+  .mvp-premium-lightning i,
+  .mvp-premium-sparks i,
+  .mvp-premium-foot-glow{
+    animation:none !important;
+  }
+
+  .mvp-premium-lightning{
+    display:none;
+  }
+}
+

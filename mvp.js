@@ -499,7 +499,41 @@ window.addEventListener("resize",()=>{
   premiumMvpResizeTimer=setTimeout(schedulePremiumMvpFit,120);
 });
 
+
+function ensurePremiumMvpCharacterFx(){
+  const stage=document.querySelector(".mvp-character-stage");
+  if(!stage||stage.querySelector(".mvp-premium-fx"))return;
+
+  const fx=document.createElement("div");
+  fx.className="mvp-premium-fx";
+  fx.setAttribute("aria-hidden","true");
+  fx.innerHTML=`
+    <div class="mvp-premium-spotlight"></div>
+    <div class="mvp-premium-aura">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="mvp-premium-lightning">
+      <i></i><i></i><i></i>
+    </div>
+
+    <div class="mvp-premium-sparks">
+      ${Array.from({length:18},(_,index)=>
+        `<i style="--spark-index:${index}"></i>`
+      ).join("")}
+    </div>
+
+    <div class="mvp-premium-foot-glow"></div>
+  `;
+
+  stage.prepend(fx);
+}
+
 async function renderMvpV30(){
+  ensurePremiumMvpCharacterFx();
+
   const [{data:mvp,error},{data:settings}]=await Promise.all([
     sb.rpc("get_public_mvp"),
     sb.from("mvp_settings").select("*").eq("id",1).maybeSingle()
