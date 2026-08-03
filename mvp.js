@@ -4,6 +4,17 @@ function mvpEsc(v){
   }[c]));
 }
 
+function mvpNameSizeClass(name,prefix="mvp-name"){
+  const length=Array.from(String(name??"")).length;
+
+  if(length>=24)return `${prefix}-xxs`;
+  if(length>=19)return `${prefix}-xs`;
+  if(length>=15)return `${prefix}-sm`;
+  if(length>=11)return `${prefix}-md`;
+
+  return `${prefix}-normal`;
+}
+
 async function loadPublicMvp(){
   const [{data:mvp,error},{data:settings}]=await Promise.all([
     sb.rpc("get_public_mvp"),
@@ -22,7 +33,7 @@ async function loadPublicMvp(){
     info.innerHTML='<span class="mvp-status">MVP đang được cập nhật.</span>';
   }else{
     info.innerHTML=`
-      <strong class="mvp-player-name">${mvpEsc(row.game_name)}</strong>
+      <strong class="mvp-player-name ${mvpNameSizeClass(row.game_name,"mvp-name")}">${mvpEsc(row.game_name)}</strong>
       <span class="mvp-team-name">${mvpEsc(row.team_name||"Chưa có đội")}</span>
       <div class="mvp-kill-number">${row.total_kills}<small>KILL</small></div>
       <span class="mvp-match-count">${row.matches_played}/4 trận đã nhập</span>
@@ -97,7 +108,7 @@ async function loadMatchMvps(){
 
                     <div class="match-mvp-player">
                       <span class="match-mvp-live">• LIVE MVP</span>
-                      <strong>${mvpEsc(row.game_name)}</strong>
+                      <strong class="${mvpNameSizeClass(row.game_name,"match-name")}">${mvpEsc(row.game_name)}</strong>
                       <small>${mvpEsc(row.team_name||"Chưa có đội")}</small>
                     </div>
 

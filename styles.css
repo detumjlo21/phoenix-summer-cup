@@ -6179,3 +6179,77 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
 }
 
+
+/* =======================================================
+   PHOENIX V39.4 - MVP NAME FIT DESKTOP
+   Tên dài tự thu nhỏ, không còn dấu ... hoặc xuống dòng xấu.
+   Mobile giữ nguyên giao diện đang ổn.
+======================================================= */
+@media(min-width:621px){
+
+  /* MVP từng trận */
+  .match-mvp-player strong{
+    display:block;
+    width:100%;
+    overflow:visible !important;
+    text-overflow:clip !important;
+    white-space:nowrap !important;
+    letter-spacing:-.7px;
+  }
+
+  .match-mvp-player strong.match-name-normal{font-size:32px}
+  .match-mvp-player strong.match-name-md{font-size:27px}
+  .match-mvp-player strong.match-name-sm{font-size:23px}
+  .match-mvp-player strong.match-name-xs{font-size:19px}
+  .match-mvp-player strong.match-name-xxs{font-size:16px}
+
+  /* Nới phần chữ, thu gọn phần logo trên card desktop */
+  .match-mvp-card{
+    grid-template-columns:minmax(0,1fr) 132px;
+  }
+
+  .match-mvp-logo{
+    width:108px;
+    height:108px;
+    border-radius:23px;
+  }
+
+  .match-mvp-logo-aura{
+    width:130px;
+    height:130px;
+  }
+
+  /* MVP tổng giải */
+  .mvp-player-name{
+    display:block;
+    width:max-content;
+    max-width:100%;
+    overflow:visible;
+    text-overflow:clip;
+    white-space:nowrap;
+    letter-spacing:-1.2px;
+    line-height:.98;
+  }
+
+  .mvp-player-name.mvp-name-normal{font-size:48px}
+  .mvp-player-name.mvp-name-md{font-size:41px}
+  .mvp-player-name.mvp-name-sm{font-size:35px}
+  .mvp-player-name.mvp-name-xs{font-size:30px}
+  .mvp-player-name.mvp-name-xxs{font-size:25px}
+}
+
+/* Màn hình PC có card hẹp hơn */
+@media(min-width:621px) and (max-width:1050px){
+  .match-mvp-player strong.match-name-normal{font-size:28px}
+  .match-mvp-player strong.match-name-md{font-size:24px}
+  .match-mvp-player strong.match-name-sm{font-size:20px}
+  .match-mvp-player strong.match-name-xs{font-size:17px}
+  .match-mvp-player strong.match-name-xxs{font-size:15px}
+
+  .mvp-player-name.mvp-name-normal{font-size:43px}
+  .mvp-player-name.mvp-name-md{font-size:37px}
+  .mvp-player-name.mvp-name-sm{font-size:32px}
+  .mvp-player-name.mvp-name-xs{font-size:27px}
+  .mvp-player-name.mvp-name-xxs{font-size:23px}
+}
+

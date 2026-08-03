@@ -1,17 +1,15 @@
-PHOENIX V39.3 - SỬA TRANG KẾT QUẢ CỨ ĐỨNG Ở ĐANG TẢI
+PHOENIX V39.4 - SỬA TÊN MVP TRÊN PC
 
-Nguyên nhân:
-results.js gọi biến sb nhưng không hề tạo Supabase client.
-Trình duyệt báo ReferenceError: sb is not defined và dừng chạy,
-nên trang luôn đứng ở "Đang tải kết quả...".
+Đã sửa:
+- Tên MVP từng trận không còn bị cắt thành ...
+- Tên MVP tổng không còn xuống dòng xấu.
+- Tên càng dài thì font tự giảm theo nhiều cấp.
+- Nới phần chữ và thu nhỏ logo một chút trên card PC.
+- Giao diện điện thoại giữ nguyên vì hiện đã ổn.
 
 Cách cài:
-1. Upload đè results.js ở thư mục gốc GitHub.
-2. Commit vào nhánh main.
-3. Chờ Vercel Deployment báo Ready.
-4. Mở results.html bằng Ctrl + Shift + R hoặc cửa sổ ẩn danh.
-
-Bản sửa còn:
-- Hiện lỗi thật nếu RPC hoặc bảng Supabase có vấn đề.
-- Có nút Tải lại.
-- Kiểm tra cả lỗi kết quả, MVP và lịch thi đấu.
+1. Upload đè mvp.js.
+2. Upload đè styles.css.
+3. Commit vào nhánh main.
+4. Chờ Vercel Ready.
+5. Nhấn Ctrl + Shift + R hoặc mở cửa sổ ẩn danh.
