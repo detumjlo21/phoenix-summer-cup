@@ -7658,3 +7658,52 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   }
 }
 
+
+/* V39 - Đổi tên tuyển thủ */
+.admin-pro-player{
+  grid-template-columns:24px minmax(0,1fr) 32px 32px 32px 58px;
+}
+
+.admin-pro-rename-player{
+  width:30px;
+  min-width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  margin:0;
+  padding:0;
+  border:1px solid rgba(89,159,255,.26);
+  border-radius:9px;
+  color:#8dc0ff;
+  background:rgba(89,159,255,.055);
+  font-size:16px;
+  line-height:1;
+  opacity:.68;
+  transition:.18s ease;
+}
+
+.admin-pro-player:hover .admin-pro-rename-player{
+  opacity:1;
+}
+
+.admin-pro-rename-player:hover{
+  transform:translateY(-1px) scale(1.06);
+  border-color:rgba(89,159,255,.66);
+  background:rgba(89,159,255,.16);
+  box-shadow:0 0 18px rgba(89,159,255,.14);
+}
+
+.admin-pro-rename-player:disabled{
+  cursor:wait;
+  opacity:.35;
+}
+
+@media(max-width:760px){
+  .admin-pro-player{
+    grid-template-columns:22px minmax(0,1fr) 32px 32px 32px 56px;
+  }
+
+  .admin-pro-rename-player{
+    opacity:.92;
+  }
+}

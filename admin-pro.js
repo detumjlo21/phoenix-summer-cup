@@ -143,6 +143,14 @@ function renderAdminProBoard(){
                     </div>
 
                     <button
+                      class="admin-pro-rename-player adminProRenamePlayerBtn"
+                      type="button"
+                      data-player="${player.id}"
+                      title="Đổi tên tuyển thủ"
+                      aria-label="Đổi tên ${adminProEsc(player.game_name)}"
+                    >✎</button>
+
+                    <button
                       class="admin-pro-captain-button adminProCaptainBtn"
                       type="button"
                       data-player="${player.id}"
@@ -401,6 +409,65 @@ async function adminProSetCaptain(playerId,teamNumber){
   renderAdminProBoard();
 
   if(typeof loadAll==="function")loadAll();
+}
+
+async function adminProRenamePlayer(playerId){
+  const player=adminProPlayers.find(item=>item.id===playerId);
+  if(!player)return;
+
+  const currentName=String(player.game_name||"").trim();
+  const entered=prompt("Nhập tên mới cho tuyển thủ:",currentName);
+  if(entered===null)return;
+
+  const newName=entered.trim().replace(/\s+/g," ");
+
+  if(newName===currentName)return;
+  if(newName.length<2||newName.length>40){
+    adminProToast("Tên tuyển thủ phải từ 2 đến 40 ký tự.","warning");
+    return;
+  }
+
+  const duplicate=adminProPlayers.some(item=>
+    item.id!==playerId &&
+    String(item.game_name||"").trim().toLocaleLowerCase("vi")===newName.toLocaleLowerCase("vi")
+  );
+  if(duplicate){
+    adminProToast("Tên tuyển thủ này đã tồn tại.","warning");
+    return;
+  }
+
+  const button=document.querySelector(
+    `.adminProRenamePlayerBtn[data-player="${CSS.escape(playerId)}"]`
+  );
+  if(button)button.disabled=true;
+
+  const {error}=await sb.rpc("admin_rename_player_safe",{
+    p_player_id:playerId,
+    p_game_name:newName
+  });
+
+  if(button)button.disabled=false;
+
+  if(error){
+    const message=String(error.message||"");
+    adminProToast(
+      message.includes("duplicate_player_name")
+        ?"Tên tuyển thủ này đã tồn tại."
+        :message.includes("invalid_player_name")
+          ?"Tên tuyển thủ phải từ 2 đến 40 ký tự."
+          :message||"Không thể đổi tên tuyển thủ.",
+      "error"
+    );
+    return;
+  }
+
+  player.game_name=newName;
+  adminProToast(`Đã đổi tên ${currentName} → ${newName}.`,"success");
+  renderAdminProBoard();
+
+  if(typeof loadAll==="function")loadAll();
+  if(typeof loadMvpAdmin==="function")loadMvpAdmin();
+  if(typeof loadChampionAdmin==="function")loadChampionAdmin();
 }
 
 async function adminProDeletePlayer(playerId){
@@ -690,6 +757,15 @@ document.querySelector("#adminProBoard")?.addEventListener("input",event=>{
   if(event.target.closest(".adminProKillInput")){
     updateAdminProChangedCount();
   }
+});
+
+document.querySelector("#adminProBoard")?.addEventListener("click",event=>{
+  const button=event.target.closest(".adminProRenamePlayerBtn");
+  if(!button)return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  adminProRenamePlayer(button.dataset.player);
 });
 
 document.querySelector("#adminProBoard")?.addEventListener("click",event=>{
