@@ -22,3 +22,7 @@ Bản đã dọn gọn từ project hiện tại.
 ## Triển khai
 
 Upload toàn bộ nội dung thư mục này lên nhánh `main` của GitHub, thay thế project cũ.
+
+## V45 Hall stats fix
+Sau khi deploy, chạy `repair_v45_hall_stats.sql` một lần trong Supabase SQL Editor.
+Migration này sửa bản Hall hiện tại đang hiện 0 và đảm bảo các mùa sau lưu snapshot Điểm / Hạ gục / Booyah / Kill MVP đúng từ kết quả giải.
