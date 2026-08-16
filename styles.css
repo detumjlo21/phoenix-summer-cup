@@ -7707,3 +7707,47 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
     opacity:.92;
   }
 }
+
+/* =======================================================
+   V44 - CINEMATIC HALL OF CHAMPIONS
+======================================================= */
+.hall-v44-body{background:#050506;color:#f7f1e8;min-height:100vh}
+.hall-v44-body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 20%,rgba(167,15,9,.22),transparent 32%),radial-gradient(circle at 50% 90%,rgba(255,70,0,.09),transparent 35%),linear-gradient(90deg,rgba(0,0,0,.9),transparent 25%,transparent 75%,rgba(0,0,0,.9));z-index:-1}
+.hall-v44-page{max-width:1240px;padding-top:20px}
+.hall-v44-hero{text-align:center;padding:10px 12px 30px;position:relative}
+.hall-v44-hero .hall-back-link{position:absolute;left:0;top:8px;font-size:11px;font-weight:900;letter-spacing:1px}
+.hall-v44-brand{color:#e43c32;font-size:13px;font-weight:950;letter-spacing:6px;margin:5px 0 10px}
+.hall-v44-hero h1{font-size:clamp(42px,7vw,88px);line-height:.95;margin:0;font-weight:1000;letter-spacing:-3px;color:#f6c85f;text-shadow:0 5px 30px rgba(255,111,0,.15)}
+.hall-v44-hero h1 span{color:#f4f1eb}
+.hall-v44-hero p{font-size:12px;letter-spacing:5px;color:#aaa;margin:18px 0 0}
+.hall-v44-shell{display:grid;grid-template-columns:270px 1fr;min-height:720px;border:1px solid rgba(236,124,28,.6);clip-path:polygon(18px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%,0 18px);background:linear-gradient(135deg,rgba(19,18,18,.97),rgba(5,5,6,.98));box-shadow:0 0 45px rgba(255,73,0,.08),inset 0 0 80px rgba(0,0,0,.5)}
+.hall-v44-timeline{padding:22px 12px;border-right:1px solid rgba(255,102,20,.28);background:linear-gradient(180deg,rgba(22,7,5,.72),rgba(5,5,6,.94));display:flex;flex-direction:column;gap:9px}
+.hall-v44-side-title{color:#ff4c35;font-size:12px;font-weight:950;letter-spacing:2px;padding:10px 10px 17px}
+.hall-v44-season-btn{appearance:none;width:100%;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.015);color:#eee;display:flex;align-items:center;gap:10px;padding:12px;text-align:left;cursor:pointer;min-height:74px;transition:.2s}
+.hall-v44-season-btn img{width:48px;height:48px;object-fit:cover;border-radius:7px}
+.hall-v44-season-btn div{min-width:0;display:grid;gap:5px}.hall-v44-season-btn strong{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hall-v44-season-btn small{color:#777;font-size:10px}
+.hall-v44-season-btn.active{border-color:#ff9c22;background:linear-gradient(90deg,rgba(170,25,12,.75),rgba(80,10,6,.35));box-shadow:inset 3px 0 #ffb52d,0 0 22px rgba(255,55,0,.1)}
+.hall-v44-season-btn.active small{color:#d8b17d}
+.hall-v44-main{padding:28px 30px 34px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 35%,rgba(153,12,6,.22),transparent 40%)}
+.hall-v44-main::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 39px,rgba(255,255,255,.015) 40px),repeating-linear-gradient(90deg,transparent 0 59px,rgba(255,255,255,.012) 60px)}
+.hall-v44-season-chip{position:relative;z-index:2;display:inline-flex;gap:8px;align-items:center;padding:8px 13px;border:1px solid #9a681d;color:#ffc54d;background:#130d07;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px}
+.hall-v44-stage{position:relative;z-index:1}.hall-v44-stage[hidden]{display:none!important}
+.hall-v44-champion{text-align:center;padding:20px 0 0}.hall-v44-kicker{color:#ffc63d;font-size:13px;font-weight:1000;letter-spacing:3px}.hall-v44-champion h2{font-size:clamp(34px,5vw,60px);margin:8px 0 12px;text-transform:uppercase;line-height:1;color:#fff1d4;text-shadow:0 0 25px rgba(255,161,35,.2)}
+.hall-v44-logo-wrap{height:255px;display:grid;place-items:center;position:relative}.hall-v44-logo-wrap img,.hall-v44-logo-fallback{position:relative;z-index:2;width:220px;height:220px;object-fit:contain;filter:drop-shadow(0 14px 24px #000)}
+.hall-v44-logo-fallback{display:grid;place-items:center;border:2px solid #a94b1c;font-size:52px;font-weight:1000;background:#0b0b0c;color:#ff9c22}
+.hall-v44-logo-glow{position:absolute;width:330px;height:100px;border-radius:50%;bottom:5px;background:radial-gradient(ellipse,rgba(255,62,0,.55),rgba(255,120,0,.15) 40%,transparent 70%);filter:blur(8px);transform:perspective(120px) rotateX(65deg);box-shadow:0 0 40px #c41c00}
+.hall-v44-stats{max-width:700px;margin:8px auto 25px;display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(190,92,18,.38);background:rgba(6,6,7,.78)}
+.hall-v44-stats>div{padding:13px 8px;display:grid;gap:3px;border-right:1px solid rgba(255,255,255,.07)}.hall-v44-stats>div:last-child{border:0}.hall-v44-stats span{font-size:15px}.hall-v44-stats small{color:#85817d;font-size:9px;letter-spacing:1px}.hall-v44-stats b{color:#ffb52d;font-size:27px}
+.hall-v44-mvp{min-height:250px;border:1px solid rgba(211,38,25,.55);background:radial-gradient(circle at 70% 60%,rgba(185,17,9,.32),transparent 35%),linear-gradient(115deg,rgba(63,8,6,.55),rgba(8,8,9,.92));display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;text-align:left}
+.hall-v44-mvp::before{content:"";position:absolute;inset:auto 0 0;height:2px;background:linear-gradient(90deg,transparent,#ff2c1c,transparent);box-shadow:0 0 20px #ff2c1c}
+.hall-v44-mvp-copy{padding:30px;display:flex;flex-direction:column;justify-content:center;gap:12px}.hall-v44-mvp-copy h3{font-size:clamp(25px,3.4vw,42px);margin:0;color:white}.hall-v44-mvp-stat{max-width:270px;display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);padding:7px 0}.hall-v44-mvp-stat span{font-size:11px;color:#aaa}.hall-v44-mvp-stat b{color:#fff}
+.hall-v44-mvp-visual{position:relative;min-height:250px;display:grid;place-items:end center}.hall-v44-mvp-char{position:relative;z-index:2;max-width:95%;height:245px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 10px 18px #000)}.hall-v44-mvp-crown{font-size:90px;align-self:center;color:#dca732;filter:drop-shadow(0 0 22px rgba(255,170,0,.2));z-index:2}.hall-v44-mvp-word{position:absolute;right:-10px;top:30px;font-size:100px;font-weight:1000;color:transparent;-webkit-text-stroke:1px rgba(255,35,25,.28);transform:rotate(90deg);letter-spacing:-8px}
+.hall-v44-footer{text-align:center;padding:25px 10px 35px;display:grid;gap:10px;color:#bbb;font-size:11px;letter-spacing:4px}.hall-v44-footer a{color:#d94c39;text-decoration:none;font-weight:900;font-size:9px}
+.hall-v44-loading{grid-column:1/-1;min-height:400px;display:grid;place-items:center;color:#b88747;letter-spacing:2px}
+@media(max-width:760px){
+ .hall-v44-page{padding:10px 8px}.hall-v44-hero{padding-top:38px}.hall-v44-hero .hall-back-link{left:8px}.hall-v44-brand{letter-spacing:3px;font-size:10px}.hall-v44-hero h1{font-size:43px;letter-spacing:-2px}.hall-v44-hero p{letter-spacing:2px;font-size:8px;line-height:1.6}
+ .hall-v44-shell{grid-template-columns:1fr;clip-path:none;border-radius:18px;overflow:hidden}.hall-v44-timeline{border-right:0;border-bottom:1px solid rgba(255,102,20,.25);display:flex;flex-direction:row;overflow-x:auto;padding:12px}.hall-v44-side-title{display:none}.hall-v44-season-btn{flex:0 0 190px;min-height:60px;padding:8px}.hall-v44-season-btn img{width:40px;height:40px}
+ .hall-v44-main{padding:18px 14px 20px}.hall-v44-champion{padding-top:16px}.hall-v44-kicker{font-size:10px;letter-spacing:2px}.hall-v44-champion h2{font-size:34px}.hall-v44-logo-wrap{height:190px}.hall-v44-logo-wrap img,.hall-v44-logo-fallback{width:165px;height:165px}.hall-v44-logo-glow{width:250px}
+ .hall-v44-stats{grid-template-columns:repeat(2,1fr)}.hall-v44-stats>div:nth-child(2){border-right:0}.hall-v44-stats>div:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.07)}
+ .hall-v44-mvp{grid-template-columns:1fr;min-height:390px}.hall-v44-mvp-copy{padding:22px 20px 5px;z-index:3}.hall-v44-mvp-visual{min-height:220px}.hall-v44-mvp-char{height:220px}.hall-v44-mvp-word{font-size:75px;top:50px}.hall-v44-footer{letter-spacing:2px}
+}
