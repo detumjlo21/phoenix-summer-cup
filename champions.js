@@ -1,3 +1,6 @@
+const hallCfg=window.PHOENIX_CONFIG;
+const sb=window.supabase.createClient(hallCfg.supabaseUrl,hallCfg.supabaseKey);
+
 function hallEsc(value){
   return String(value??"").replace(/[&<>"']/g,char=>({
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"

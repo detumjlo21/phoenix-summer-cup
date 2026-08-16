@@ -1,3 +1,6 @@
+const hallCfg=window.PHOENIX_CONFIG;
+const sb=window.supabase.createClient(hallCfg.supabaseUrl,hallCfg.supabaseKey);
+
 let hallTeams=[];
 let hallPlayers=[];
 
@@ -48,6 +51,25 @@ function renderChampionPreview(){
   `;
 }
 
+function renderMvpOptions(){
+  const mvpSelect=document.querySelector("#seasonMvpSelect");
+  const teamNumber=Number(document.querySelector("#championTeamSelect")?.value);
+  const players=teamNumber
+    ?hallPlayers.filter(player=>Number(player.team_number)===teamNumber)
+    :hallPlayers;
+
+  mvpSelect.innerHTML=`
+    <option value="">${teamNumber?"-- Chọn MVP của đội vô địch --":"-- Chọn đội vô địch trước --"}</option>
+    ${players.map(player=>`
+      <option value="${player.id}">
+        ${hallAdminEsc(player.game_name)} — ${hallAdminEsc(hallTeams.find(t=>Number(t.team_number)===Number(player.team_number))?.name||`Đội ${player.team_number}`)}
+      </option>
+    `).join("")}
+  `;
+  mvpSelect.disabled=!teamNumber;
+  renderMvpPreview();
+}
+
 function renderMvpPreview(){
   const playerId=document.querySelector("#seasonMvpSelect")?.value;
   const player=hallPlayers.find(item=>item.id===playerId);
@@ -63,7 +85,7 @@ function renderMvpPreview(){
     <div>
       <span>MVP MÙA GIẢI</span>
       <strong>${hallAdminEsc(player.game_name)}</strong>
-      <small>${hallAdminEsc(player.team_names?.name||`Đội ${player.team_number}`)}</small>
+      <small>${hallAdminEsc(hallTeams.find(t=>Number(t.team_number)===Number(player.team_number))?.name||`Đội ${player.team_number}`)}</small>
     </div>
   `;
 }
@@ -75,7 +97,7 @@ async function loadHallOptions(){
       .lte("team_number",12)
       .order("team_number"),
     sb.from("players")
-      .select("id,game_name,team_number,team_names(name)")
+      .select("id,game_name,team_number")
       .order("team_number")
       .order("game_name")
   ]);
@@ -100,17 +122,8 @@ async function loadHallOptions(){
     `).join("")}
   `;
 
-  mvpSelect.innerHTML=`
-    <option value="">-- Chọn MVP --</option>
-    ${hallPlayers.map(player=>`
-      <option value="${player.id}">
-        ${hallAdminEsc(player.game_name)} — ${hallAdminEsc(player.team_names?.name||`Đội ${player.team_number}`)}
-      </option>
-    `).join("")}
-  `;
-
   renderChampionPreview();
-  renderMvpPreview();
+  renderMvpOptions();
 }
 
 async function loadSeasonAdminList(){
@@ -150,7 +163,10 @@ async function loadSeasonAdminList(){
     :'<p class="muted">Chưa lưu mùa giải nào.</p>';
 }
 
-document.querySelector("#championTeamSelect")?.addEventListener("change",renderChampionPreview);
+document.querySelector("#championTeamSelect")?.addEventListener("change",()=>{
+  renderChampionPreview();
+  renderMvpOptions();
+});
 document.querySelector("#seasonMvpSelect")?.addEventListener("change",renderMvpPreview);
 
 document.querySelector("#saveSeasonForm")?.addEventListener("submit",async event=>{
