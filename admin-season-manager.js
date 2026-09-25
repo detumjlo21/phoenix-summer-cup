@@ -76,14 +76,26 @@ async function clientResetNewSeason(keepTeams){
     const {error:playerError}=await sb.from("players").delete().not("id","is",null);
     if(playerError)throw new Error(`Không thể xóa thành viên cũ: ${playerError.message}`);
 
-    const teamResetRows=Array.from({length:12},(_,i)=>({
-      team_number:i+1,
-      name:`Đội ${i+1}`,
-      logo_url:null,
-      updated_at:new Date().toISOString()
-    }));
-    const {error:teamError}=await sb.from("team_names").upsert(teamResetRows,{onConflict:"team_number"});
-    if(teamError)throw new Error(`Không thể reset đội: ${teamError.message}`);
+    // Không dùng upsert/insert ở đây: bảng team_names đang bật RLS và
+    // policy của site chỉ cho admin UPDATE các đội hiện có. Upsert có thể
+    // chuyển thành INSERT khi một team_number không tồn tại, gây lỗi
+    // "new row violates row-level security policy". Chỉ cập nhật các row
+    // hiện hữu, còn thiếu đội thì để nguyên (mùa mới vẫn hoạt động bình thường).
+    const {data:existingTeams,error:teamReadError}=await sb.from("team_names")
+      .select("team_number")
+      .gte("team_number",1).lte("team_number",12);
+    if(teamReadError)throw new Error(`Không thể đọc danh sách đội: ${teamReadError.message}`);
+    for(const team of (existingTeams||[])){
+      const teamNumber=Number(team.team_number);
+      const {error:teamError}=await sb.from("team_names")
+        .update({
+          name:`Đội ${teamNumber}`,
+          logo_url:null,
+          updated_at:new Date().toISOString()
+        })
+        .eq("team_number",teamNumber);
+      if(teamError)throw new Error(`Không thể reset đội ${teamNumber}: ${teamError.message}`);
+    }
   }
 }
 
