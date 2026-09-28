@@ -7974,3 +7974,14 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 @media(max-width:650px){
   .deathmatch-top3-heading{align-items:flex-start;flex-direction:column;gap:5px;}
 }
+
+/* V67 - Fix TOP 3 MVP target: render inside the combined MVP panel */
+.mvp-honor-panel .deathmatch-top3-mvp{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.mvp-honor-panel .deathmatch-top3-honor .dm-top3-card{min-width:0;}
+@media(max-width:800px){
+  .mvp-honor-panel .deathmatch-top3-mvp{grid-template-columns:1fr;}
+}

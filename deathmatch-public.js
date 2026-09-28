@@ -23,7 +23,7 @@
     box.innerHTML=`<article class="deathmatch-group-standings dm-overall-standing dm-progress-card"><div class="dm-group-head"><div><span>THỂ THỨC THẮNG — THUA</span><strong>12 đội • thua 2 lần là bị loại</strong></div><b>${done}/17</b></div><div class="dm-progress-steps"><div class="done"><b>1</b><span>Vòng 1</span><small>${r1}/6 trận • 6 vé</small></div><i>→</i><div class="${rv===3?'done':''}"><b>2</b><span>Vé vớt</span><small>${rv}/3 trận • 3 đội bị loại</small></div><i>→</i><div class="${d?.status==='completed'?'done':''}"><b>3</b><span>Quyết đấu</span><small>1 đặc cách + 1 vé đấu</small></div><i>→</i><div><b>4</b><span>Tứ kết</span><small>Top 8</small></div></div></article>`;
   }
   function renderTop3(){
-    const box=document.querySelector("#deathmatchTop3Mvp"); if(!box)return;
+    const box=document.querySelector(".mvp-honor-panel #deathmatchTop3Mvp"); if(!box)return;
     if(!dmTop3.length){box.innerHTML=`<div class="dm-top3-empty">Chưa có dữ liệu Kill. Admin sẽ nhập Kill từng tuyển thủ sau mỗi trận.</div>`;return;}
     box.innerHTML=dmTop3.map((r,i)=>`<article class="dm-top3-card rank-${i+1}"><div class="dm-top3-rank">${i===0?"🥇":i===1?"🥈":"🥉"}<small>TOP ${i+1}</small></div><div class="dm-top3-player"><strong>${esc(r.game_name)}</strong><span>${esc(teamName(r.team_number))}</span></div><div class="dm-top3-kills"><b>${Number(r.total_kills)||0}</b><small>KILL</small></div></article>`).join("");
   }
