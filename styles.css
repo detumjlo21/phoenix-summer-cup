@@ -7985,3 +7985,23 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 @media(max-width:800px){
   .mvp-honor-panel .deathmatch-top3-mvp{grid-template-columns:1fr;}
 }
+
+
+/* PHOENIX TOP 3 MVP FIX: always show all three rank slots */
+.mvp-honor-panel .dm-top3-ranking-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  width:100%;
+}
+.mvp-honor-panel .dm-top3-card.is-empty{
+  opacity:.72;
+  border-style:dashed;
+}
+.mvp-honor-panel .dm-top3-card.is-empty .dm-top3-player strong{
+  font-size:14px;
+  color:var(--muted,#a7a7b2);
+}
+@media(max-width:760px){
+  .mvp-honor-panel .dm-top3-ranking-grid{grid-template-columns:1fr}
+}
