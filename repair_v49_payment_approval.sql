@@ -63,7 +63,7 @@ grant update on public.registration_requests to authenticated;
 
 -- Không cho đăng ký trực tiếp bỏ qua bước thanh toán.
 revoke all on function public.register_player_random_team(text,text) from public;
-revoke all on function public.register_player_random_team(text,text,text) from public;
+-- Không revoke overload 3 tham số vì database hiện tại không có function này.
 
 create or replace function public.create_registration_request(
   p_game_name text,

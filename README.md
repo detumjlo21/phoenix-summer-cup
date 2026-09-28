@@ -35,11 +35,14 @@ Migration này sửa bản Hall hiện tại đang hiện 0 và đảm bảo cá
 - Admin cấu hình phí/người và tiền tố nội dung chuyển khoản.
 - Admin kiểm tra danh sách đơn, Duyệt/Từ chối.
 - Chỉ đơn được duyệt mới được đưa vào bảng `players` và được xếp đội.
-- SQL migration: `repair_v49_payment_approval.sql`.
+- SQL migration: `repair_v50_payment_approval.sql`.
 
 ### Cài đặt
-1. Chạy `repair_v49_payment_approval.sql` trong Supabase SQL Editor.
+1. Chạy `repair_v50_payment_approval.sql` trong Supabase SQL Editor.
 2. Đăng nhập Admin → Thanh toán → nhập **phí đăng ký / người** → Lưu.
 3. Mở đăng ký.
 4. Người chơi tạo đơn → chuyển khoản → nhập mã giao dịch → gửi xác nhận.
 5. Admin đối chiếu giao dịch → Duyệt đơn.
+
+
+V50 HOTFIX: repair_v49_payment_approval.sql không còn gọi REVOKE trên register_player_random_team(text,text,text), vì DB hiện tại chỉ có register_player_random_team(text,text).
