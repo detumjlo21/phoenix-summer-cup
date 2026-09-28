@@ -14,11 +14,16 @@ background-size:34px 34px;mask-image:linear-gradient(to bottom,black,transparent
 .page{position:relative;width:min(960px,calc(100% - 24px));margin:auto;padding:28px 0 60px}
 .hero{text-align:center;padding:10px 0 18px}.hero.compact{padding-bottom:4px}
 
-.mode-hero-banner-wrap{display:block;width:100%;margin:0 auto 16px;overflow:hidden;border-radius:24px;border:1px solid rgba(255,255,255,.10);background:#090a0e;box-shadow:0 18px 55px rgba(0,0,0,.35)}
+.mode-hero-banner-wrap{position:relative;display:block;width:100%;margin:0 auto 16px;overflow:hidden;border-radius:24px;border:1px solid rgba(255,255,255,.10);background:#090a0e;box-shadow:0 18px 55px rgba(0,0,0,.35)}
 .mode-hero-banner{display:block;width:100%;aspect-ratio:16/7;object-fit:cover;object-position:center;transition:opacity .25s ease,transform .35s ease}
-.mode-hero-banner-wrap.deathmatch-banner{border-color:rgba(239,61,50,.35);box-shadow:0 20px 70px rgba(239,61,50,.18)}
+.mode-hero-banner-wrap.deathmatch-banner{border-color:rgba(239,61,50,.55);box-shadow:0 20px 70px rgba(239,61,50,.22);background:#050608}
+.mode-hero-banner-wrap.deathmatch-banner .mode-hero-banner{object-fit:contain;object-position:center}
+.deathmatch-hero-title{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;display:flex;align-items:center;justify-content:center;width:min(72%,620px);padding:10px 24px 12px;border:2px solid rgba(239,61,50,.95);border-radius:12px;background:linear-gradient(180deg,rgba(8,9,13,.94),rgba(8,9,13,.78));box-shadow:0 0 0 1px rgba(0,0,0,.8),0 0 35px rgba(239,61,50,.32),inset 0 0 28px rgba(239,61,50,.10);color:#fff;font-size:clamp(24px,5vw,58px);font-weight:1000;letter-spacing:clamp(1px,.35vw,5px);line-height:1;text-align:center;text-shadow:0 3px 0 #000,0 0 18px rgba(239,61,50,.55);white-space:nowrap}
+.deathmatch-hero-title::before,.deathmatch-hero-title::after{content:"";position:absolute;top:50%;width:70px;height:3px;background:#ef3d32;box-shadow:0 0 12px rgba(239,61,50,.65)}
+.deathmatch-hero-title::before{right:100%;margin-right:14px}
+.deathmatch-hero-title::after{left:100%;margin-left:14px}
 .hero-copy{display:none}
-@media(max-width:650px){.mode-hero-banner-wrap{border-radius:16px;margin-bottom:12px}.mode-hero-banner{aspect-ratio:16/8.5}}
+@media(max-width:650px){.mode-hero-banner-wrap{border-radius:16px;margin-bottom:12px}.mode-hero-banner{aspect-ratio:16/8.5}.deathmatch-hero-title{width:78%;padding:8px 12px;font-size:clamp(18px,6vw,32px);letter-spacing:1px}.deathmatch-hero-title::before,.deathmatch-hero-title::after{width:28px}.deathmatch-hero-title::before{margin-right:7px}.deathmatch-hero-title::after{margin-left:7px}}
 .logo{width:min(250px,68vw);height:auto;filter:drop-shadow(0 0 26px rgba(239,61,50,.42))}
 .logo.small{width:min(165px,48vw)}
 .eyebrow{margin:6px 0;color:var(--orange);font-size:12px;font-weight:900;letter-spacing:2px}

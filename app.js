@@ -136,9 +136,11 @@ function setModeHeroBanner(mode){
   const wrap=document.querySelector("#modeHeroBannerWrap");
   if(!img||!wrap)return;
   const deathmatch=mode==="deathmatch";
-  img.src=deathmatch?"deathmatch-banner.png":"survival-banner.png";
+  img.src=deathmatch?"deathmatch-logo.jpg":"survival-banner.png";
   img.alt=deathmatch?"PHOENIX CUP 2026 - Tử chiến":"PHOENIX CUP 2026 - Sinh tồn";
   wrap.classList.toggle("deathmatch-banner",deathmatch);
+  const title=document.querySelector("#deathmatchHeroTitle");
+  if(title)title.hidden=!deathmatch;
 }
 
 function hideRulesGate(){
