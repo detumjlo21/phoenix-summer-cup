@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP V52
+-- PHOENIX SUMMER CUP V56
 -- Đăng ký cá nhân + chuyển khoản + Admin duyệt đơn.
 -- Chạy sau các SQL hiện tại của website.
 
@@ -10,7 +10,7 @@ create table if not exists public.tournament_payment_settings(
   id integer primary key default 1 check(id=1),
   amount bigint not null default 0 check(amount>=0),
   content_prefix text not null default 'PSC',
-  instructions text not null default 'Quét mã QR, chuyển đúng số tiền và nhập mã giao dịch để gửi xác nhận.',
+  instructions text not null default 'Quét mã QR, chuyển đúng số tiền với nội dung TÊN FACEBOOK KHÔNG DẤU, sau đó bấm xác nhận đã chuyển khoản.',
   updated_at timestamptz not null default now()
 );
 
@@ -69,6 +69,24 @@ grant update on public.registration_requests to authenticated;
 revoke all on function public.register_player_random_team(text,text) from public;
 -- Không revoke overload 3 tham số vì database hiện tại không có function này.
 
+create or replace function public.normalize_payment_facebook_name(p_text text)
+returns text
+language sql
+immutable
+set search_path=public
+as $$
+  select upper(
+    regexp_replace(
+      translate(
+        lower(trim(coalesce(p_text,''))),
+        'áàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ',
+        'aaaaaaaaaaaaaaaaaeeeeeeeeeeeiiiiioooooooooooooooooouuuuuuuuuuuuyyyyyd'
+      ),
+      '[[:space:]]+', ' ', 'g'
+    )
+  );
+$$;
+
 create or replace function public.create_registration_request(
   p_game_name text,
   p_facebook_name text
@@ -86,7 +104,7 @@ as $$
 declare
   v_code text;
   v_amount bigint;
-  v_prefix text;
+  v_content text;
   v_pending integer;
   v_players integer;
 begin
@@ -108,6 +126,11 @@ begin
     raise exception 'invalid_facebook_name';
   end if;
 
+  v_content := public.normalize_payment_facebook_name(p_facebook_name);
+  if char_length(v_content)<2 then
+    raise exception 'invalid_payment_content';
+  end if;
+
   if exists(select 1 from public.players p where lower(p.game_name)=lower(trim(p_game_name))) then
     raise exception 'duplicate_game_name';
   end if;
@@ -125,9 +148,8 @@ begin
     raise exception 'duplicate_pending_facebook_name';
   end if;
 
-  select s.amount,s.content_prefix into v_amount,v_prefix
+  select s.amount into v_amount
   from public.tournament_payment_settings as s where s.id=1;
-
   if coalesce(v_amount,0)<=0 then
     raise exception 'payment_amount_not_configured';
   end if;
@@ -135,31 +157,52 @@ begin
   select count(*) into v_players from public.players;
   select count(*) into v_pending from public.registration_requests rr
   where rr.status in ('pending_payment','pending_review');
-
   if v_players+v_pending>=48 then
     raise exception 'tournament_full_pending';
   end if;
 
-  -- Tạo mã đơn bằng các hàm built-in của PostgreSQL.
-  -- md5(), clock_timestamp() và random() là hàm built-in của PostgreSQL.
   v_code := upper('PSC26-'||substr(md5(clock_timestamp()::text||random()::text||p_game_name||p_facebook_name),1,8));
 
   insert into public.registration_requests(
-    request_code,game_name,facebook_name,payment_amount,status
+    request_code,game_name,facebook_name,payment_amount,payment_reference,status
   ) values(
-    v_code,trim(p_game_name),trim(p_facebook_name),v_amount,'pending_payment'
+    v_code,trim(p_game_name),trim(p_facebook_name),v_amount,v_content,'pending_payment'
   );
 
   return query
-  select v_code,v_amount,
-         trim(coalesce(v_prefix,'PSC'))||' '||v_code,
-         'pending_payment'::text;
+  select v_code,v_amount,v_content,'pending_payment'::text;
 end;
 $$;
 
 revoke all on function public.create_registration_request(text,text) from public;
 grant execute on function public.create_registration_request(text,text) to anon,authenticated;
 
+create or replace function public.confirm_registration_payment(
+  p_request_code text
+)
+returns table(request_code text,status text)
+language plpgsql
+security definer
+set search_path=public
+as $$
+begin
+  update public.registration_requests rr
+  set status='pending_review',
+      payment_confirmed_at=now()
+  where rr.request_code=upper(trim(p_request_code))
+    and rr.status='pending_payment';
+
+  if not found then
+    raise exception 'request_not_found_or_already_confirmed';
+  end if;
+
+  return query
+  select upper(trim(p_request_code)),'pending_review'::text;
+end;
+$$;
+
+-- Tương thích với frontend cũ: nếu có nơi nào vẫn gửi mã giao dịch,
+-- hệ thống bỏ qua mã đó và vẫn dùng TÊN FACEBOOK KHÔNG DẤU làm nội dung chuyển khoản.
 create or replace function public.confirm_registration_payment(
   p_request_code text,
   p_payment_reference text
@@ -170,24 +213,12 @@ security definer
 set search_path=public
 as $$
 begin
-  if char_length(trim(coalesce(p_payment_reference,'')))<2 then
-    raise exception 'invalid_payment_reference';
-  end if;
-
-  update public.registration_requests rr
-  set payment_reference=trim(p_payment_reference),
-      status='pending_review',
-      payment_confirmed_at=now()
-  where rr.request_code=upper(trim(p_request_code))
-    and rr.status='pending_payment';
-
-  if not found then raise exception 'request_not_found_or_already_confirmed'; end if;
-
-  return query
-  select upper(trim(p_request_code)),'pending_review'::text;
+  return query select * from public.confirm_registration_payment(p_request_code);
 end;
 $$;
 
+revoke all on function public.confirm_registration_payment(text) from public;
+grant execute on function public.confirm_registration_payment(text) to anon,authenticated;
 revoke all on function public.confirm_registration_payment(text,text) from public;
 grant execute on function public.confirm_registration_payment(text,text) to anon,authenticated;
 

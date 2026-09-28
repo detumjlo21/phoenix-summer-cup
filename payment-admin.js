@@ -13,9 +13,7 @@ async function loadPaymentSettings(){
   const {data,error}=await sb.from('tournament_payment_settings').select('*').eq('id',1).maybeSingle();
   if(error){paymentAdminMsg(error.message,'error');return;}
   const amount=document.querySelector('#paymentAmountInput');
-  const prefix=document.querySelector('#paymentPrefixInput');
   if(amount)amount.value=data?.amount??0;
-  if(prefix)prefix.value=data?.content_prefix||'PSC';
 }
 
 async function loadPaymentRequests(){
@@ -38,8 +36,8 @@ async function loadPaymentRequests(){
       <span>Facebook: ${paymentAdminEsc(r.facebook_name)}</span>
       <span>Mã đơn: <b>${paymentAdminEsc(r.request_code)}</b></span>
       <span>Số tiền: <b>${paymentAdminMoney(r.payment_amount)}</b></span>
-      <span>Mã giao dịch: <b class="payment-ref">${paymentAdminEsc(r.payment_reference||'Chưa xác nhận')}</b></span>
-      <small class="muted">${r.status==='pending_review'?'Đã xác nhận chuyển khoản — chờ đối chiếu':'Chưa xác nhận đã chuyển khoản'}</small>
+      <span>Nội dung chuyển khoản: <b class="payment-ref">${paymentAdminEsc(r.payment_reference||r.facebook_name||'Chưa có')}</b></span>
+      <small class="muted">${r.status==='pending_review'?'Đã xác nhận đã chuyển khoản — chờ Admin duyệt':'Chờ người chơi chuyển khoản và xác nhận'}</small>
     </div>
     <div class="payment-request-actions">
       ${r.status==='pending_review'?`<button type="button" data-payment-approve="${r.id}">✓ DUYỆT ĐƠN</button>
@@ -57,9 +55,8 @@ window.loadPaymentAdmin=loadPaymentAdmin;
 
 document.querySelector('#savePaymentSettingsBtn')?.addEventListener('click',async()=>{
   const amount=Number(document.querySelector('#paymentAmountInput')?.value||0);
-  const prefix=(document.querySelector('#paymentPrefixInput')?.value||'PSC').trim().toUpperCase();
   if(amount<=0){paymentAdminMsg('Hãy nhập phí đăng ký lớn hơn 0.','error');return;}
-  const {error}=await sb.from('tournament_payment_settings').update({amount,content_prefix:prefix||'PSC',updated_at:new Date().toISOString()}).eq('id',1);
+  const {error}=await sb.from('tournament_payment_settings').update({amount,updated_at:new Date().toISOString()}).eq('id',1);
   if(error)paymentAdminMsg(error.message,'error');
   else paymentAdminMsg(`Đã lưu phí ${paymentAdminMoney(amount)} / người.`,'success');
 });

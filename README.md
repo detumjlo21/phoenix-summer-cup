@@ -60,3 +60,7 @@ V50 HOTFIX: repair_v49_payment_approval.sql không còn gọi REVOKE trên regis
 - Public/admin cache-busting versions bumped to v55.
 - Admin contains Survival/Deathmatch mode selector.
 - Run the payment and tournament-mode SQL files in the target Supabase project if not already applied.
+
+
+## V56 payment
+Nội dung chuyển khoản được tạo tự động từ TÊN FACEBOOK KHÔNG DẤU; người chơi chỉ cần bấm xác nhận đã chuyển khoản, không nhập mã giao dịch.

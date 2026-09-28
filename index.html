@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#08090d">
   <title>Phoenix Summer Cup Mùa 1</title>
-  <link rel="stylesheet" href="styles.css?v=55">
+  <link rel="stylesheet" href="styles.css?v=56">
   <link rel="stylesheet" href="prizes.css?v=41">
 </head>
 <body>
@@ -120,7 +120,7 @@
           <div>
             <p class="eyebrow">THANH TOÁN LỆ PHÍ</p>
             <h3>Chuyển khoản để gửi đơn duyệt</h3>
-            <p class="muted">Mỗi người chơi tự chuyển khoản. Sau khi chuyển, nhập mã giao dịch để Ban tổ chức kiểm tra.</p>
+            <p class="muted">Mỗi người chơi tự chuyển khoản. Nội dung chuyển khoản là TÊN FACEBOOK KHÔNG DẤU. Sau đó chỉ cần xác nhận đã chuyển khoản để gửi đơn cho Ban tổ chức.</p>
           </div>
           <strong id="paymentAmount" class="payment-amount">0đ</strong>
         </div>
@@ -133,12 +133,10 @@
           <div class="payment-info">
             <div class="payment-code-box">
               <span>Nội dung chuyển khoản bắt buộc</span>
-              <strong id="paymentContent">PSC</strong>
+              <strong id="paymentContent">TEN FACEBOOK KHONG DAU</strong>
               <button id="copyPaymentContent" type="button" class="secondary">Copy nội dung</button>
             </div>
             <p id="paymentInstructions" class="muted"></p>
-            <label for="paymentReference">Mã giao dịch / mã tham chiếu ngân hàng</label>
-            <input id="paymentReference" maxlength="100" placeholder="Ví dụ: FT123456789">
             <button id="confirmPaymentBtn" type="button">TÔI ĐÃ CHUYỂN KHOẢN</button>
             <p id="paymentMessage" class="message" aria-live="polite"></p>
           </div>
@@ -321,7 +319,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js?v=41"></script>
-  <script src="app.js?v=55"></script>
+  <script src="app.js?v=56"></script>
   <script src="scoreboard.js?v=41"></script>
   <script src="mvp.js?v=41"></script>
   <script src="champion.js?v=41"></script>

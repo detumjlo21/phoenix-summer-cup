@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#08090d">
   <title>Quản trị Phoenix Summer Cup</title>
-  <link rel="stylesheet" href="styles.css?v=55">
+  <link rel="stylesheet" href="styles.css?v=56">
   <link rel="stylesheet" href="prizes.css?v=41">
 </head>
 <body>
@@ -211,7 +211,7 @@
           <div>
             <p class="eyebrow">THANH TOÁN</p>
             <h2>Cài đặt phí & duyệt đơn đăng ký</h2>
-            <p class="muted">Mỗi người chơi tự chuyển khoản. Admin kiểm tra mã giao dịch rồi mới duyệt vào giải.</p>
+            <p class="muted">Mỗi người chơi tự chuyển khoản. Nội dung chuyển khoản là TÊN FACEBOOK KHÔNG DẤU. Admin kiểm tra đơn rồi mới duyệt vào giải.</p>
           </div>
           <span id="paymentPendingBadge" class="status-badge">0 đơn chờ</span>
         </div>
@@ -220,10 +220,6 @@
           <div>
             <label for="paymentAmountInput">Phí đăng ký / người</label>
             <input id="paymentAmountInput" type="number" min="0" step="1000" placeholder="Ví dụ: 50000">
-          </div>
-          <div>
-            <label for="paymentPrefixInput">Tiền tố nội dung chuyển khoản</label>
-            <input id="paymentPrefixInput" maxlength="20" placeholder="PSC">
           </div>
           <div class="payment-admin-actions">
             <button id="savePaymentSettingsBtn" type="button">Lưu cài đặt thanh toán</button>
@@ -528,15 +524,15 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="config.js?v=41"></script>
-  <script src="admin.js?v=55"></script>
-  <script src="admin-tournament.js?v=55"></script>
+  <script src="admin.js?v=56"></script>
+  <script src="admin-tournament.js?v=56"></script>
   <script src="admin-mvp.js?v=41"></script>
   <script src="admin-champion.js?v=41"></script>
   <script src="toast.js?v=41"></script>
   <script src="admin-results-control.js?v=41"></script>
   <script src="admin-poster.js?v=41"></script>
-  <script src="admin-season-manager.js?v=55"></script>
-  <script src="payment-admin.js?v=55"></script>
+  <script src="admin-season-manager.js?v=56"></script>
+  <script src="payment-admin.js?v=56"></script>
   <script src="admin-pro.js?v=42"></script>
   <script src="admin-prizes.js?v=41"></script>
 </body>

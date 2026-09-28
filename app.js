@@ -395,7 +395,7 @@ async function syncRegistrationStatus(){
       }else if(full){
         joinBtn.textContent="GIẢI ĐÃ ĐỦ 48 NGƯỜI";
       }else{
-        joinBtn.textContent="THAM GIA & RANDOM ĐỘI";
+        joinBtn.textContent="TẠO ĐƠN & THANH TOÁN";
       }
     }
   }catch(error){
@@ -699,7 +699,7 @@ async function showPaymentForRequest(request){
   const instructions=document.querySelector("#paymentInstructions");
   if(amount)amount.textContent=formatVnd(request.amount);
   if(content)content.textContent=request.content;
-  if(instructions)instructions.textContent="Chuyển đúng số tiền và giữ lại mã giao dịch. Sau đó nhập mã giao dịch bên dưới để gửi Admin duyệt.";
+  if(instructions)instructions.textContent="Chuyển đúng số tiền, ghi đúng nội dung chuyển khoản hiển thị ở trên, sau đó chỉ cần bấm xác nhận đã chuyển khoản.";
   renderRegistrationStatus({
     request_code:request.request_code,
     game_name:document.querySelector("#gameName")?.value.trim()||"",
@@ -743,16 +743,13 @@ document.querySelector("#copyPaymentContent")?.addEventListener("click",async()=
 
 document.querySelector("#confirmPaymentBtn")?.addEventListener("click",async()=>{
   if(!currentPaymentRequest)return;
-  const reference=document.querySelector("#paymentReference")?.value.trim();
-  if(reference.length<2){setPaymentMessage("Vui lòng nhập mã giao dịch sau khi chuyển khoản.","error");return}
   const button=document.querySelector("#confirmPaymentBtn");
   button.disabled=true;setPaymentMessage("Đang gửi xác nhận cho Admin...");
   const {data,error}=await sb.rpc("confirm_registration_payment",{
-    p_request_code:currentPaymentRequest.request_code,
-    p_payment_reference:reference
+    p_request_code:currentPaymentRequest.request_code
   });
   if(error){setPaymentMessage(error.message,"error");button.disabled=false;return}
-  setPaymentMessage("Đã gửi xác nhận. Admin sẽ kiểm tra giao dịch và duyệt đơn.","success");
+  setPaymentMessage("Đã gửi xác nhận. Admin sẽ kiểm tra và duyệt đơn.","success");
   await loadPaymentRequestStatus(currentPaymentRequest.request_code);
 });
 
@@ -767,11 +764,10 @@ async function restorePendingPaymentRequest(){
     return;
   }
   if(row.status!=='approved'){
-    currentPaymentRequest={request_code:row.request_code,amount:row.amount,content:`PSC ${row.request_code}`};
+    currentPaymentRequest={request_code:row.request_code,amount:row.amount,content:row.payment_reference||row.facebook_name||"TEN FACEBOOK KHONG DAU"};
     await showPaymentForRequest(currentPaymentRequest);
     document.querySelector("#gameName").value=row.game_name||"";
     document.querySelector("#facebookName").value=row.facebook_name||"";
-    if(row.payment_reference)document.querySelector("#paymentReference").value=row.payment_reference;
   }
   renderRegistrationStatus(row);
 }
