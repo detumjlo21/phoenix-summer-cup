@@ -140,7 +140,7 @@ begin
     raise exception 'tournament_full_pending';
   end if;
 
-  -- Không phụ thuộc gen_random_bytes()/pgcrypto để tạo mã đơn.
+  -- Tạo mã đơn bằng các hàm built-in của PostgreSQL.
   -- md5(), clock_timestamp() và random() là hàm built-in của PostgreSQL.
   v_code := upper('PSC26-'||substr(md5(clock_timestamp()::text||random()::text||p_game_name||p_facebook_name),1,8));
 

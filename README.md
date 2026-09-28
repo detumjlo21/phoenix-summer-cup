@@ -53,3 +53,10 @@ V50 HOTFIX: repair_v49_payment_approval.sql không còn gọi REVOKE trên regis
 - Chạy `repair_v54_tournament_modes.sql` một lần để thêm `tournament_settings.game_mode`.
 - Mùa mới có thể chọn chế độ riêng.
 - Khi chọn Tử chiến, Admin hiển thị bracket 3 bảng × 4 đội và ẩn các khu vực nhập Top/Booyah của Sinh tồn.
+
+
+## V55 deployment note
+- Public registration uses `create_registration_request` and button `TẠO ĐƠN & THANH TOÁN`.
+- Public/admin cache-busting versions bumped to v55.
+- Admin contains Survival/Deathmatch mode selector.
+- Run the payment and tournament-mode SQL files in the target Supabase project if not already applied.
