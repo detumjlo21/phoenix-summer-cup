@@ -102,7 +102,7 @@ function renderTournamentMode(){
   }
   if(description){
     description.textContent=mode==="deathmatch"
-      ?"Đang sử dụng bracket Tử chiến: 3 bảng × 4 đội, Bo3, lấy 3 đội/bảng."
+      ?"Đang sử dụng bracket Tử chiến: 12 đội cọ xát A/B/C, mỗi đội 2 trận, Top 8 vào tứ kết."
       :"Đang sử dụng hệ thống tính điểm Sinh tồn: Top + Kill + Booyah.";
   }
   if(deathmatchPanel)deathmatchPanel.hidden=mode!=="deathmatch";
@@ -206,10 +206,9 @@ function dmAdminKillRows(matchId,a,b){
 function renderDeathmatchAdmin(){
   const box=document.querySelector("#deathmatchAdminGroups"),meta=document.querySelector("#deathmatchAdminMeta"); if(!box)return;
   if(!deathmatchMatches.length){box.innerHTML=`<div class="dm-admin-empty">Chưa có bracket. Bấm <strong>Khởi tạo / Reset bracket Tử chiến</strong>.</div>`;if(meta)meta.textContent="Chưa khởi tạo bracket.";return;}
-  const done=deathmatchMatches.filter(m=>m.status==="completed").length; if(meta)meta.textContent=`${done}/27 trận đã hoàn tất`;
+  const done=deathmatchMatches.filter(m=>m.status==="completed").length; if(meta)meta.textContent=`${done}/19 trận đã hoàn tất`;
   const stages=[
-    ["group","VÒNG BẢNG",["A","B","C"]],
-    ["playoff","CỌ XÁT CHÉO",["X"]],
+    ["cross","CỌ XÁT CHÉO A / B / C",["X"]],
     ["quarterfinal","TỨ KẾT",["Q"]],
     ["semifinal","BÁN KẾT",["S"]],
     ["final","CHUNG KẾT",["F"]]
@@ -230,10 +229,10 @@ function renderDeathmatchAdmin(){
 }
 
 document.querySelector("#initDeathmatchBtn")?.addEventListener("click",async()=>{
-  if(!confirm("Khởi tạo lại bracket Tử chiến vòng bảng? Kết quả bracket vòng bảng hiện tại sẽ bị xóa."))return;
+  if(!confirm("Khởi tạo lại bracket Tử chiến 19 trận? Kết quả Tử chiến hiện tại sẽ bị xóa."))return;
   const {error}=await sb.rpc("admin_init_deathmatch_bracket");
   if(error){msg(adminMessage,error.message,"error");return;}
-  msg(adminMessage,"Đã khởi tạo bracket Tử chiến 27 trận.","success");
+  msg(adminMessage,"Đã khởi tạo bracket Tử chiến 19 trận.","success");
   await loadTournamentAdmin();
 });
 

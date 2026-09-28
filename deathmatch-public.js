@@ -1,4 +1,4 @@
-/* PHOENIX V61 - TỬ CHIẾN: 12 đội / 27 trận / cọ xát chéo / Top 8 / chung kết */
+/* PHOENIX V62 - TỬ CHIẾN: 12 đội / 19 trận / cọ xát A-B-C / Top 8 / chung kết */
 (()=>{
   const dmSb=window.supabase.createClient(window.PHOENIX_CONFIG.supabaseUrl,window.PHOENIX_CONFIG.supabaseKey);
   let dmTeams=[],dmMatches=[],dmTop3=[];
@@ -23,22 +23,13 @@
 
   function renderStandings(){
     const box=document.querySelector("#deathmatchStandings"); if(!box)return;
-    const groups=["A","B","C"];
-    box.innerHTML=groups.map(g=>{
-      const ms=dmMatches.filter(m=>m.stage==="group"&&m.group_code===g);
-      const rows=[];
-      const initial=g==="A"?[1,2,3,4]:g==="B"?[5,6,7,8]:[9,10,11,12];
-      initial.forEach(n=>{
-        const played=ms.filter(m=>m.status==="completed"&&(Number(m.team_a)===n||Number(m.team_b)===n));
-        const wins=ms.filter(m=>m.status==="completed"&&Number(m.winner_team)===n).length;
-        const losses=ms.filter(m=>m.status==="completed"&&(Number(m.team_a)===n||Number(m.team_b)===n)&&Number(m.winner_team)!==n).length;
-        rows.push({n,wins,losses,played:played.length});
-      });
-      rows.sort((a,b)=>b.wins-a.wins||a.losses-b.losses);
-      return `<article class="deathmatch-group-standings"><div class="dm-group-head"><div><span>BẢNG ${g}</span><strong>Thứ hạng vòng bảng</strong></div><b>4 đội</b></div>
+    const winsFor=n=>dmMatches.filter(m=>m.stage==="cross"&&m.status==="completed"&&Number(m.winner_team)===n).length;
+    const playedFor=n=>dmMatches.filter(m=>m.stage==="cross"&&m.status==="completed"&&(Number(m.team_a)===n||Number(m.team_b)===n)).length;
+    const rows=Array.from({length:12},(_,i)=>{const n=i+1;return {n,wins:winsFor(n),played:playedFor(n),losses:playedFor(n)-winsFor(n)};})
+      .sort((a,b)=>b.wins-a.wins||b.played-a.played||a.n-b.n);
+    box.innerHTML=`<article class="deathmatch-group-standings dm-overall-standing"><div class="dm-group-head"><div><span>BẢNG XẾP HẠNG CỌ XÁT</span><strong>12 đội • 2 trận/đội</strong></div><b>TOP 8</b></div>
       <div class="dm-table-head"><span>Hạng</span><span>Đội</span><span>Trận</span><span>W</span><span>L</span></div>
-      ${rows.map((r,i)=>`<div class="dm-standing-row"><div class="dm-rank">${i+1}</div><div class="dm-team-cell">${logo(r.n)?`<img src="${esc(logo(r.n))}" alt="">`:``}<strong>${esc(teamName(r.n))}</strong></div><div>${r.played}</div><div class="dm-win">${r.wins}</div><div>${r.losses}</div></div>`).join("")}</article>`;
-    }).join("");
+      ${rows.map((r,i)=>`<div class="dm-standing-row ${i<8?'qualified':''}"><div class="dm-rank">${i+1}</div><div class="dm-team-cell">${logo(r.n)?`<img src="${esc(logo(r.n))}" alt="">`:``}<strong>${esc(teamName(r.n))}</strong></div><div>${r.played}</div><div class="dm-win">${r.wins}</div><div>${r.losses}</div></div>`).join("")}</article>`;
   }
 
   function renderTop3(){
@@ -50,26 +41,24 @@
 
   function renderBracket(){
     const box=document.querySelector("#deathmatchSchedule"); if(!box)return;
-    const groups=["A","B","C"];
-    const groupHtml=groups.map(g=>{
-      const ms=dmMatches.filter(m=>m.stage==="group"&&m.group_code===g).sort((a,b)=>a.match_order-b.match_order);
-      return `<article class="dm-bracket-group"><div class="dm-bracket-group-head"><div><span class="eyebrow">PHOENIX DEATHMATCH</span><h4>BẢNG ${g}</h4><small>4 ĐỘI • 4 TRẬN • LẤY 3 ĐỘI</small></div><div class="dm-bracket-group-badge">BO3</div></div><div class="dm-group-four-grid">${ms.map(m=>card(m,m.round_name,"group-tone")).join("")}</div></article>`;
-    }).join("");
-
-    const branch=[
-      [1,5,"NHÁNH 1"],[2,6,"NHÁNH 2"],[3,7,"NHÁNH 3"],[4,8,"NHÁNH 4"]
+    const crossRounds=[
+      {title:"NHÁNH A ↔ B",start:1,end:4,sub:"4 trận • A gặp B"},
+      {title:"NHÁNH B ↔ C",start:5,end:8,sub:"4 trận • B gặp C"},
+      {title:"NHÁNH C ↔ A",start:9,end:12,sub:"4 trận • C gặp A"}
     ];
-    const playHtml=branch.map(([a,b,label])=>`<article class="dm-play-branch"><header><strong>${label}</strong><span>2 TRẬN</span></header>${card(match("playoff",a),`TRẬN ${a}`,"play-tone")}${card(match("playoff",b),`TRẬN ${b}`,"play-tone")}</article>`).join("");
+    const crossHtml=crossRounds.map(r=>{
+      const ms=dmMatches.filter(m=>m.stage==="cross"&&Number(m.match_order)>=r.start&&Number(m.match_order)<=r.end).sort((a,b)=>a.match_order-b.match_order);
+      return `<article class="dm-bracket-group"><div class="dm-bracket-group-head"><div><span class="eyebrow">PHOENIX DEATHMATCH</span><h4>${r.title}</h4><small>${r.sub}</small></div><div class="dm-bracket-group-badge">BO3</div></div><div class="dm-group-four-grid">${ms.map(m=>card(m,m.round_name,"group-tone")).join("")}</div></article>`;
+    }).join("");
     const qf=[1,2,3,4].map(n=>card(match("quarterfinal",n),`TỨ KẾT ${n}`,"qf-tone")).join("");
     const sf=[1,2].map(n=>card(match("semifinal",n),`BÁN KẾT ${n}`,"sf-tone")).join("");
     const f=card(match("final",1),"CHUNG KẾT","final-tone");
-    box.innerHTML=`<section class="dm-stage-block"><div class="dm-stage-heading"><span>1</span><div><h3>VÒNG BẢNG</h3><small>3 bảng × 4 đội • 12 trận</small></div></div><div class="dm-three-groups">${groupHtml}</div></section>
-      <section class="dm-stage-block"><div class="dm-stage-heading"><span>2</span><div><h3>VÒNG CỌ XÁT CHÉO GIỮA 3 BẢNG</h3><small>9 đội vào cọ xát • 8 trận • đấu theo nhánh</small></div></div><div class="dm-playoff-grid">${playHtml}</div></section>
-      <section class="dm-stage-block"><div class="dm-stage-heading"><span>3</span><div><h3>TỨ KẾT</h3><small>8 đội • 4 trận</small></div></div><div class="dm-final-grid four">${qf}</div></section>
-      <section class="dm-stage-block"><div class="dm-stage-heading"><span>4</span><div><h3>BÁN KẾT</h3><small>4 đội • 2 trận</small></div></div><div class="dm-final-grid two">${sf}</div></section>
-      <section class="dm-stage-block"><div class="dm-stage-heading gold"><span>5</span><div><h3>CHUNG KẾT</h3><small>2 đội • BO5</small></div></div><div class="dm-final-single">${f}</div></section>`;
+    box.innerHTML=`<section class="dm-stage-block"><div class="dm-stage-heading"><span>1</span><div><h3>VÒNG CỌ XÁT CHÉO A / B / C</h3><small>12 đội • mỗi đội 2 trận • tổng 12 trận</small></div></div><div class="dm-three-groups">${crossHtml}</div></section>
+      <section class="dm-stage-block"><div class="dm-stage-heading"><span>2</span><div><h3>TỨ KẾT</h3><small>Top 8 • 4 trận • đấu theo nhánh</small></div></div><div class="dm-final-grid four">${qf}</div></section>
+      <section class="dm-stage-block"><div class="dm-stage-heading"><span>3</span><div><h3>BÁN KẾT</h3><small>4 đội • 2 trận</small></div></div><div class="dm-final-grid two">${sf}</div></section>
+      <section class="dm-stage-block"><div class="dm-stage-heading gold"><span>4</span><div><h3>CHUNG KẾT</h3><small>2 đội • BO5</small></div></div><div class="dm-final-single">${f}</div></section>`;
     const done=dmMatches.filter(m=>m.status==="completed").length;
-    const meta=document.querySelector("#deathmatchScheduleMeta"); if(meta)meta.textContent=`${done}/27 trận đã chốt`;
+    const meta=document.querySelector("#deathmatchScheduleMeta"); if(meta)meta.textContent=`${done}/19 trận đã chốt`;
   }
 
   function toggle(mode){
