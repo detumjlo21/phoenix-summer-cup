@@ -211,6 +211,13 @@
           <button id="toggleRegistrationBtn" type="button">Đóng đăng ký</button>
         </div>
 
+        <div class="registration-deadline-admin">
+          <label for="registrationDeadlineInput">Hạn chót đăng ký</label>
+          <input id="registrationDeadlineInput" type="datetime-local">
+          <p class="muted">Sau thời điểm này hệ thống sẽ tự chặn tạo đơn mới, kể cả khi nút đăng ký vẫn đang mở. Để bỏ hạn chót, xóa thời gian rồi lưu.</p>
+          <button id="saveRegistrationDeadlineBtn" type="button" class="secondary">Lưu hạn chót</button>
+        </div>
+
         <label for="announcementInput">Thông báo của Ban tổ chức</label>
         <textarea id="announcementInput" class="admin-textarea" maxlength="500"
           placeholder="Ví dụ: Các đội tập trung trước giờ thi đấu 15 phút."></textarea>

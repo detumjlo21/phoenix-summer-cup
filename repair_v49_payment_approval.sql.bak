@@ -1,10 +1,6 @@
--- PHOENIX SUMMER CUP V52
+-- PHOENIX SUMMER CUP V49
 -- Đăng ký cá nhân + chuyển khoản + Admin duyệt đơn.
 -- Chạy sau các SQL hiện tại của website.
-
--- Hạn chót đăng ký do Admin quản lý. NULL = không đặt hạn.
-alter table public.tournament_settings
-  add column if not exists registration_deadline timestamptz;
 
 create table if not exists public.tournament_payment_settings(
   id integer primary key default 1 check(id=1),
@@ -92,13 +88,8 @@ declare
 begin
   perform pg_advisory_xact_lock(20260949);
 
-  if not coalesce((select ts.registration_open from public.tournament_settings ts where ts.id=1),true) then
+  if not coalesce((select registration_open from public.tournament_settings where id=1),true) then
     raise exception 'registration_closed_by_admin';
-  end if;
-
-  if (select ts.registration_deadline from public.tournament_settings ts where ts.id=1) is not null
-     and now() >= (select ts.registration_deadline from public.tournament_settings ts where ts.id=1) then
-    raise exception 'registration_deadline_passed';
   end if;
 
   if char_length(trim(p_game_name))<2 or char_length(trim(p_game_name))>40 then
@@ -133,8 +124,8 @@ begin
   end if;
 
   select count(*) into v_players from public.players;
-  select count(*) into v_pending from public.registration_requests rr
-  where rr.status in ('pending_payment','pending_review');
+  select count(*) into v_pending from public.registration_requests
+  where status in ('pending_payment','pending_review');
 
   if v_players+v_pending>=48 then
     raise exception 'tournament_full_pending';
@@ -172,12 +163,12 @@ begin
     raise exception 'invalid_payment_reference';
   end if;
 
-  update public.registration_requests rr
+  update public.registration_requests
   set payment_reference=trim(p_payment_reference),
       status='pending_review',
       payment_confirmed_at=now()
-  where rr.request_code=upper(trim(p_request_code))
-    and rr.status='pending_payment';
+  where request_code=upper(trim(p_request_code))
+    and status='pending_payment';
 
   if not found then raise exception 'request_not_found_or_already_confirmed'; end if;
 

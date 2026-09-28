@@ -61,6 +61,13 @@ async function loadTournamentAdmin(){
   renderAdminRanking(ranking||[]);
 }
 
+function toDateTimeLocalValue(value){
+  const date=new Date(value);
+  if(Number.isNaN(date.getTime()))return "";
+  const pad=n=>String(n).padStart(2,"0");
+  return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
 function renderRegistrationSettings(){
   const open=tournamentSettings?.registration_open!==false;
   const badge=document.querySelector("#adminRegistrationBadge");
@@ -73,6 +80,12 @@ function renderRegistrationSettings(){
   }
   if(button)button.textContent=open?"Đóng đăng ký":"Mở đăng ký";
   if(announcement)announcement.value=tournamentSettings?.announcement||"";
+
+  const deadlineInput=document.querySelector("#registrationDeadlineInput");
+  if(deadlineInput){
+    const raw=tournamentSettings?.registration_deadline;
+    deadlineInput.value=raw?toDateTimeLocalValue(raw):"";
+  }
 }
 
 function renderScheduleEditor(){
@@ -185,6 +198,28 @@ document.querySelector("#toggleRegistrationBtn")?.addEventListener("click",async
   if(error)msg(adminMessage,error.message,"error");
   else{
     msg(adminMessage,next?"Đã mở đăng ký.":"Đã đóng đăng ký.","success");
+    await loadTournamentAdmin();
+  }
+});
+
+document.querySelector("#saveRegistrationDeadlineBtn")?.addEventListener("click",async()=>{
+  const input=document.querySelector("#registrationDeadlineInput");
+  const value=input?.value||"";
+  const registration_deadline=value?new Date(value).toISOString():null;
+
+  if(value && Number.isNaN(new Date(value).getTime())){
+    msg(adminMessage,"Hạn chót không hợp lệ.","error");
+    return;
+  }
+
+  const {error}=await sb.from("tournament_settings").update({
+    registration_deadline,
+    updated_at:new Date().toISOString()
+  }).eq("id",1);
+
+  if(error)msg(adminMessage,error.message,"error");
+  else{
+    msg(adminMessage,registration_deadline?"Đã lưu hạn chót đăng ký.":"Đã bỏ hạn chót đăng ký.","success");
     await loadTournamentAdmin();
   }
 });

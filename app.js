@@ -1,5 +1,6 @@
 const cfg=window.PHOENIX_CONFIG;
 let registrationManuallyOpen=null;
+let registrationDeadline=cfg.closeAt;
 const sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseKey);
 
 const form=document.querySelector("#joinForm");
@@ -64,8 +65,12 @@ function captainBadgeMarkup(player,team){
 
 function setMsg(text,type=""){message.textContent=text;message.className=`message ${type}`}
 function isClosed(){
-  // Chỉ phụ thuộc vào nút Đóng/Mở của Admin.
-  return !registrationManuallyOpen;
+  if(!registrationManuallyOpen)return true;
+  if(registrationDeadline){
+    const deadline=Date.parse(registrationDeadline);
+    if(!Number.isNaN(deadline) && Date.now()>=deadline)return true;
+  }
+  return false;
 }
 
 function updateTopLayout(){
@@ -222,6 +227,27 @@ function updateUnit(id,value){
     setTimeout(()=>el.classList.remove("tick"),180);
   }
 }
+function isDeadlinePassed(){
+  if(!registrationDeadline)return false;
+  const deadline=Date.parse(registrationDeadline);
+  return !Number.isNaN(deadline) && Date.now()>=deadline;
+}
+
+function updateDeadlineChip(){
+  const chip=document.querySelector("#registrationDeadlineChip");
+  if(!chip)return;
+  if(!registrationDeadline){
+    chip.textContent="Không đặt hạn chót";
+    return;
+  }
+  const date=new Date(registrationDeadline);
+  if(Number.isNaN(date.getTime())){
+    chip.textContent="Hạn đăng ký chưa hợp lệ";
+    return;
+  }
+  chip.textContent=`Đến ${date.toLocaleString("vi-VN",{timeZone:"Asia/Ho_Chi_Minh",day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",hour12:false})}`;
+}
+
 function updateCountdown(){
   const daysEl=document.querySelector("#days");
   const hoursEl=document.querySelector("#hours");
@@ -230,7 +256,7 @@ function updateCountdown(){
   const titleEl=document.querySelector("#countdownTitle");
   const notice=document.querySelector("#registrationClosedNotice");
 
-  if(!registrationManuallyOpen){
+  if(!registrationManuallyOpen || isDeadlinePassed()){
     if(daysEl)daysEl.textContent="00";
     if(hoursEl)hoursEl.textContent="00";
     if(minutesEl)minutesEl.textContent="00";
@@ -244,18 +270,20 @@ function updateCountdown(){
     return;
   }
 
-  const deadlinePassed=Date.now()>=new Date(cfg.closeAt).getTime();
+  const deadlinePassed=isDeadlinePassed();
 
   if(titleEl){
     titleEl.textContent=deadlinePassed
-      ?"Đăng ký đang mở theo Admin"
-      :"Đăng ký kết thúc sau";
+      ?"Đăng ký đã hết hạn"
+      :registrationDeadline
+        ?"Đăng ký kết thúc sau"
+        :"Đăng ký đang mở";
   }
   if(notice)notice.hidden=true;
 
-  const diff=deadlinePassed
+  const diff=deadlinePassed||!registrationDeadline
     ?0
-    :Math.max(0,new Date(cfg.closeAt).getTime()-Date.now());
+    :Math.max(0,new Date(registrationDeadline).getTime()-Date.now());
   const days=Math.floor(diff/86400000);
   const hours=Math.floor(diff%86400000/3600000);
   const minutes=Math.floor(diff%3600000/60000);
@@ -343,14 +371,17 @@ resetRulesGate();
 async function syncRegistrationStatus(){
   try{
     const {data,error}=await sb.from("tournament_settings")
-      .select("registration_open")
+      .select("registration_open,registration_deadline,updated_at")
       .eq("id",1)
       .maybeSingle();
 
     if(error)throw error;
 
+    registrationDeadline=data?.registration_deadline||null;
+    updateDeadlineChip();
     setRegistrationVisibility(
-      data?.registration_open===true
+      data?.registration_open===true,
+      data?.updated_at||null
     );
     updateCountdown();
 
@@ -359,6 +390,8 @@ async function syncRegistrationStatus(){
       joinBtn.disabled=isClosed()||full;
       if(!registrationManuallyOpen){
         joinBtn.textContent="ĐĂNG KÝ ĐÃ ĐÓNG";
+      }else if(isDeadlinePassed()){
+        joinBtn.textContent="ĐÃ HẾT HẠN ĐĂNG KÝ";
       }else if(full){
         joinBtn.textContent="GIẢI ĐÃ ĐỦ 48 NGƯỜI";
       }else{
@@ -642,6 +675,7 @@ async function createPaymentRequest(gameName,facebookName){
   if(error){
     const known={
       registration_closed_by_admin:"Đăng ký đã được Ban tổ chức đóng.",
+      registration_deadline_passed:"Đã quá hạn đăng ký.",
       invalid_game_name:"Tên trong game không hợp lệ.",
       invalid_facebook_name:"Tên Facebook không hợp lệ.",
       duplicate_game_name:"Tên game đã được đăng ký.",
@@ -679,7 +713,7 @@ async function showPaymentForRequest(request){
 
 form.addEventListener("submit",async e=>{
   e.preventDefault();
-  if(isClosed()){setMsg("Đăng ký đã kết thúc.","error");return}
+  if(isClosed()){setMsg(isDeadlinePassed()?"Đã quá hạn đăng ký.":"Đăng ký đã đóng.","error");return}
   const gameName=document.querySelector("#gameName").value.trim();
   const facebookName=document.querySelector("#facebookName").value.trim();
   if(gameName.length<2){setMsg("Tên trong game phải có ít nhất 2 ký tự.","error");return}
