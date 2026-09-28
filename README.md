@@ -26,3 +26,20 @@ Upload toàn bộ nội dung thư mục này lên nhánh `main` của GitHub, th
 ## V45 Hall stats fix
 Sau khi deploy, chạy `repair_v45_hall_stats.sql` một lần trong Supabase SQL Editor.
 Migration này sửa bản Hall hiện tại đang hiện 0 và đảm bảo các mùa sau lưu snapshot Điểm / Hạ gục / Booyah / Kill MVP đúng từ kết quả giải.
+
+
+## V49 — Chuyển khoản & Admin duyệt đơn
+- Thêm QR nhận phí `payment-qr.png` do BTC cung cấp.
+- Mỗi người chơi tạo đơn riêng, nhận mã đơn và nội dung chuyển khoản riêng.
+- Người chơi nhập mã giao dịch sau khi chuyển khoản.
+- Admin cấu hình phí/người và tiền tố nội dung chuyển khoản.
+- Admin kiểm tra danh sách đơn, Duyệt/Từ chối.
+- Chỉ đơn được duyệt mới được đưa vào bảng `players` và được xếp đội.
+- SQL migration: `repair_v49_payment_approval.sql`.
+
+### Cài đặt
+1. Chạy `repair_v49_payment_approval.sql` trong Supabase SQL Editor.
+2. Đăng nhập Admin → Thanh toán → nhập **phí đăng ký / người** → Lưu.
+3. Mở đăng ký.
+4. Người chơi tạo đơn → chuyển khoản → nhập mã giao dịch → gửi xác nhận.
+5. Admin đối chiếu giao dịch → Duyệt đơn.

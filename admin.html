@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#08090d">
   <title>Quản trị Phoenix Summer Cup</title>
-  <link rel="stylesheet" href="styles.css?v=42">
+  <link rel="stylesheet" href="styles.css?v=49">
   <link rel="stylesheet" href="prizes.css?v=41">
 </head>
 <body>
@@ -150,10 +150,51 @@
         <div id="adminPlayers" class="players"></div>
       </section>
 
-      <section class="panel">
-        <p class="eyebrow">ĐỘI THI ĐẤU</p>
-        <h2>Danh sách đội</h2>
-        <div id="adminTeams" class="teams"></div>
+      <section class="panel admin-payment-panel">
+        <div class="section-row">
+          <div>
+            <p class="eyebrow">THANH TOÁN</p>
+            <h2>Cài đặt phí & duyệt đơn đăng ký</h2>
+            <p class="muted">Mỗi người chơi tự chuyển khoản. Admin kiểm tra mã giao dịch rồi mới duyệt vào giải.</p>
+          </div>
+          <span id="paymentPendingBadge" class="status-badge">0 đơn chờ</span>
+        </div>
+
+        <div class="payment-admin-settings">
+          <div>
+            <label for="paymentAmountInput">Phí đăng ký / người</label>
+            <input id="paymentAmountInput" type="number" min="0" step="1000" placeholder="Ví dụ: 50000">
+          </div>
+          <div>
+            <label for="paymentPrefixInput">Tiền tố nội dung chuyển khoản</label>
+            <input id="paymentPrefixInput" maxlength="20" placeholder="PSC">
+          </div>
+          <div class="payment-admin-actions">
+            <button id="savePaymentSettingsBtn" type="button">Lưu cài đặt thanh toán</button>
+          </div>
+        </div>
+        <p id="paymentAdminMessage" class="message" aria-live="polite"></p>
+
+        <div class="payment-admin-preview">
+          <img src="payment-qr.png" alt="QR nhận tiền" class="payment-admin-qr">
+          <div>
+            <strong>QR nhận tiền</strong>
+            <p class="muted">Đây là mã QR bạn đã cung cấp. Không cần nhập mật khẩu/OTP ngân hàng vào website.</p>
+          </div>
+        </div>
+
+        <div class="payment-request-list-wrap">
+          <div class="section-row">
+            <div>
+              <h3>Đơn đang chờ kiểm tra</h3>
+              <p class="muted">Duyệt sau khi đối chiếu giao dịch ngân hàng.</p>
+            </div>
+            <button id="refreshPaymentRequestsBtn" type="button" class="secondary">Tải lại đơn</button>
+          </div>
+          <div id="paymentRequestList" class="payment-request-list">
+            <p class="muted">Đang tải...</p>
+          </div>
+        </div>
       </section>
     </div>
 
@@ -423,6 +464,7 @@
   <script src="admin-results-control.js?v=41"></script>
   <script src="admin-poster.js?v=41"></script>
   <script src="admin-season-manager.js?v=47"></script>
+  <script src="payment-admin.js?v=49"></script>
   <script src="admin-pro.js?v=42"></script>
   <script src="admin-prizes.js?v=41"></script>
 </body>

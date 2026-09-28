@@ -61,6 +61,7 @@ async function loadAll(){
 
   renderAdminPlayers();
   renderTeams();renderEditor();
+  if(typeof window.loadPaymentAdmin==='function')await window.loadPaymentAdmin();
 }
 function renderAdminPlayers(){
   const filtered=currentPlayers.filter(p=>{

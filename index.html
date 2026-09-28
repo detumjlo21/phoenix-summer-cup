@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#08090d">
   <title>Phoenix Summer Cup Mùa 1</title>
-  <link rel="stylesheet" href="styles.css?v=41">
+  <link rel="stylesheet" href="styles.css?v=49">
   <link rel="stylesheet" href="prizes.css?v=41">
 </head>
 <body>
@@ -111,9 +111,48 @@
         <label for="facebookName">Tên Facebook</label>
         <input id="facebookName" maxlength="80" placeholder="Ví dụ: Nguyễn Văn A" required>
 
-        <button id="joinBtn" type="submit">THAM GIA & RANDOM ĐỘI</button>
+        <button id="joinBtn" type="submit">TẠO ĐƠN ĐĂNG KÝ</button>
         <p id="message" class="message" aria-live="polite"></p>
       </form>
+
+      <section id="paymentPanel" class="payment-panel" hidden>
+        <div class="payment-header">
+          <div>
+            <p class="eyebrow">THANH TOÁN LỆ PHÍ</p>
+            <h3>Chuyển khoản để gửi đơn duyệt</h3>
+            <p class="muted">Mỗi người chơi tự chuyển khoản. Sau khi chuyển, nhập mã giao dịch để Ban tổ chức kiểm tra.</p>
+          </div>
+          <strong id="paymentAmount" class="payment-amount">0đ</strong>
+        </div>
+        <div class="payment-grid">
+          <div class="payment-qr-wrap">
+            <img src="payment-qr.png" alt="Mã QR nhận phí đăng ký" class="payment-qr">
+            <p class="muted">Quét QR để chuyển khoản</p>
+            <p class="payment-recipient"><strong>VŨ ĐĂNG ĐOÀN</strong><br>Số tài khoản: 99999888881904</p>
+          </div>
+          <div class="payment-info">
+            <div class="payment-code-box">
+              <span>Nội dung chuyển khoản bắt buộc</span>
+              <strong id="paymentContent">PSC</strong>
+              <button id="copyPaymentContent" type="button" class="secondary">Copy nội dung</button>
+            </div>
+            <p id="paymentInstructions" class="muted"></p>
+            <label for="paymentReference">Mã giao dịch / mã tham chiếu ngân hàng</label>
+            <input id="paymentReference" maxlength="100" placeholder="Ví dụ: FT123456789">
+            <button id="confirmPaymentBtn" type="button">TÔI ĐÃ CHUYỂN KHOẢN</button>
+            <p id="paymentMessage" class="message" aria-live="polite"></p>
+          </div>
+        </div>
+      </section>
+
+      <section id="registrationStatusPanel" class="registration-status-panel" hidden>
+        <div>
+          <p class="eyebrow">THEO DÕI ĐƠN</p>
+          <h3 id="registrationStatusTitle">Đang chờ duyệt</h3>
+          <p id="registrationStatusText" class="muted"></p>
+        </div>
+        <span id="registrationStatusBadge" class="status-badge">Đang tải</span>
+      </section>
     </section>
 
     
@@ -282,7 +321,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js?v=41"></script>
-  <script src="app.js?v=41"></script>
+  <script src="app.js?v=49"></script>
   <script src="scoreboard.js?v=41"></script>
   <script src="mvp.js?v=41"></script>
   <script src="champion.js?v=41"></script>
