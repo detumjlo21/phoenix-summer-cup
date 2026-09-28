@@ -134,13 +134,20 @@ window.updatePhoenixTopLayout=updateTopLayout;
 function setModeHeroBanner(mode){
   const img=document.querySelector("#modeHeroBanner");
   const wrap=document.querySelector("#modeHeroBannerWrap");
+  const hero=document.querySelector(".hero");
   if(!img||!wrap)return;
+
   const deathmatch=mode==="deathmatch";
-  img.src=deathmatch?"deathmatch-logo.png":"survival-banner.png";
-  img.alt=deathmatch?"PHOENIX CUP 2026 - Tử chiến":"PHOENIX CUP 2026 - Sinh tồn";
+
+  // Tử chiến: chỉ dùng logo Phoenix vuông.
+  // Sinh tồn: giữ nguyên banner mới.
+  img.src=deathmatch?"assets/logo.png":"survival-banner.png";
+  img.alt=deathmatch
+    ?"PHOENIX CUP 2026 - Tử chiến"
+    :"PHOENIX CUP 2026 - Sinh tồn";
+
   wrap.classList.toggle("deathmatch-banner",deathmatch);
-  const title=document.querySelector("#deathmatchHeroTitle");
-  if(title)title.hidden=!deathmatch;
+  hero?.classList.toggle("deathmatch-mode",deathmatch);
 }
 
 function hideRulesGate(){
