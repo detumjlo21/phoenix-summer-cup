@@ -60,14 +60,11 @@
     if(dm)dm.hidden=mode!=="deathmatch";
     document.querySelectorAll(".survival-public-section").forEach(el=>el.hidden=mode==="deathmatch");
 
-    // Giữ nguyên khối MVP cũ. Tử chiến chỉ thêm bảng TOP 10 KILL ở phía trên.
-    const mvp=document.querySelector(".mvp-honor-panel");
-    if(mvp){
-      mvp.hidden=false;
-      mvp.classList.toggle("deathmatch-view",mode==="deathmatch");
+    // Tử chiến dùng bảng TOP 10 KILL thay hoàn toàn khối MVP cũ.
+    const top10Panel=document.querySelector(".deathmatch-top10-panel");
+    if(top10Panel){
+      top10Panel.hidden=mode!=="deathmatch";
     }
-    const top10=document.querySelector(".deathmatch-top10-honor");
-    if(top10)top10.hidden=mode!=="deathmatch";
 
     if(window.setModeHeroBanner)window.setModeHeroBanner(mode);
   }

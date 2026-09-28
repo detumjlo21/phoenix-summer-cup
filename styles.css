@@ -8036,3 +8036,23 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   .dm-top10-player strong{font-size:13px;}
   .dm-top10-kill b{font-size:21px;}
 }
+
+
+/* V67 - TỬ CHIẾN: thay toàn bộ MVP cũ bằng TOP 10 KILL */
+.deathmatch-top10-panel{
+  display:block;
+  padding:28px 32px 30px;
+}
+.deathmatch-top10-panel[hidden]{display:none!important;}
+.deathmatch-top10-panel .deathmatch-top10-heading{
+  margin-bottom:18px;
+  padding-bottom:16px;
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+.deathmatch-top10-panel .deathmatch-top10-heading h2{
+  margin-top:4px;
+  font-size:clamp(28px,4vw,42px);
+}
+@media(max-width:650px){
+  .deathmatch-top10-panel{padding:22px 16px 24px;}
+}
