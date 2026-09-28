@@ -5,6 +5,7 @@ let tournamentSchedule=[];
 let tournamentTeams=[];
 let selectedMatch=1;
 let selectedGameMode="survival";
+let deathmatchMatches=[];
 
 function tournamentEsc(value){
   return String(value??"").replace(/[&<>"']/g,char=>({
@@ -27,17 +28,19 @@ function rankLabel(rank){
 }
 
 async function loadTournamentAdmin(){
-  const [{data:settings},{data:schedule},{data:teams},{data:ranking}]=await Promise.all([
+  const [{data:settings},{data:schedule},{data:teams},{data:ranking},{data:dmMatches}]=await Promise.all([
     sb.from("tournament_settings").select("*").eq("id",1).maybeSingle(),
     sb.from("match_schedule").select("*").order("match_number"),
     sb.from("team_names").select("*").lte("team_number",12).order("team_number"),
-    sb.rpc("get_public_leaderboard")
+    sb.rpc("get_public_leaderboard"),
+    sb.from("deathmatch_matches").select("*").eq("stage","group").order("group_code").order("match_order")
   ]);
 
   tournamentSettings=settings;
   selectedGameMode=tournamentSettings?.game_mode==="deathmatch"?"deathmatch":"survival";
   tournamentSchedule=schedule||[];
   tournamentTeams=teams||[];
+  deathmatchMatches=dmMatches||[];
 
   const dashboardRegistration=document.querySelector("#dashboardRegistration");
   const dashboardMatch=document.querySelector("#dashboardMatch");
@@ -62,6 +65,7 @@ async function loadTournamentAdmin(){
   renderScheduleEditor();
   await renderScoreEntry();
   renderAdminRanking(ranking||[]);
+  renderDeathmatchAdmin();
 }
 
 function toDateTimeLocalValue(value){
@@ -179,6 +183,83 @@ function renderScheduleEditor(){
     </article>`;
   }).join("");
 }
+
+
+function dmAdminTeamName(n){
+  const team=tournamentTeams.find(t=>Number(t.team_number)===Number(n));
+  return team?.name||`Đội ${n||"?"}`;
+}
+function dmAdminLogo(n){
+  const team=tournamentTeams.find(t=>Number(t.team_number)===Number(n));
+  return team?.logo_url||"";
+}
+function dmAdminEsc(v){return tournamentEsc(v);}
+function renderDeathmatchAdmin(){
+  const box=document.querySelector("#deathmatchAdminGroups");
+  const meta=document.querySelector("#deathmatchAdminMeta");
+  if(!box)return;
+  if(!deathmatchMatches.length){
+    box.innerHTML=`<div class="dm-admin-empty">Chưa có bracket. Bấm <strong>Khởi tạo / Reset bracket vòng bảng</strong> để tạo 12 trận.</div>`;
+    if(meta)meta.textContent="Chưa khởi tạo bracket.";
+    return;
+  }
+  const done=deathmatchMatches.filter(m=>m.status==="completed").length;
+  if(meta)meta.textContent=`${done}/12 trận đã hoàn tất`;
+  box.innerHTML=["A","B","C"].map(g=>{
+    const matches=deathmatchMatches.filter(m=>m.group_code===g).sort((a,b)=>a.match_order-b.match_order);
+    return `<article class="dm-admin-group"><div class="dm-admin-group-head"><div><span>BẢNG ${g}</span><strong>4 đội → 3 vé</strong></div><small>Bo3</small></div>${matches.map(m=>{
+      const a=Number(m.team_a),b=Number(m.team_b),w=Number(m.winner_team);
+      return `<div class="dm-admin-match ${m.status}">
+        <div class="dm-admin-match-top"><strong>${dmAdminEsc(m.round_name)}</strong><span>${m.status==="completed"?"✅ Đã chốt":m.status==="live"?"🔴 Đang đấu":"⏳ Chưa đấu"}</span></div>
+        <div class="dm-admin-teams">
+          <div>${a?`${dmAdminLogo(a)?`<img src="${dmAdminEsc(dmAdminLogo(a))}" alt="">`:``}<strong>${dmAdminEsc(dmAdminTeamName(a))}</strong>`:`<em>Chờ kết quả trận trước</em>`}</div>
+          <b>VS</b>
+          <div>${b?`<strong>${dmAdminEsc(dmAdminTeamName(b))}</strong>${dmAdminLogo(b)?`<img src="${dmAdminEsc(dmAdminLogo(b))}" alt="">`:``}`:`<em>Chờ kết quả trận trước</em>`}</div>
+        </div>
+        <div class="dm-admin-controls">
+          <label>Ngày <input type="date" class="dmDate" data-id="${m.id}" value="${m.match_date||""}"></label>
+          <label>Giờ <input type="time" class="dmTime" data-id="${m.id}" value="${m.match_time?String(m.match_time).slice(0,5):""}"></label>
+          <button type="button" class="secondary dmSaveSchedule" data-id="${m.id}">Lưu lịch</button>
+          <select class="dmWinnerSelect" data-id="${m.id}" ${a&&b?"":"disabled"}>
+            <option value="">${w?"Đổi đội thắng":"Chọn đội thắng"}</option>
+            ${a?`<option value="${a}" ${w===a?"selected":""}>${dmAdminEsc(dmAdminTeamName(a))}</option>`:""}
+            ${b?`<option value="${b}" ${w===b?"selected":""}>${dmAdminEsc(dmAdminTeamName(b))}</option>`:""}
+          </select>
+          <button type="button" class="dmSaveWinner" data-id="${m.id}" ${a&&b?"":"disabled"}>${w?"Cập nhật thắng":"Chốt đội thắng"}</button>
+        </div>
+      </div>`;
+    }).join("")}</article>`;
+  }).join("");
+}
+
+document.querySelector("#initDeathmatchBtn")?.addEventListener("click",async()=>{
+  if(!confirm("Khởi tạo lại bracket Tử chiến vòng bảng? Kết quả bracket vòng bảng hiện tại sẽ bị xóa."))return;
+  const {error}=await sb.rpc("admin_init_deathmatch_groups");
+  if(error){msg(adminMessage,error.message,"error");return;}
+  msg(adminMessage,"Đã khởi tạo 3 bảng Tử chiến.","success");
+  await loadTournamentAdmin();
+});
+
+document.querySelector("#deathmatchAdminGroups")?.addEventListener("click",async e=>{
+  const saveSchedule=e.target.closest(".dmSaveSchedule");
+  if(saveSchedule){
+    const id=Number(saveSchedule.dataset.id);
+    const date=document.querySelector(`.dmDate[data-id="${id}"]`)?.value||null;
+    const time=document.querySelector(`.dmTime[data-id="${id}"]`)?.value||null;
+    const {error}=await sb.rpc("admin_save_deathmatch_schedule",{p_match_id:id,p_match_date:date,p_match_time:time});
+    if(error)msg(adminMessage,error.message,"error"); else {msg(adminMessage,"Đã lưu lịch Tử chiến.","success");await loadTournamentAdmin();}
+    return;
+  }
+  const saveWinner=e.target.closest(".dmSaveWinner");
+  if(saveWinner){
+    const id=Number(saveWinner.dataset.id);
+    const select=document.querySelector(`.dmWinnerSelect[data-id="${id}"]`);
+    const winner=Number(select?.value||0);
+    if(!winner){msg(adminMessage,"Hãy chọn đội thắng.","error");return;}
+    const {error}=await sb.rpc("admin_set_deathmatch_winner",{p_match_id:id,p_winner_team:winner,p_status:"completed"});
+    if(error)msg(adminMessage,error.message,"error"); else {msg(adminMessage,"Đã chốt đội thắng. Bracket sẽ tự cập nhật.","success");await loadTournamentAdmin();}
+  }
+});
 
 async function renderScoreEntry(){
   const body=document.querySelector("#scoreEntryBody");

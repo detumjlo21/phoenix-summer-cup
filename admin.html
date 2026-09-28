@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#08090d">
   <title>Quản trị Phoenix Summer Cup</title>
-  <link rel="stylesheet" href="styles.css?v=56">
+  <link rel="stylesheet" href="styles.css?v=57">
   <link rel="stylesheet" href="prizes.css?v=41">
 </head>
 <body>
@@ -105,28 +105,19 @@
       <section class="panel deathmatch-admin-panel" id="deathmatchAdminPanel" hidden>
         <div class="section-row">
           <div>
-            <p class="eyebrow">TỬ CHIẾN</p>
-            <h2>Bracket vòng bảng</h2>
-            <p class="muted">12 đội → 3 bảng × 4 đội. Mỗi bảng đánh Bo3 và lấy 3 đội đi tiếp.</p>
+            <p class="eyebrow">⚔️ TỬ CHIẾN</p>
+            <h2>Điều khiển bracket & lịch thi đấu</h2>
+            <p class="muted">12 đội → 3 bảng × 4 đội • Bo3 • mỗi bảng lấy 3 vé. Chọn đội thắng và đặt lịch ngay tại đây.</p>
           </div>
-          <span class="status-badge open">BO3</span>
+          <span class="status-badge closed">BO3</span>
         </div>
-        <div class="deathmatch-groups">
-          ${['A','B','C'].map(letter=>`<article class="deathmatch-group-card">
-            <div class="deathmatch-group-head"><strong>BẢNG ${letter}</strong><span>4 đội → 3 vé</span></div>
-            <div class="deathmatch-bracket-mini">
-              <div><span>Trận 1</span><b>Đội 1 🆚 Đội 2</b></div>
-              <div><span>Trận 2</span><b>Đội 3 🆚 Đội 4</b></div>
-              <div><span>Vé 1–2</span><b>2 đội thắng 🆚 nhau</b></div>
-              <div><span>Vé 3</span><b>2 đội thua 🆚 nhau</b></div>
-            </div>
-          </article>`).join('')}
+        <div class="deathmatch-admin-toolbar">
+          <button id="initDeathmatchBtn" type="button">⚔️ Khởi tạo / Reset bracket vòng bảng</button>
+          <span id="deathmatchAdminMeta" class="muted">Chưa khởi tạo bracket.</span>
         </div>
-        <div class="deathmatch-next-stage">
-          <strong>Vòng trong</strong>
-          <span>9 đội đi tiếp • Play-off → Tứ kết → Bán kết → Chung kết</span>
+        <div id="deathmatchAdminGroups" class="deathmatch-admin-groups">
+          <p class="muted">Đang tải bracket...</p>
         </div>
-        <p class="muted mode-note">Phần nhập kết quả Bo3/bracket sẽ dùng giao diện Tử chiến riêng, không dùng bảng Top/Booyah của Sinh tồn.</p>
       </section>
 
       <section class="panel admin-pro-panel" id="survivalTeamManagerPanel">
@@ -525,7 +516,7 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="config.js?v=41"></script>
   <script src="admin.js?v=56"></script>
-  <script src="admin-tournament.js?v=56"></script>
+  <script src="admin-tournament.js?v=57"></script>
   <script src="admin-mvp.js?v=41"></script>
   <script src="admin-champion.js?v=41"></script>
   <script src="toast.js?v=41"></script>

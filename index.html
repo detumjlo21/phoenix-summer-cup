@@ -174,7 +174,34 @@
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel deathmatch-public-panel" id="deathmatchPublicArea" hidden>
+      <div class="section-row deathmatch-public-head">
+        <div>
+          <p class="eyebrow">⚔️ PHOENIX DEATHMATCH</p>
+          <h2>Giải Tử chiến</h2>
+          <p class="muted">3 bảng × 4 đội • Bo3 • mỗi bảng lấy 3 đội đi tiếp</p>
+        </div>
+        <span class="status-badge closed">BO3</span>
+      </div>
+
+      <div class="deathmatch-stage-strip">
+        <span class="active">Vòng bảng</span><i>→</i><span>Play-off</span><i>→</i><span>Tứ kết</span><i>→</i><span>Bán kết</span><i>→</i><span>Chung kết</span>
+      </div>
+
+      <div class="deathmatch-section-title">
+        <div><p class="eyebrow">BẢNG XẾP HẠNG</p><h3>BXH từng bảng</h3></div>
+        <span id="deathmatchStandingsMeta" class="muted">Đang tải...</span>
+      </div>
+      <div id="deathmatchStandings" class="deathmatch-standings-grid"></div>
+
+      <div class="deathmatch-section-title schedule-title">
+        <div><p class="eyebrow">LỊCH THI ĐẤU</p><h3>Bracket vòng bảng</h3></div>
+        <span id="deathmatchScheduleMeta" class="muted">Đang tải...</span>
+      </div>
+      <div id="deathmatchSchedule" class="deathmatch-schedule-grid"></div>
+    </section>
+
+    <section class="panel survival-public-section" id="survivalScheduleSection">
       <div class="section-row">
         <div>
           <h2>Lịch thi đấu</h2>
@@ -186,7 +213,7 @@
     </section>
 
     
-    <section class="panel match-results-cta">
+    <section class="panel match-results-cta survival-public-section">
       <div>
         <p class="eyebrow">KẾT QUẢ GIẢI ĐẤU</p>
         <h2>📊 Kết quả từng trận</h2>
@@ -195,7 +222,7 @@
       <a class="match-results-link" href="results.html">Xem kết quả Trận 1–4</a>
     </section>
 
-<section class="panel leaderboard-panel">
+<section class="panel leaderboard-panel survival-public-section">
       <div class="leaderboard-header">
         <div>
           <p class="leaderboard-kicker">PHOENIX SUMMER CUP 2026</p>
@@ -320,7 +347,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js?v=41"></script>
   <script src="app.js?v=56"></script>
-  <script src="scoreboard.js?v=41"></script>
+  <script src="scoreboard.js?v=57"></script>
+  <script src="deathmatch-public.js?v=57"></script>
   <script src="mvp.js?v=41"></script>
   <script src="champion.js?v=41"></script>
 
