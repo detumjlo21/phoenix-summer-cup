@@ -102,7 +102,7 @@ function renderTournamentMode(){
   }
   if(description){
     description.textContent=mode==="deathmatch"
-      ?"Đang sử dụng bracket Tử chiến: 12 đội cọ xát A/B/C, mỗi đội 2 trận, Top 8 vào tứ kết."
+      ?"Đang sử dụng Tử chiến 17 trận: 6 trận Vòng 1 → 3 trận Vé vớt → 1 Quyết đấu (1 đặc cách) → Top 8 → Tứ kết."
       :"Đang sử dụng hệ thống tính điểm Sinh tồn: Top + Kill + Booyah.";
   }
   if(deathmatchPanel)deathmatchPanel.hidden=mode!=="deathmatch";
@@ -206,12 +206,14 @@ function dmAdminKillRows(matchId,a,b){
 function renderDeathmatchAdmin(){
   const box=document.querySelector("#deathmatchAdminGroups"),meta=document.querySelector("#deathmatchAdminMeta"); if(!box)return;
   if(!deathmatchMatches.length){box.innerHTML=`<div class="dm-admin-empty">Chưa có bracket. Bấm <strong>Khởi tạo / Reset bracket Tử chiến</strong>.</div>`;if(meta)meta.textContent="Chưa khởi tạo bracket.";return;}
-  const done=deathmatchMatches.filter(m=>m.status==="completed").length; if(meta)meta.textContent=`${done}/19 trận đã hoàn tất`;
+  const done=deathmatchMatches.filter(m=>m.status==="completed").length; if(meta)meta.textContent=`${done}/17 trận đã hoàn tất`;
   const stages=[
-    ["cross","CỌ XÁT CHÉO A / B / C",["X"]],
-    ["quarterfinal","TỨ KẾT",["Q"]],
+    ["round1","VÒNG 1 — 6 VÉ ĐẦU TIÊN",["R1"]],
+    ["repechage","VÒNG VÉ VỚT — 3 TRẬN",["RV"]],
+    ["decider","VÒNG QUYẾT ĐẤU — 1 TRẬN + 1 ĐẶC CÁCH",["D"]],
+    ["quarterfinal","TỨ KẾT — TOP 8",["Q"]],
     ["semifinal","BÁN KẾT",["S"]],
-    ["final","CHUNG KẾT",["F"]]
+    ["final","CHUNG KẾT BO5",["F"]]
   ];
   box.innerHTML=stages.map(([stage,title,groups])=>{
     const ms=deathmatchMatches.filter(m=>m.stage===stage).sort((a,b)=>Number(a.match_order)-Number(b.match_order));
@@ -222,17 +224,26 @@ function renderDeathmatchAdmin(){
         <div class="dm-admin-match-top"><strong>${dmAdminEsc(m.round_name)}</strong><span>${m.status==="completed"?"✅ Đã chốt":m.status==="live"?"🔴 Đang đấu":"⏳ Chưa đấu"}</span></div>
         <div class="dm-admin-teams"><div>${a?(dmAdminLogo(a)?`<img src="${dmAdminEsc(dmAdminLogo(a))}" alt="">`:"")+`<strong>${dmAdminEsc(dmAdminTeamName(a))}</strong>`:"<em>Chờ đội</em>"}</div><b>VS</b><div>${b?`<strong>${dmAdminEsc(dmAdminTeamName(b))}</strong>`+ (dmAdminLogo(b)?`<img src="${dmAdminEsc(dmAdminLogo(b))}" alt="">`:""):"<em>Chờ đội</em>"}</div></div>
         <div class="dm-admin-controls"><label>Ngày <input type="date" class="dmDate" data-id="${m.id}" value="${m.match_date||""}"></label><label>Giờ <input type="time" class="dmTime" data-id="${m.id}" value="${m.match_time?String(m.match_time).slice(0,5):""}"></label><button type="button" class="secondary dmSaveSchedule" data-id="${m.id}">Lưu lịch</button><select class="dmWinnerSelect" data-id="${m.id}" ${a&&b?"":"disabled"}><option value="">${w?"Đổi đội thắng":"Chọn đội thắng"}</option>${a?`<option value="${a}" ${w===a?"selected":""}>${dmAdminEsc(dmAdminTeamName(a))}</option>`:""}${b?`<option value="${b}" ${w===b?"selected":""}>${dmAdminEsc(dmAdminTeamName(b))}</option>`:""}</select><button type="button" class="dmSaveWinner" data-id="${m.id}" ${a&&b?"":"disabled"}>${w?"Cập nhật thắng":"Chốt đội thắng"}</button></div>
+        ${m.bye_team?`<div class="dm-bye-note">🎟️ Đặc cách: <strong>${dmAdminEsc(dmAdminTeamName(m.bye_team))}</strong></div>`:""}
         ${a&&b?`<details class="dm-kill-editor"><summary>🎯 Nhập Kill từng người trong trận</summary><table><thead><tr><th>Người chơi</th><th>Đội</th><th>Kill</th></tr></thead><tbody>${dmAdminKillRows(m.id,a,b)}</tbody></table><button type="button" class="secondary dmSaveKills" data-id="${m.id}">Lưu Kill trận này</button></details>`:""}
       </article>`;
     }).join("")}</div></section>`;
   }).join("");
 }
 
+document.querySelector("#drawDeathmatchRound1Btn")?.addEventListener("click",async()=>{
+  if(!confirm("Bốc thăm ngẫu nhiên 12 đội thành 6 cặp Vòng 1?"))return;
+  const {error}=await sb.rpc("admin_draw_deathmatch_round1");
+  if(error){msg(adminMessage,error.message,"error");return;}
+  msg(adminMessage,"Đã bốc thăm 6 cặp Vòng 1.","success");
+  await loadTournamentAdmin();
+});
+
 document.querySelector("#initDeathmatchBtn")?.addEventListener("click",async()=>{
-  if(!confirm("Khởi tạo lại bracket Tử chiến 19 trận? Kết quả Tử chiến hiện tại sẽ bị xóa."))return;
+  if(!confirm("Khởi tạo lại bracket Tử chiến 17 trận? Kết quả Tử chiến hiện tại sẽ bị xóa."))return;
   const {error}=await sb.rpc("admin_init_deathmatch_bracket");
   if(error){msg(adminMessage,error.message,"error");return;}
-  msg(adminMessage,"Đã khởi tạo bracket Tử chiến 19 trận.","success");
+  msg(adminMessage,"Đã khởi tạo bracket Tử chiến 17 trận.","success");
   await loadTournamentAdmin();
 });
 

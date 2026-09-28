@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#08090d">
   <title>Kết quả từng trận — PHOENIX CUP 2026</title>
-  <link rel="stylesheet" href="styles.css?v=41">
+  <link rel="stylesheet" href="styles.css?v=63">
 </head>
 <body>
   <div class="background-grid"></div>
@@ -15,10 +15,10 @@
       <a href="index.html" class="hall-back-link">← Trang chủ</a>
       <p class="eyebrow">PHOENIX CUP 2026</p>
       <h1>Kết quả từng trận</h1>
-      <p class="subtitle">Thứ hạng, Kill, điểm và MVP của Trận 1–4.</p>
+      <p class="subtitle">Sinh tồn: kết quả 4 trận. Tử chiến: kết quả 17 trận theo bracket.</p>
     </header>
 
-    <section class="panel">
+    <section class="panel survival-results-panel">
       <div class="results-tabs" role="tablist">
         <button class="result-tab active" type="button" data-match="1">Trận 1</button>
         <button class="result-tab" type="button" data-match="2">Trận 2</button>
@@ -31,11 +31,16 @@
       </div>
     </section>
 
+    <section class="panel deathmatch-results-panel" id="deathmatchResultsPanel" hidden>
+      <div class="section-row"><div><p class="eyebrow">⚔️ PHOENIX DEATHMATCH</p><h2>Kết quả 17 trận</h2><p class="muted">Không tính điểm. Chỉ thắng–thua; Kill được cộng để tính Top 3 MVP toàn giải.</p></div></div>
+      <div id="deathmatchResultsList" class="deathmatch-results-list"><p class="muted">Đang tải...</p></div>
+    </section>
+
     <footer><a href="index.html">Trang chủ</a></footer>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=41"></script>
-  <script src="results.js?v=41"></script>
+  <script src="config.js?v=63"></script>
+  <script src="results.js?v=63"></script>
 </body>
 </html>
