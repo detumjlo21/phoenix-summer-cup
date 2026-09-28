@@ -41,7 +41,7 @@ function renderHall(seasons){
       <div class="hall-v44-side-title">🏆 LỊCH SỬ VÔ ĐỊCH</div>
       ${seasons.map((s,i)=>`<button class="hall-v44-season-btn ${i===0?'active':''}" data-season="${i}">
         ${s.team_logo_url?`<img src="${hallEsc(s.team_logo_url)}" alt="">`:`<span>🏆</span>`}
-        <div><strong>${hallEsc(s.tournament_name||'Phoenix Summer Cup')}</strong><small>${hallEsc(s.season_label||`Mùa ${i+1}`)} • ${hallDate(s.season_date)}</small></div>
+        <div><strong>${hallEsc(s.tournament_name||'PHOENIX CUP 2026')}</strong><small>${hallEsc(s.season_label||`Mùa ${i+1}`)} • ${hallDate(s.season_date)}</small></div>
       </button>`).join('')}
     </aside>
     <div class="hall-v44-main">
@@ -62,7 +62,7 @@ async function getLiveChampionFallback(){
   if(!rows.length||!rows.every(r=>Number(r.matches_played||0)>=4))return null;
   const c=[...rows].sort((a,b)=>Number(a.current_rank||999)-Number(b.current_rank||999)||Number(b.total_points||0)-Number(a.total_points||0))[0];
   const m=Array.isArray(mvp)?mvp[0]:mvp;
-  return {season_label:"Mùa hiện tại",tournament_name:"Phoenix Summer Cup",season_date:null,team_number:c.team_number,team_name:c.team_name,team_logo_url:c.logo_url,total_points:c.total_points,total_kills:c.total_kills,booyahs:c.booyahs,mvp_name:mvpError?null:(m?.game_name||m?.player_name),mvp_kills:m?.total_kills||m?.kills||0,mvp_character_url:null};
+  return {season_label:"Mùa hiện tại",tournament_name:"PHOENIX CUP 2026",season_date:null,team_number:c.team_number,team_name:c.team_name,team_logo_url:c.logo_url,total_points:c.total_points,total_kills:c.total_kills,booyahs:c.booyahs,mvp_name:mvpError?null:(m?.game_name||m?.player_name),mvp_kills:m?.total_kills||m?.kills||0,mvp_character_url:null};
 }
 
 async function loadHallOfChampions(){

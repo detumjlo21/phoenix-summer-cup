@@ -131,6 +131,16 @@ function updateTopLayout(){
 
 window.updatePhoenixTopLayout=updateTopLayout;
 
+function setModeHeroBanner(mode){
+  const img=document.querySelector("#modeHeroBanner");
+  const wrap=document.querySelector("#modeHeroBannerWrap");
+  if(!img||!wrap)return;
+  const deathmatch=mode==="deathmatch";
+  img.src=deathmatch?"deathmatch-banner.png":"survival-banner.png";
+  img.alt=deathmatch?"PHOENIX CUP 2026 - Tử chiến":"PHOENIX CUP 2026 - Sinh tồn";
+  wrap.classList.toggle("deathmatch-banner",deathmatch);
+}
+
 function hideRulesGate(){
   if(!rulesGate)return;
   rulesGate.hidden=true;
@@ -347,16 +357,14 @@ continueButton.addEventListener("click",()=>{
   setTimeout(()=>{
     hideRulesGate();
 
-    // Bỏ qua phần hero/logo phía trên và cuộn tới
-    // thẻ nội dung đầu tiên: Thông báo Ban tổ chức.
-    const firstContentCard=
-      announcementPanel||
-      document.querySelector("main.page > .panel");
-
-    firstContentCard?.scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
+    // Khi đang mở đăng ký: giữ nguyên đầu trang, không tự kéo xuống.
+    // Khi đã đóng đăng ký: đưa người xem thẳng tới lịch thi đấu.
+    if(registrationManuallyOpen===false){
+      const target=document.querySelector("#deathmatchPublicArea:not([hidden])") || schedulePanel;
+      target?.scrollIntoView({behavior:"smooth",block:"start"});
+    }else{
+      window.scrollTo({top:0,behavior:"instant"});
+    }
   },320);
 });
 
@@ -367,6 +375,13 @@ setTimeout(()=>{
 },8000);
 
 resetRulesGate();
+
+async function syncModeHero(){
+  try{
+    const {data}=await sb.from("tournament_settings").select("game_mode").eq("id",1).maybeSingle();
+    setModeHeroBanner(data?.game_mode||"survival");
+  }catch{ setModeHeroBanner("survival"); }
+}
 
 async function syncRegistrationStatus(){
   try{
@@ -420,7 +435,9 @@ updateTopLayout();
 setInterval(updateCountdown,1000);
 updateCountdown();
 syncRegistrationStatus();
+syncModeHero();
 setInterval(syncRegistrationStatus,30000);
+setInterval(syncModeHero,15000);
 
 async function loadPublicData(){
   const [playersResult,teamsResult]=await Promise.all([

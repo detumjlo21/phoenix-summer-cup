@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP V54
+-- PHOENIX CUP 2026 V54
 -- Thêm lựa chọn chế độ giải: Sinh tồn / Tử chiến.
 -- Chạy một lần trong Supabase SQL Editor.
 

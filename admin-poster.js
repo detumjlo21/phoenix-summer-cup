@@ -20,7 +20,7 @@ async function downloadLeaderboardPoster(){
     exportWrap.className="leaderboard-export-wrap";
     exportWrap.innerHTML=`
       <div class="leaderboard-export-title">
-        <span>PHOENIX SUMMER CUP 2026</span>
+        <span>PHOENIX CUP 2026</span>
         <strong>BẢNG XẾP HẠNG TRỰC TIẾP</strong>
         <small>${new Date().toLocaleString("vi-VN")}</small>
       </div>

@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP V2
+-- PHOENIX CUP 2026 V2
 -- Chạy TOÀN BỘ file này một lần trong Supabase > SQL Editor.
 -- File này nâng cấp dữ liệu cũ sang kiểu: đăng ký xong random đội ngay.
 

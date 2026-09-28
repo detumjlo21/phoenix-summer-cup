@@ -381,7 +381,7 @@ function ensureV19Sections(){
       <div class="live-indicator"><span></span><strong id="liveBannerStatus">SẮP DIỄN RA</strong></div>
       <div class="live-banner-main">
         <div>
-          <p class="eyebrow">PHOENIX SUMMER CUP 2026</p>
+          <p class="eyebrow">PHOENIX CUP 2026</p>
           <h2 id="liveBannerTitle">Trận đấu sắp diễn ra</h2>
           <p id="liveBannerMeta" class="muted">Chưa cập nhật</p>
         </div>
@@ -416,7 +416,7 @@ function ensureV19Sections(){
       finished.className="panel tournament-finished";
       finished.hidden=true;
       finished.innerHTML=`
-        <p class="eyebrow">PHOENIX SUMMER CUP 2026</p>
+        <p class="eyebrow">PHOENIX CUP 2026</p>
         <h2>🏆 GIẢI ĐẤU ĐÃ KẾT THÚC</h2>
         <div id="finishedPodium" class="finished-podium"></div>
         <p class="muted">Cảm ơn tất cả các đội đã tham gia!</p>`;

@@ -2,7 +2,7 @@
 create table if not exists public.tournament_prizes(
   id integer primary key default 1 check(id=1),
   title text not null default 'CƠ CẤU GIẢI THƯỞNG',
-  subtitle text not null default 'Phoenix Summer Cup 2026 • Mùa 1',
+  subtitle text not null default 'PHOENIX CUP 2026 • Mùa 1',
   total_pool text not null default 'Đang cập nhật',
   champion_prize text not null default 'Đang cập nhật',
   runner_up_prize text not null default 'Đang cập nhật',
@@ -59,7 +59,7 @@ begin
   values(
     1,
     coalesce(nullif(trim(p_title),''),'CƠ CẤU GIẢI THƯỞNG'),
-    coalesce(nullif(trim(p_subtitle),''),'Phoenix Summer Cup 2026 • Mùa 1'),
+    coalesce(nullif(trim(p_subtitle),''),'PHOENIX CUP 2026 • Mùa 1'),
     coalesce(nullif(trim(p_total_pool),''),'Đang cập nhật'),
     coalesce(nullif(trim(p_champion_prize),''),'Đang cập nhật'),
     coalesce(nullif(trim(p_runner_up_prize),''),'Đang cập nhật'),

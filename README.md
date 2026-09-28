@@ -1,4 +1,4 @@
-# Phoenix Summer Cup — V41 Clean
+# PHOENIX CUP 2026 — V41 Clean
 
 Bản đã dọn gọn từ project hiện tại.
 

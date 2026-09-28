@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP V56
+-- PHOENIX CUP 2026 V56
 -- Đăng ký cá nhân + chuyển khoản + Admin duyệt đơn.
 -- Chạy sau các SQL hiện tại của website.
 

@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP V11.3
+-- PHOENIX CUP 2026 V11.3
 -- Tối đa 48 người = 12 đội, mỗi đội tối đa 4 người.
 
 insert into public.team_names(team_number,name)

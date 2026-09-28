@@ -204,6 +204,11 @@ function phoenixInitMatchMvpEffects(section){
 }
 
 async function loadMatchMvps(){
+  const {data:modeSettings}=await sb.from("tournament_settings").select("game_mode").eq("id",1).maybeSingle();
+  if(modeSettings?.game_mode==="deathmatch"){
+    document.querySelector("#matchMvpSection")?.remove();
+    return;
+  }
   const {data,error}=await sb.rpc("get_public_match_mvps");
   if(error)return;
 
@@ -229,7 +234,7 @@ async function loadMatchMvps(){
         <p class="muted">Tuyển thủ có số hạ gục cao nhất trong từng trận đấu.</p>
       </div>
       <div class="match-mvp-heading-side">
-        <span class="match-mvp-heading-badge">PHOENIX SUMMER CUP</span>
+        <span class="match-mvp-heading-badge">PHOENIX CUP 2026</span>
         <span class="match-mvp-scan-label">LIVE HONOR BOARD</span>
       </div>
     </div>

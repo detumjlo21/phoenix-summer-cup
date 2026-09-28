@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP V10.2
+-- PHOENIX CUP 2026 V10.2
 -- Sửa việc thành viên vẫn thấy đội cũ sau khi Admin chuyển đội.
 -- Chạy toàn bộ trong Supabase SQL Editor. Không xóa dữ liệu.
 

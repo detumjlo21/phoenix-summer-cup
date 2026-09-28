@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP V12 FINAL
+-- PHOENIX CUP 2026 V12 FINAL
 -- Chạy toàn bộ một lần trong Supabase SQL Editor.
 
 create table if not exists public.tournament_settings(

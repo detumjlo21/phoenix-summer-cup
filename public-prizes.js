@@ -35,7 +35,7 @@
     section.innerHTML=`
       <div class="prize-center-head">
         <div>
-          <p class="prize-center-kicker">PHOENIX SUMMER CUP</p>
+          <p class="prize-center-kicker">PHOENIX CUP 2026</p>
           <h2 class="prize-center-title">${esc(data.title)}</h2>
           <p class="prize-center-subtitle">${esc(data.subtitle)}</p>
         </div>

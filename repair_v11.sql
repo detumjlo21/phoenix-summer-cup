@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP V11 - TEAM LOGOS
+-- PHOENIX CUP 2026 V11 - TEAM LOGOS
 -- Chạy toàn bộ trong Supabase SQL Editor.
 -- Thêm upload logo đội từ trang Admin.
 

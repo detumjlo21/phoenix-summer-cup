@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP V8 FINAL
+-- PHOENIX CUP 2026 V8 FINAL
 -- Chạy toàn bộ một lần trong Supabase SQL Editor.
 
 create extension if not exists pgcrypto;

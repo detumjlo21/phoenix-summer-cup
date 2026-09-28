@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP V10 STABLE
+-- PHOENIX CUP 2026 V10 STABLE
 -- Chạy toàn bộ file này trong Supabase SQL Editor.
 
 -- 1. Sửa hàm đăng ký để mã đăng ký không bao giờ bị trùng.

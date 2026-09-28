@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP V3 - SỬA DATABASE
+-- PHOENIX CUP 2026 V3 - SỬA DATABASE
 -- Chạy toàn bộ một lần trong Supabase SQL Editor.
 -- Giữ nguyên tài khoản Admin và dữ liệu người đăng ký hiện có.
 

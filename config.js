@@ -3,6 +3,6 @@ window.PHOENIX_CONFIG = {
   supabaseKey: "sb_publishable_6yVhgxIzPcUyDPAvtfP3VA_DGL3lWS0",
   maxPlayers: 48,
   teamSize: 4,
-  tournamentName: "Phoenix Summer Cup 2026 — Lần 2",
+  tournamentName: "PHOENIX CUP 2026",
   closeAt: "2026-07-30T23:59:59+07:00"
 };

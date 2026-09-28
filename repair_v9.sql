@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP V9
+-- PHOENIX CUP 2026 V9
 -- Chạy toàn bộ file này trong Supabase SQL Editor.
 -- Thêm chức năng Admin chuyển thành viên giữa các đội.
 

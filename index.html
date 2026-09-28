@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#08090d">
-  <title>Phoenix Summer Cup Mùa 1</title>
-  <link rel="stylesheet" href="styles.css?v=58">
+  <title>PHOENIX CUP 2026 Mùa 1</title>
+  <link rel="stylesheet" href="styles.css?v=61">
   <link rel="stylesheet" href="prizes.css?v=41">
 </head>
 <body>
@@ -15,7 +15,7 @@
         <img
           id="rulesPoster"
           src="rules-poster.png"
-          alt="Bảng cách thức tính điểm và quy định Phoenix Summer Cup 2026"
+          alt="Bảng cách thức tính điểm và quy định PHOENIX CUP 2026"
           class="rules-poster-v6"
           loading="eager"
         >
@@ -45,10 +45,15 @@
 
   <main class="page">
     <header class="hero">
-      <img src="assets/logo.png" alt="Logo Phoenix" class="logo">
-      <p class="eyebrow">PHOENIX TOURNAMENT</p>
-      <h1>Phoenix Summer Cup 2026</h1>
-      <p class="subtitle">Mùa 1 • Giải đấu nội bộ quân đoàn</p>
+      <picture id="modeHeroBannerWrap" class="mode-hero-banner-wrap">
+        <img id="modeHeroBanner" src="survival-banner.png" alt="PHOENIX CUP 2026 - Sinh tồn" class="mode-hero-banner">
+      </picture>
+      <div class="hero-copy">
+        <img src="assets/logo.png" alt="Logo Phoenix" class="logo">
+        <p class="eyebrow">PHOENIX TOURNAMENT</p>
+        <h1>PHOENIX CUP 2026</h1>
+        <p class="subtitle">Mùa 1 • Giải đấu nội bộ quân đoàn</p>
+      </div>
 
       <section class="countdown-wrap" aria-label="Thời gian đăng ký còn lại">
         <p class="countdown-title">Đăng ký kết thúc sau</p>
@@ -179,13 +184,13 @@
         <div>
           <p class="eyebrow">⚔️ PHOENIX DEATHMATCH</p>
           <h2>Giải Tử chiến</h2>
-          <p class="muted">3 bảng × 4 đội • Bo3 • mỗi bảng lấy 3 đội đi tiếp</p>
+          <p id="deathmatchPublicSubtitle" class="muted">12 đội • 3 bảng • đấu chéo • 8 đội vào tứ kết</p>
         </div>
         <span class="status-badge closed">BO3</span>
       </div>
 
       <div class="deathmatch-stage-strip">
-        <span class="active">Vòng bảng</span><i>→</i><span>Play-off</span><i>→</i><span>Tứ kết</span><i>→</i><span>Bán kết</span><i>→</i><span>Chung kết</span>
+        <span class="active">Vòng bảng</span><i>→</i><span>Cọ xát chéo</span><i>→</i><span>Tứ kết</span><i>→</i><span>Bán kết</span><i>→</i><span>Chung kết</span>
       </div>
 
       <div class="deathmatch-section-title">
@@ -194,13 +199,19 @@
       </div>
       <div id="deathmatchStandings" class="deathmatch-standings-grid"></div>
 
+      <div class="deathmatch-section-title dm-top3-title">
+        <div><p class="eyebrow">VINH DANH CÁ NHÂN</p><h3>TOP 3 MVP KILL</h3></div>
+        <span id="deathmatchMvpMeta" class="muted">Tổng kill tất cả các trận</span>
+      </div>
+      <div id="deathmatchTop3Mvp" class="deathmatch-top3-mvp"></div>
+
       <div class="deathmatch-section-title schedule-title">
         <div><p class="eyebrow">LỊCH THI ĐẤU</p><h3>BRACKET VÒNG BẢNG</h3></div>
         <span id="deathmatchScheduleMeta" class="muted">Đang tải...</span>
       </div>
       <div class="deathmatch-bracket-legend">
-        <span><i class="bracket-dot upper"></i> NHÁNH TRÊN</span>
-        <span><i class="bracket-dot lower"></i> NHÁNH DƯỚI</span>
+        <span><i class="bracket-dot upper"></i> NHÁNH CỌ XÁT</span>
+        <span><i class="bracket-dot lower"></i> NHÁNH PLAY-OFF</span>
         <span><b>BO3</b> • Thắng 2 ván</span>
       </div>
       <div id="deathmatchSchedule" class="deathmatch-bracket-list"></div>
@@ -222,7 +233,7 @@
       <div>
         <p class="eyebrow">KẾT QUẢ GIẢI ĐẤU</p>
         <h2>📊 Kết quả từng trận</h2>
-        <p class="muted">Xem thứ hạng, Kill, điểm và MVP của từng trận đấu.</p>
+        <p class="muted">Xem kết quả, Kill và Top 3 MVP tính trên toàn bộ các trận Tử chiến.</p>
       </div>
       <a class="match-results-link" href="results.html">Xem kết quả Trận 1–4</a>
     </section>
@@ -230,7 +241,7 @@
 <section class="panel leaderboard-panel survival-public-section">
       <div class="leaderboard-header">
         <div>
-          <p class="leaderboard-kicker">PHOENIX SUMMER CUP 2026</p>
+          <p class="leaderboard-kicker">PHOENIX CUP 2026</p>
           <h2>Bảng xếp hạng trực tiếp</h2>
           <p id="leaderboardSubtitle" class="muted">Chưa có kết quả trận đấu.</p>
         </div>
@@ -319,7 +330,7 @@
 
 <section id="championHonorSection" class="panel champion-honor-panel" hidden>
       <div class="champion-honor-heading">
-        <p class="eyebrow">PHOENIX SUMMER CUP 2026</p>
+        <p class="eyebrow">PHOENIX CUP 2026</p>
         <h2>🏆 NHÀ VÔ ĐỊCH</h2>
         <p class="muted">Đội dẫn đầu sau khi hoàn tất 4 trận đấu.</p>
       </div>
@@ -353,7 +364,7 @@
   <script src="config.js?v=41"></script>
   <script src="app.js?v=56"></script>
   <script src="scoreboard.js?v=57"></script>
-  <script src="deathmatch-public.js?v=59"></script>
+  <script src="deathmatch-public.js?v=61"></script>
   <script src="mvp.js?v=41"></script>
   <script src="champion.js?v=41"></script>
 

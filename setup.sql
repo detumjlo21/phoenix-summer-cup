@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP 2026 — LẦN 2
+-- PHOENIX CUP 2026 — LẦN 2
 -- Chạy toàn bộ file này trong Supabase > SQL Editor > New query > Run
 
 create extension if not exists pgcrypto;

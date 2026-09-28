@@ -1,4 +1,4 @@
--- PHOENIX SUMMER CUP V56
+-- PHOENIX CUP 2026 V56
 -- Nội dung chuyển khoản = TÊN FACEBOOK KHÔNG DẤU. Người chơi chỉ cần bấm xác nhận đã chuyển khoản.
 -- Chạy file repair_v49_payment_approval.sql của V56, hoặc chạy file này sau đó nếu cần đồng bộ riêng phần payment.
 
