@@ -71,9 +71,65 @@
         </article>
       </section>
 
-      
-      
-      <section class="panel admin-pro-panel">
+
+      <section class="panel tournament-mode-panel" id="tournamentModePanel">
+        <div class="section-row">
+          <div>
+            <p class="eyebrow">CHẾ ĐỘ GIẢI ĐẤU</p>
+            <h2>Chọn loại giải đang sử dụng</h2>
+            <p class="muted">Mỗi mùa chỉ dùng một chế độ. Bạn có thể đổi cho mùa hiện tại và chọn lại khi tạo mùa mới.</p>
+          </div>
+          <span id="currentGameModeBadge" class="status-badge open">Sinh tồn</span>
+        </div>
+        <div class="mode-choice-grid">
+          <button type="button" class="mode-choice-card active" data-game-mode="survival">
+            <span class="mode-choice-icon">🪖</span>
+            <span class="mode-choice-title">GIẢI SINH TỒN</span>
+            <span class="mode-choice-text">12 đội • 4 trận • tính Top + Kill + Booyah</span>
+            <span class="mode-choice-check">✓ Đang chọn</span>
+          </button>
+          <button type="button" class="mode-choice-card" data-game-mode="deathmatch">
+            <span class="mode-choice-icon">⚔️</span>
+            <span class="mode-choice-title">GIẢI TỬ CHIẾN</span>
+            <span class="mode-choice-text">12 đội • 3 bảng • Bo3 • đấu loại</span>
+            <span class="mode-choice-check">Chọn chế độ này</span>
+          </button>
+        </div>
+        <div class="mode-save-row">
+          <span id="gameModeDescription" class="muted">Đang sử dụng hệ thống tính điểm Sinh tồn.</span>
+          <button id="saveGameModeBtn" type="button">💾 Lưu chế độ giải</button>
+        </div>
+        <p id="gameModeMessage" class="message" aria-live="polite"></p>
+      </section>
+
+      <section class="panel deathmatch-admin-panel" id="deathmatchAdminPanel" hidden>
+        <div class="section-row">
+          <div>
+            <p class="eyebrow">TỬ CHIẾN</p>
+            <h2>Bracket vòng bảng</h2>
+            <p class="muted">12 đội → 3 bảng × 4 đội. Mỗi bảng đánh Bo3 và lấy 3 đội đi tiếp.</p>
+          </div>
+          <span class="status-badge open">BO3</span>
+        </div>
+        <div class="deathmatch-groups">
+          ${['A','B','C'].map(letter=>`<article class="deathmatch-group-card">
+            <div class="deathmatch-group-head"><strong>BẢNG ${letter}</strong><span>4 đội → 3 vé</span></div>
+            <div class="deathmatch-bracket-mini">
+              <div><span>Trận 1</span><b>Đội 1 🆚 Đội 2</b></div>
+              <div><span>Trận 2</span><b>Đội 3 🆚 Đội 4</b></div>
+              <div><span>Vé 1–2</span><b>2 đội thắng 🆚 nhau</b></div>
+              <div><span>Vé 3</span><b>2 đội thua 🆚 nhau</b></div>
+            </div>
+          </article>`).join('')}
+        </div>
+        <div class="deathmatch-next-stage">
+          <strong>Vòng trong</strong>
+          <span>9 đội đi tiếp • Play-off → Tứ kết → Bán kết → Chung kết</span>
+        </div>
+        <p class="muted mode-note">Phần nhập kết quả Bo3/bracket sẽ dùng giao diện Tử chiến riêng, không dùng bảng Top/Booyah của Sinh tồn.</p>
+      </section>
+
+      <section class="panel admin-pro-panel" id="survivalTeamManagerPanel">
         <div class="admin-pro-header">
           <div>
             <p class="eyebrow">TEAM MANAGER</p>
@@ -224,14 +280,14 @@
         <button id="saveAnnouncementBtn" type="button">Lưu thông báo</button>
       </section>
 
-      <section class="panel">
+      <section class="panel survival-only" id="survivalSchedulePanel">
         <p class="eyebrow">LỊCH THI ĐẤU</p>
         <h2>Quản lý 4 trận</h2>
         <p class="muted">Chỉ có map, ngày và giờ. Không có ID phòng hoặc mật khẩu.</p>
         <div id="scheduleEditor" class="schedule-editor"></div>
       </section>
 
-      <section class="panel">
+      <section class="panel survival-only" id="survivalScorePanel">
         <div class="section-row">
           <div>
             <p class="eyebrow">NHẬP KẾT QUẢ</p>
@@ -267,7 +323,7 @@
         </div>
       </section>
 
-      <section class="panel mvp-image-only-panel">
+      <section class="panel mvp-image-only-panel survival-only" id="survivalMvpPanel">
         <div class="section-row">
           <div>
             <p class="eyebrow">ẢNH MVP</p>
@@ -408,6 +464,15 @@
             </p>
           </div>
 
+          <div class="new-season-mode-box">
+            <label for="newSeasonGameMode">Chế độ cho mùa mới</label>
+            <select id="newSeasonGameMode" class="match-select">
+              <option value="survival">🪖 Giải Sinh tồn</option>
+              <option value="deathmatch">⚔️ Giải Tử chiến</option>
+            </select>
+            <small class="muted">Chọn trước khi bấm Tạo mùa giải mới.</small>
+          </div>
+
           <label class="season-keep-option">
             <input id="keepTeamsForNewSeason" type="checkbox" checked>
             <span>
@@ -429,7 +494,7 @@
         </div>
       </section>
 
-<section class="panel leaderboard-panel">
+<section class="panel leaderboard-panel survival-only" id="survivalLeaderboardPanel">
         <div class="leaderboard-header">
           <div>
             <p class="eyebrow">BẢNG XẾP HẠNG</p>
@@ -464,14 +529,14 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="config.js?v=41"></script>
   <script src="admin.js?v=41"></script>
-  <script src="admin-tournament.js?v=41"></script>
+  <script src="admin-tournament.js?v=54"></script>
   <script src="admin-mvp.js?v=41"></script>
   <script src="admin-champion.js?v=41"></script>
   <script src="toast.js?v=41"></script>
   <script src="admin-results-control.js?v=41"></script>
   <script src="admin-poster.js?v=41"></script>
-  <script src="admin-season-manager.js?v=47"></script>
-  <script src="payment-admin.js?v=49"></script>
+  <script src="admin-season-manager.js?v=54"></script>
+  <script src="payment-admin.js?v=54"></script>
   <script src="admin-pro.js?v=42"></script>
   <script src="admin-prizes.js?v=41"></script>
 </body>

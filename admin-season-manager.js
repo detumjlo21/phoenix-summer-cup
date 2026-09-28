@@ -1,5 +1,12 @@
 const RESET_CONFIRM_TEXT="TAO MUA MOI";
 
+async function saveNewSeasonGameMode(){
+  const mode=document.querySelector("#newSeasonGameMode")?.value==="deathmatch"?"deathmatch":"survival";
+  const {error}=await sb.from("tournament_settings").update({game_mode:mode,updated_at:new Date().toISOString()}).eq("id",1);
+  if(error)throw new Error(`Không thể lưu chế độ mùa mới: ${error.message}`);
+  return mode;
+}
+
 function setSeasonManagerBusy(busy,text){
   const status=document.querySelector("#seasonManagerStatus");
   const buttons=[
@@ -150,6 +157,7 @@ document.querySelector("#createNewSeasonBtn")?.addEventListener("click",async()=
     // Ưu tiên RPC nguyên tử nếu database đã có V28.
     const rpc=await sb.rpc("admin_start_new_season",{p_keep_teams:keepTeams});
     if(!rpc.error){
+      await saveNewSeasonGameMode();
       toast("Đã tạo mùa giải mới thành công.","success");
       confirmation.value="";
       setTimeout(()=>location.reload(),1000);
@@ -160,6 +168,7 @@ document.querySelector("#createNewSeasonBtn")?.addEventListener("click",async()=
     console.warn("admin_start_new_season failed, using client fallback:",rpc.error);
     const backedUp=await backupBeforeClientReset();
     await clientResetNewSeason(keepTeams);
+    await saveNewSeasonGameMode();
     toast(
       backedUp
         ?"Đã tạo mùa giải mới. Backup cũng đã được tải về máy."

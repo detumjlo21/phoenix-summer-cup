@@ -46,3 +46,10 @@ Migration này sửa bản Hall hiện tại đang hiện 0 và đảm bảo cá
 
 
 V50 HOTFIX: repair_v49_payment_approval.sql không còn gọi REVOKE trên register_player_random_team(text,text,text), vì DB hiện tại chỉ có register_player_random_team(text,text).
+
+
+## V54 – 2 chế độ giải
+- Admin có thể chọn **Giải Sinh tồn** hoặc **Giải Tử chiến**.
+- Chạy `repair_v54_tournament_modes.sql` một lần để thêm `tournament_settings.game_mode`.
+- Mùa mới có thể chọn chế độ riêng.
+- Khi chọn Tử chiến, Admin hiển thị bracket 3 bảng × 4 đội và ẩn các khu vực nhập Top/Booyah của Sinh tồn.

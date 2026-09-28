@@ -4,6 +4,7 @@ let tournamentSettings=null;
 let tournamentSchedule=[];
 let tournamentTeams=[];
 let selectedMatch=1;
+let selectedGameMode="survival";
 
 function tournamentEsc(value){
   return String(value??"").replace(/[&<>"']/g,char=>({
@@ -34,6 +35,7 @@ async function loadTournamentAdmin(){
   ]);
 
   tournamentSettings=settings;
+  selectedGameMode=tournamentSettings?.game_mode==="deathmatch"?"deathmatch":"survival";
   tournamentSchedule=schedule||[];
   tournamentTeams=teams||[];
 
@@ -55,6 +57,7 @@ async function loadTournamentAdmin(){
       :"Chưa cập nhật";
   }
 
+  renderTournamentMode();
   renderRegistrationSettings();
   renderScheduleEditor();
   await renderScoreEntry();
@@ -67,6 +70,60 @@ function toDateTimeLocalValue(value){
   const pad=n=>String(n).padStart(2,"0");
   return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
+
+function renderTournamentMode(){
+  const mode=selectedGameMode==="deathmatch"?"deathmatch":"survival";
+  const badge=document.querySelector("#currentGameModeBadge");
+  const description=document.querySelector("#gameModeDescription");
+  const deathmatchPanel=document.querySelector("#deathmatchAdminPanel");
+  const survivalPanels=[
+    document.querySelector("#survivalSchedulePanel"),
+    document.querySelector("#survivalScorePanel"),
+    document.querySelector("#survivalMvpPanel"),
+    document.querySelector("#survivalLeaderboardPanel")
+  ];
+  document.querySelectorAll(".mode-choice-card").forEach(card=>{
+    const active=card.dataset.gameMode===mode;
+    card.classList.toggle("active",active);
+    const check=card.querySelector(".mode-choice-check");
+    if(check)check.textContent=active?"✓ Đang chọn":"Chọn chế độ này";
+  });
+  if(badge){
+    badge.textContent=mode==="deathmatch"?"⚔️ Tử chiến":"🪖 Sinh tồn";
+    badge.className=`status-badge ${mode==="deathmatch"?"closed":"open"}`;
+  }
+  if(description){
+    description.textContent=mode==="deathmatch"
+      ?"Đang sử dụng bracket Tử chiến: 3 bảng × 4 đội, Bo3, lấy 3 đội/bảng."
+      :"Đang sử dụng hệ thống tính điểm Sinh tồn: Top + Kill + Booyah.";
+  }
+  if(deathmatchPanel)deathmatchPanel.hidden=mode!=="deathmatch";
+  survivalPanels.forEach(panel=>{if(panel)panel.hidden=mode!=="survival";});
+}
+
+document.querySelectorAll(".mode-choice-card").forEach(card=>{
+  card.addEventListener("click",()=>{
+    selectedGameMode=card.dataset.gameMode==="deathmatch"?"deathmatch":"survival";
+    renderTournamentMode();
+  });
+});
+
+document.querySelector("#saveGameModeBtn")?.addEventListener("click",async()=>{
+  const {error}=await sb.from("tournament_settings").update({
+    game_mode:selectedGameMode,
+    updated_at:new Date().toISOString()
+  }).eq("id",1);
+  const out=document.querySelector("#gameModeMessage");
+  if(error){
+    if(out){out.textContent=error.message;out.className="message error";}
+    return;
+  }
+  if(out){
+    out.textContent=selectedGameMode==="deathmatch"?"Đã chuyển sang Giải Tử chiến.":"Đã chuyển sang Giải Sinh tồn.";
+    out.className="message success";
+  }
+  renderTournamentMode();
+});
 
 function renderRegistrationSettings(){
   const open=tournamentSettings?.registration_open!==false;

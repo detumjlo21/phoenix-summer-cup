@@ -140,7 +140,9 @@ begin
     raise exception 'tournament_full_pending';
   end if;
 
-  v_code := upper('PSC26-'||substr(encode(gen_random_bytes(4),'hex'),1,8));
+  -- Không phụ thuộc gen_random_bytes()/pgcrypto để tạo mã đơn.
+  -- md5(), clock_timestamp() và random() là hàm built-in của PostgreSQL.
+  v_code := upper('PSC26-'||substr(md5(clock_timestamp()::text||random()::text||p_game_name||p_facebook_name),1,8));
 
   insert into public.registration_requests(
     request_code,game_name,facebook_name,payment_amount,status
