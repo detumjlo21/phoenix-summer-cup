@@ -1,7 +1,7 @@
 /* PHOENIX V63 - TỬ CHIẾN 17 TRẬN: thắng-thua, không tính điểm */
 (()=>{
   const dmSb=window.supabase.createClient(window.PHOENIX_CONFIG.supabaseUrl,window.PHOENIX_CONFIG.supabaseKey);
-  let dmTeams=[],dmMatches=[],dmTop3=[];
+  let dmTeams=[],dmMatches=[],dmTop10=[];
   const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;", "'":"&#039;"}[c]));
   const teamName=n=>dmTeams.find(t=>Number(t.team_number)===Number(n))?.name||`Đội ${n||"?"}`;
   const logo=n=>dmTeams.find(t=>Number(t.team_number)===Number(n))?.logo_url||"";
@@ -22,26 +22,25 @@
     const d=dmMatches.find(m=>m.stage==="decider");
     box.innerHTML=`<article class="deathmatch-group-standings dm-overall-standing dm-progress-card"><div class="dm-group-head"><div><span>THỂ THỨC THẮNG — THUA</span><strong>12 đội • thua 2 lần là bị loại</strong></div><b>${done}/17</b></div><div class="dm-progress-steps"><div class="done"><b>1</b><span>Vòng 1</span><small>${r1}/6 trận • 6 vé</small></div><i>→</i><div class="${rv===3?'done':''}"><b>2</b><span>Vé vớt</span><small>${rv}/3 trận • 3 đội bị loại</small></div><i>→</i><div class="${d?.status==='completed'?'done':''}"><b>3</b><span>Quyết đấu</span><small>1 đặc cách + 1 vé đấu</small></div><i>→</i><div><b>4</b><span>Tứ kết</span><small>Top 8</small></div></div></article>`;
   }
-  function renderTop3(){
-    const box=document.querySelector(".mvp-honor-panel #deathmatchTop3Mvp");
-    if(!box)return;
-
-    // Luôn render đủ 3 vị trí để TOP 2/TOP 3 không biến mất khi chưa có dữ liệu.
-    const rows=[0,1,2].map(i=>dmTop3[i]||null);
-    const hasData=dmTop3.some(r=>Number(r?.total_kills||0)>0);
-
-    box.innerHTML=`
-      ${!hasData?`<div class="dm-top3-empty">Chưa có dữ liệu Kill Tử chiến. Vào Quản trị → Tử chiến → mở từng trận → “Nhập Kill từng người trong trận” và bấm “Lưu Kill trận này”.</div>`:""}
-      <div class="dm-top3-ranking-grid">
-        ${rows.map((r,i)=>`<article class="dm-top3-card rank-${i+1} ${r?"":"is-empty"}">
-          <div class="dm-top3-rank">${i===0?"🥇":i===1?"🥈":"🥉"}<small>TOP ${i+1}</small></div>
-          <div class="dm-top3-player">
-            <strong>${r?esc(r.game_name):"Đang chờ dữ liệu"}</strong>
-            <span>${r?esc(r.team_name||teamName(r.team_number)):"Chưa có tuyển thủ"}</span>
-          </div>
-          <div class="dm-top3-kills"><b>${r?Number(r.total_kills)||0:"—"}</b><small>KILL</small></div>
-        </article>`).join("")}
+  function renderTop10(){
+    const box=document.querySelector("#deathmatchTop10Kills"); if(!box)return;
+    const meta=document.querySelector("#deathmatchKillMeta");
+    if(!dmTop10.length){
+      box.innerHTML=`<div class="dm-top10-empty">Chưa có dữ liệu Kill. Admin sẽ nhập Kill từng tuyển thủ sau mỗi trận.</div>`;
+      if(meta)meta.textContent="Tổng kill tất cả các trận";
+      return;
+    }
+    const rows=dmTop10.map((r,i)=>{
+      const rank=i+1;
+      const medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":String(rank).padStart(2,"0");
+      return `<div class="dm-top10-row rank-${rank}">
+        <div class="dm-top10-rank">${medal}</div>
+        <div class="dm-top10-player"><strong>${esc(r.game_name)}</strong><span>${esc(teamName(r.team_number))}</span></div>
+        <div class="dm-top10-kill"><b>${Number(r.total_kills)||0}</b><small>KILL</small></div>
       </div>`;
+    }).join("");
+    box.innerHTML=`<div class="dm-top10-list">${rows}</div>`;
+    if(meta)meta.textContent=`${dmTop10.length} tuyển thủ có dữ liệu • Tổng kill tất cả các trận`;
   }
   function renderBracket(){
     const box=document.querySelector("#deathmatchSchedule"); if(!box)return;
@@ -61,60 +60,49 @@
     if(dm)dm.hidden=mode!=="deathmatch";
     document.querySelectorAll(".survival-public-section").forEach(el=>el.hidden=mode==="deathmatch");
 
-    // Giữ nguyên khối MVP cũ. Khi Tử chiến chỉ thêm TOP 3 MVP KILL
-    // vào phía trên trong cùng một khối, không thay thế MVP cũ.
+    // Giữ nguyên khối MVP cũ. Tử chiến chỉ thêm bảng TOP 10 KILL ở phía trên.
     const mvp=document.querySelector(".mvp-honor-panel");
     if(mvp){
       mvp.hidden=false;
       mvp.classList.toggle("deathmatch-view",mode==="deathmatch");
     }
+    const top10=document.querySelector(".deathmatch-top10-honor");
+    if(top10)top10.hidden=mode!=="deathmatch";
 
     if(window.setModeHeroBanner)window.setModeHeroBanner(mode);
   }
   async function load(){
     const {data:settings,error}=await dmSb.from("tournament_settings").select("game_mode").eq("id",1).maybeSingle();
-    if(error){console.error("Không tải được chế độ giải:",error);return;}
+    if(error)return;
     const mode=settings?.game_mode||"survival";
     toggle(mode);
     if(mode!=="deathmatch")return;
-
-    const [tm,mm,top]=await Promise.all([
+    const [tm,mm,kills,players]=await Promise.all([
       dmSb.from("team_names").select("team_number,name,logo_url").lte("team_number",12).order("team_number"),
       dmSb.from("deathmatch_matches").select("*").order("stage").order("group_code").order("match_order"),
-      dmSb.rpc("get_public_deathmatch_top3")
+      dmSb.from("deathmatch_player_kills").select("player_id,kills"),
+      dmSb.from("players").select("id,game_name,team_number")
     ]);
-    if(mm.error)console.error("Không tải được bracket Tử chiến:",mm.error);
+    if(mm.error)return console.error(mm.error);
+    if(kills.error)return console.error(kills.error);
+    if(players.error)return console.error(players.error);
     dmTeams=tm.data||[];
     dmMatches=mm.data||[];
-
-    if(!top.error && Array.isArray(top.data) && top.data.length){
-      dmTop3=top.data;
-    }else{
-      // Fallback: tổng hợp trực tiếp từ bảng Kill nếu RPC chưa được cập nhật schema.
-      const [{data:kills,error:killsError},{data:players,error:playersError}]=await Promise.all([
-        dmSb.from("deathmatch_player_kills").select("player_id,kills"),
-        dmSb.from("players").select("id,game_name,team_number")
-      ]);
-      if(!killsError && !playersError && Array.isArray(kills) && Array.isArray(players)){
-        const totals=new Map();
-        for(const row of kills){
-          const key=row.player_id;
-          totals.set(key,(totals.get(key)||0)+Number(row.kills||0));
-        }
-        const byId=new Map(players.map(p=>[p.id,p]));
-        dmTop3=[...totals.entries()]
-          .map(([id,total_kills])=>({player_id:id,...(byId.get(id)||{}),total_kills,team_name:teamName(byId.get(id)?.team_number)}))
-          .filter(r=>Number(r.total_kills)>0)
-          .sort((a,b)=>Number(b.total_kills)-Number(a.total_kills)||String(a.game_name||"").localeCompare(String(b.game_name||"")))
-          .slice(0,3);
-      }else{
-        console.error("Không tải được TOP 3 MVP Kill. Kiểm tra migration repair_v63_deathmatch_17_matches.sql và quyền đọc dữ liệu.",top.error||killsError||playersError);
-        dmTop3=[];
-      }
+    const playerMap=new Map((players.data||[]).map(p=>[String(p.id),p]));
+    const totals=new Map();
+    for(const row of (kills.data||[])){
+      const p=playerMap.get(String(row.player_id));
+      if(!p)continue;
+      const key=String(p.id);
+      const prev=totals.get(key);
+      totals.set(key,{player_id:p.id,game_name:p.game_name,team_number:p.team_number,total_kills:(prev?.total_kills||0)+(Number(row.kills)||0)});
     }
-
+    dmTop10=[...totals.values()]
+      .filter(r=>r.total_kills>0)
+      .sort((a,b)=>b.total_kills-a.total_kills || String(a.game_name||"").localeCompare(String(b.game_name||"")))
+      .slice(0,10);
     renderProgress();
-    renderTop3();
+    renderTop10();
     renderBracket();
   }
   load();setInterval(load,15000);
