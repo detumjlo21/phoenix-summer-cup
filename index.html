@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#08090d">
   <title>Phoenix Summer Cup Mùa 1</title>
-  <link rel="stylesheet" href="styles.css?v=56">
+  <link rel="stylesheet" href="styles.css?v=58">
   <link rel="stylesheet" href="prizes.css?v=41">
 </head>
 <body>
@@ -195,10 +195,15 @@
       <div id="deathmatchStandings" class="deathmatch-standings-grid"></div>
 
       <div class="deathmatch-section-title schedule-title">
-        <div><p class="eyebrow">LỊCH THI ĐẤU</p><h3>Bracket vòng bảng</h3></div>
+        <div><p class="eyebrow">LỊCH THI ĐẤU</p><h3>BRACKET VÒNG BẢNG</h3></div>
         <span id="deathmatchScheduleMeta" class="muted">Đang tải...</span>
       </div>
-      <div id="deathmatchSchedule" class="deathmatch-schedule-grid"></div>
+      <div class="deathmatch-bracket-legend">
+        <span><i class="bracket-dot upper"></i> NHÁNH TRÊN</span>
+        <span><i class="bracket-dot lower"></i> NHÁNH DƯỚI</span>
+        <span><b>BO3</b> • Thắng 2 ván</span>
+      </div>
+      <div id="deathmatchSchedule" class="deathmatch-bracket-list"></div>
     </section>
 
     <section class="panel survival-public-section" id="survivalScheduleSection">
@@ -348,7 +353,7 @@
   <script src="config.js?v=41"></script>
   <script src="app.js?v=56"></script>
   <script src="scoreboard.js?v=57"></script>
-  <script src="deathmatch-public.js?v=57"></script>
+  <script src="deathmatch-public.js?v=59"></script>
   <script src="mvp.js?v=41"></script>
   <script src="champion.js?v=41"></script>
 

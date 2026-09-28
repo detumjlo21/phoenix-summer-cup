@@ -28,7 +28,7 @@ function rankLabel(rank){
 }
 
 async function loadTournamentAdmin(){
-  const [{data:settings},{data:schedule},{data:teams},{data:ranking},{data:dmMatches}]=await Promise.all([
+  const [{data:settings},{data:schedule},{data:teams},{data:players},{data:ranking},{data:dmMatches},{data:dmMvps}]=await Promise.all([
     sb.from("tournament_settings").select("*").eq("id",1).maybeSingle(),
     sb.from("match_schedule").select("*").order("match_number"),
     sb.from("team_names").select("*").lte("team_number",12).order("team_number"),
@@ -41,6 +41,8 @@ async function loadTournamentAdmin(){
   tournamentSchedule=schedule||[];
   tournamentTeams=teams||[];
   deathmatchMatches=dmMatches||[];
+   tournamentPlayers=players||[];
+   deathmatchMvps=dmMvps||[];
 
   const dashboardRegistration=document.querySelector("#dashboardRegistration");
   const dashboardMatch=document.querySelector("#dashboardMatch");
@@ -194,6 +196,9 @@ function dmAdminLogo(n){
   return team?.logo_url||"";
 }
 function dmAdminEsc(v){return tournamentEsc(v);}
+function dmAdminMvpForMatch(id){ return deathmatchMvps.find(x=>Number(x.match_id)===Number(id))||null; }
+function dmAdminPlayersForMatch(a,b){ return tournamentPlayers.filter(p=>Number(p.team_number)===Number(a)||Number(p.team_number)===Number(b)); }
+
 function renderDeathmatchAdmin(){
   const box=document.querySelector("#deathmatchAdminGroups");
   const meta=document.querySelector("#deathmatchAdminMeta");
@@ -227,6 +232,15 @@ function renderDeathmatchAdmin(){
           </select>
           <button type="button" class="dmSaveWinner" data-id="${m.id}" ${a&&b?"":"disabled"}>${w?"Cập nhật thắng":"Chốt đội thắng"}</button>
         </div>
+        <div class="dm-admin-mvp-controls">
+          <div class="dm-mvp-label"><span>🔥 MVP TRẬN</span><small>Chọn tuyển thủ nổi bật của trận</small></div>
+          <select class="dmMvpPlayer" data-id="${m.id}" ${a&&b?"":"disabled"}>
+            <option value="">${dmAdminMvpForMatch(m.id)?"Xóa MVP / chọn lại":"Chọn MVP"}</option>
+            ${a&&b?dmAdminPlayersForMatch(a,b).map(p=>{const cur=dmAdminMvpForMatch(m.id);return `<option value="${p.id}" ${cur?.player_id===p.id?"selected":""}>${tournamentEsc(p.game_name)} • ${dmAdminTeamName(p.team_number)}</option>`}).join(""):""}
+          </select>
+          <input class="dmMvpKills" data-id="${m.id}" type="number" min="0" step="1" value="${dmAdminMvpForMatch(m.id)?.kills??0}" ${a&&b?"":"disabled"} placeholder="Kill">
+          <button type="button" class="secondary dmSaveMvp" data-id="${m.id}" ${a&&b?"":"disabled"}>Lưu MVP</button>
+        </div>
       </div>`;
     }).join("")}</article>`;
   }).join("");
@@ -258,6 +272,15 @@ document.querySelector("#deathmatchAdminGroups")?.addEventListener("click",async
     if(!winner){msg(adminMessage,"Hãy chọn đội thắng.","error");return;}
     const {error}=await sb.rpc("admin_set_deathmatch_winner",{p_match_id:id,p_winner_team:winner,p_status:"completed"});
     if(error)msg(adminMessage,error.message,"error"); else {msg(adminMessage,"Đã chốt đội thắng. Bracket sẽ tự cập nhật.","success");await loadTournamentAdmin();}
+    return;
+  }
+  const saveMvp=e.target.closest(".dmSaveMvp");
+  if(saveMvp){
+    const id=Number(saveMvp.dataset.id);
+    const player=document.querySelector(`.dmMvpPlayer[data-id="${id}"]`)?.value||"";
+    const kills=Number(document.querySelector(`.dmMvpKills[data-id="${id}"]`)?.value||0);
+    const {error}=await sb.rpc("admin_save_deathmatch_mvp",{p_match_id:id,p_player_id:player||null,p_kills:kills});
+    if(error)msg(adminMessage,error.message,"error"); else {msg(adminMessage,player?"Đã lưu MVP trận đấu.":"Đã xóa MVP trận.","success");await loadTournamentAdmin();}
   }
 });
 

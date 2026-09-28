@@ -64,3 +64,9 @@ V50 HOTFIX: repair_v49_payment_approval.sql không còn gọi REVOKE trên regis
 
 ## V56 payment
 Nội dung chuyển khoản được tạo tự động từ TÊN FACEBOOK KHÔNG DẤU; người chơi chỉ cần bấm xác nhận đã chuyển khoản, không nhập mã giao dịch.
+
+
+## V58 — Deathmatch MVP
+- Admin chọn MVP + số kill cho từng trận Tử chiến.
+- Trang công khai hiển thị MVP ngay trong từng card trận.
+- SQL: repair_v58_deathmatch_mvp.sql
