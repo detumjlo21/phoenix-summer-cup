@@ -33,6 +33,7 @@ async function loadTournamentAdmin(){
     sb.from("tournament_settings").select("*").eq("id",1).maybeSingle(),
     sb.from("match_schedule").select("*").order("match_number"),
     sb.from("team_names").select("*").lte("team_number",12).order("team_number"),
+    sb.from("players").select("id,game_name,team_number").order("team_number").order("game_name"),
     sb.rpc("get_public_leaderboard"),
     sb.from("deathmatch_matches").select("*").order("stage").order("group_code").order("match_order"),
     sb.from("deathmatch_player_kills").select("*")

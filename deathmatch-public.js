@@ -74,30 +74,44 @@
     const mode=settings?.game_mode||"survival";
     toggle(mode);
     if(mode!=="deathmatch")return;
-    const [tm,mm,kills,players]=await Promise.all([
+    // Ưu tiên RPC tổng hợp để BXH công khai không phụ thuộc RLS của bảng players.
+    // Fallback về đọc trực tiếp nếu RPC chưa được cài.
+    const [tm,mm,top10Rpc]=await Promise.all([
       dmSb.from("team_names").select("team_number,name,logo_url").lte("team_number",12).order("team_number"),
       dmSb.from("deathmatch_matches").select("*").order("stage").order("group_code").order("match_order"),
-      dmSb.from("deathmatch_player_kills").select("player_id,kills"),
-      dmSb.from("players").select("id,game_name,team_number")
+      dmSb.rpc("get_public_deathmatch_top10")
     ]);
     if(mm.error)return console.error(mm.error);
-    if(kills.error)return console.error(kills.error);
-    if(players.error)return console.error(players.error);
+    if(tm.error)console.error(tm.error);
     dmTeams=tm.data||[];
     dmMatches=mm.data||[];
-    const playerMap=new Map((players.data||[]).map(p=>[String(p.id),p]));
-    const totals=new Map();
-    for(const row of (kills.data||[])){
-      const p=playerMap.get(String(row.player_id));
-      if(!p)continue;
-      const key=String(p.id);
-      const prev=totals.get(key);
-      totals.set(key,{player_id:p.id,game_name:p.game_name,team_number:p.team_number,total_kills:(prev?.total_kills||0)+(Number(row.kills)||0)});
+
+    if(!top10Rpc.error && Array.isArray(top10Rpc.data)){
+      dmTop10=(top10Rpc.data||[]).map(r=>({
+        player_id:r.player_id,
+        game_name:r.game_name,
+        team_number:r.team_number,
+        total_kills:Number(r.total_kills)||0
+      })).filter(r=>r.total_kills>0).slice(0,10);
+    }else{
+      // Fallback cho các project chưa chạy migration RPC.
+      const [kills,players]=await Promise.all([
+        dmSb.from("deathmatch_player_kills").select("player_id,kills"),
+        dmSb.from("players").select("id,game_name,team_number")
+      ]);
+      if(kills.error)return console.error(kills.error);
+      if(players.error)return console.error(players.error);
+      const playerMap=new Map((players.data||[]).map(p=>[String(p.id),p]));
+      const totals=new Map();
+      for(const row of (kills.data||[])){
+        const p=playerMap.get(String(row.player_id));
+        if(!p)continue;
+        const key=String(p.id);
+        const prev=totals.get(key);
+        totals.set(key,{player_id:p.id,game_name:p.game_name,team_number:p.team_number,total_kills:(prev?.total_kills||0)+(Number(row.kills)||0)});
+      }
+      dmTop10=[...totals.values()].filter(r=>r.total_kills>0).sort((a,b)=>b.total_kills-a.total_kills || String(a.game_name||"").localeCompare(String(b.game_name||""))).slice(0,10);
     }
-    dmTop10=[...totals.values()]
-      .filter(r=>r.total_kills>0)
-      .sort((a,b)=>b.total_kills-a.total_kills || String(a.game_name||"").localeCompare(String(b.game_name||"")))
-      .slice(0,10);
     renderProgress();
     renderTop10();
     renderBracket();
