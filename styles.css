@@ -7945,17 +7945,19 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 
 
 /* =======================================================
-   PHOENIX V65.1 - GỘP TOP 3 MVP KILL VÀO KHỐI VINH DANH
+   PHOENIX V66 - TOP 3 MVP KILL NẰM CHUNG VỚI MVP CŨ
 ======================================================= */
-.mvp-honor-panel{
-  display:grid;
-}
+.mvp-honor-panel{display:grid;}
 .deathmatch-top3-honor{
   display:none;
   grid-column:1 / -1;
   width:100%;
   min-width:0;
+  margin-bottom:24px;
+  padding-bottom:20px;
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
+.mvp-honor-panel.deathmatch-view .deathmatch-top3-honor{display:block;}
 .deathmatch-top3-heading{
   display:flex;
   justify-content:space-between;
@@ -7963,32 +7965,12 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   gap:18px;
   margin-bottom:14px;
 }
-.deathmatch-top3-heading h2{
-  margin:3px 0 0;
-  font-size:clamp(25px,3.4vw,38px);
-}
-.mvp-honor-panel.deathmatch-view{
-  display:block;
-  min-height:0;
-  padding:22px;
-}
-.mvp-honor-panel.deathmatch-view .deathmatch-top3-honor{
-  display:block;
-}
+.deathmatch-top3-heading h2{margin:3px 0 0;font-size:clamp(25px,3.4vw,38px);}
 .mvp-honor-panel.deathmatch-view .mvp-honor-copy,
 .mvp-honor-panel.deathmatch-view .mvp-character-stage{
-  display:none;
+  display:block;
 }
-.mvp-honor-panel.deathmatch-view .dm-top3-mvp{
-  width:100%;
-}
+.deathmatch-top3-mvp{width:100%;}
 @media(max-width:650px){
-  .deathmatch-top3-heading{
-    align-items:flex-start;
-    flex-direction:column;
-    gap:5px;
-  }
-  .mvp-honor-panel.deathmatch-view{
-    padding:16px;
-  }
+  .deathmatch-top3-heading{align-items:flex-start;flex-direction:column;gap:5px;}
 }

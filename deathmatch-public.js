@@ -45,9 +45,8 @@
     if(dm)dm.hidden=mode!=="deathmatch";
     document.querySelectorAll(".survival-public-section").forEach(el=>el.hidden=mode==="deathmatch");
 
-    // Dùng chung một khối VINH DANH CÁ NHÂN:
-    // Tử chiến -> hiển thị TOP 3 MVP KILL.
-    // Sinh tồn -> hiển thị MVP tổng như trước.
+    // Giữ nguyên khối MVP cũ. Khi Tử chiến chỉ thêm TOP 3 MVP KILL
+    // vào phía trên trong cùng một khối, không thay thế MVP cũ.
     const mvp=document.querySelector(".mvp-honor-panel");
     if(mvp){
       mvp.hidden=false;
