@@ -18,9 +18,13 @@
     section.className="panel prize-center";
     section.hidden=true;
 
-    const schedule=document.querySelector("#publicSchedule")?.closest("section");
-    if(schedule) schedule.insertAdjacentElement("afterend",section);
-    else document.querySelector("main.page")?.appendChild(section);
+    // Đưa Cơ cấu giải thưởng lên đầu trang, ngay sau phần Hero/countdown
+    // và trước các nội dung đăng ký, danh sách đội, lịch thi đấu.
+    const hero=document.querySelector("main.page > header.hero");
+    const randomOverlay=document.querySelector("#randomOverlay");
+    if(hero) hero.insertAdjacentElement("afterend",section);
+    else if(randomOverlay) randomOverlay.insertAdjacentElement("beforebegin",section);
+    else document.querySelector("main.page")?.prepend(section);
 
     return section;
   }
