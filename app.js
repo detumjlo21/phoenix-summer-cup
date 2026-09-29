@@ -86,16 +86,9 @@ function updateTopLayout(){
   }
 
   if(registrationManuallyOpen===false){
-    // Khi Admin khóa đăng ký, cố định đúng thứ tự ở đầu trang:
-    // 1. Thông báo BTC
-    // 2. Sắp diễn ra / Đang thi đấu
-    // 3. Lịch thi đấu
+    // Khi đóng đăng ký, chỉ di chuyển các khối liên quan đến lịch đấu.
+    // Thông báo BTC luôn giữ nguyên vị trí phía dưới Cơ cấu giải thưởng.
     let cursor=hero;
-
-    if(announcementPanel){
-      cursor.insertAdjacentElement("afterend",announcementPanel);
-      cursor=announcementPanel;
-    }
 
     if(liveBanner){
       cursor.insertAdjacentElement("afterend",liveBanner);
