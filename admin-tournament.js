@@ -232,19 +232,50 @@ function renderDeathmatchAdmin(){
   }).join("");
 }
 
-document.querySelector("#drawDeathmatchRound1Btn")?.addEventListener("click",async()=>{
-  if(!confirm("Bốc thăm ngẫu nhiên 12 đội thành 6 cặp Vòng 1?"))return;
+function dmNotify(text,type="success"){
+  // Hiện ngay cạnh nút (trước đây thông báo nằm cuối trang nên không thấy)
+  let el=document.querySelector("#dmActionMsg");
+  if(!el){
+    el=document.createElement("p");el.id="dmActionMsg";
+    document.querySelector(".deathmatch-admin-toolbar")?.insertAdjacentElement("afterend",el);
+  }
+  el.className=`message ${type}`;el.textContent=text;
+  try{window.toast?.(text,type==="error"?"error":type);}catch(_){}
+}
+const dmErrText=e=>({
+  not_admin:"Tài khoản hiện tại không phải admin.",
+  round1_already_started:"Vòng 1 đã có trận được chốt/đang đấu nên không thể bốc thăm lại. Hãy Reset bracket nếu muốn làm lại.",
+  bracket_not_initialized:"Chưa có bracket. Hãy bấm Khởi tạo bracket 17 trận trước."
+}[e?.message]||e?.message||"Lỗi không xác định");
+
+document.querySelector("#drawDeathmatchRound1Btn")?.addEventListener("click",async e=>{
+  const btn=e.currentTarget;
+  if(!deathmatchMatches.filter(m=>m.stage==="round1").length){
+    if(!confirm("Chưa có bracket 17 trận nên chưa có cặp nào để bốc thăm.\nKhởi tạo bracket rồi bốc thăm luôn?"))return;
+    const {error:ie}=await sb.rpc("admin_init_deathmatch_bracket");
+    if(ie){dmNotify("Không khởi tạo được bracket: "+dmErrText(ie)+" (nếu báo 'function not found' hãy chạy repair_v63 và repair_v75 trong Supabase SQL Editor)","error");return;}
+  }else if(!confirm("Bốc thăm ngẫu nhiên 12 đội thành 6 cặp Vòng 1?"))return;
+
+  btn.disabled=true;
   const {error}=await sb.rpc("admin_draw_deathmatch_round1");
-  if(error){msg(adminMessage,error.message,"error");return;}
-  msg(adminMessage,"Đã bốc thăm 6 cặp Vòng 1.","success");
+  btn.disabled=false;
+  if(error){dmNotify(dmErrText(error),"error");return;}
+
   await loadTournamentAdmin();
+  const r1=deathmatchMatches.filter(m=>m.stage==="round1"&&m.team_a&&m.team_b);
+  if(r1.length!==6){
+    dmNotify(`Bốc thăm chạy xong nhưng chỉ có ${r1.length}/6 cặp. Kiểm tra bảng team_names đã đủ đội 1–12 chưa và đã chạy repair_v75.sql chưa.`,"error");
+    return;
+  }
+  dmNotify("Đã bốc thăm 6 cặp Vòng 1.","success");
+  document.querySelector("#deathmatchAdminGroups")?.scrollIntoView({behavior:"smooth",block:"start"});
 });
 
 document.querySelector("#initDeathmatchBtn")?.addEventListener("click",async()=>{
   if(!confirm("Khởi tạo lại bracket Tử chiến 17 trận? Kết quả Tử chiến hiện tại sẽ bị xóa."))return;
   const {error}=await sb.rpc("admin_init_deathmatch_bracket");
-  if(error){msg(adminMessage,error.message,"error");return;}
-  msg(adminMessage,"Đã khởi tạo bracket Tử chiến 17 trận.","success");
+  if(error){dmNotify(dmErrText(error),"error");return;}
+  dmNotify("Đã khởi tạo bracket Tử chiến 17 trận. Bấm Bốc thăm để chia 6 cặp.","success");
   await loadTournamentAdmin();
 });
 
