@@ -18,20 +18,22 @@
     section.className="panel prize-center";
     section.hidden=true;
 
-    // Đưa Cơ cấu giải thưởng lên đầu trang, ngay sau phần Hero/countdown
-    // và trước các nội dung đăng ký, danh sách đội, lịch thi đấu.
+    // Vị trí cuối cùng do Admin → "Tùy chỉnh trang đăng ký" quyết định
+    // (registration-layout.js sắp xếp lại ngay sau khi khối này được tạo).
     const hero=document.querySelector("main.page > header.hero");
     const randomOverlay=document.querySelector("#randomOverlay");
     if(hero) hero.insertAdjacentElement("afterend",section);
     else if(randomOverlay) randomOverlay.insertAdjacentElement("beforebegin",section);
     else document.querySelector("main.page")?.prepend(section);
 
+    window.applyRegistrationPageLayout?.();
     return section;
   }
 
   function render(data){
     const section=getSection();
     if(!data||data.is_visible===false){
+      section.dataset.prizeVisible="0";
       section.hidden=true;
       return;
     }
@@ -86,7 +88,8 @@
 
       ${data.extra_note?`<p class="prize-note">${esc(data.extra_note)}</p>`:""}
     `;
-    section.hidden=false;
+    section.dataset.prizeVisible="1";
+    section.hidden=section.dataset.layoutHidden==="1";
   }
 
   async function load(){
