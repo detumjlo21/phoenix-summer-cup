@@ -57,6 +57,7 @@ async function loadPaymentRequests(){
     <div class="payment-request-actions">
       ${r.status==='pending_review'?`<button type="button" data-payment-approve="${r.id}">✓ DUYỆT ĐƠN</button>
       <button type="button" class="secondary danger-outline" data-payment-reject="${r.id}">✕ TỪ CHỐI</button>`:'<span class="status-badge">Chờ người chơi xác nhận</span>'}
+      <button type="button" class="secondary danger-outline" data-payment-delete="${r.id}" data-name="${paymentAdminEsc(r.game_name)}">🗑 XÓA ĐƠN</button>
     </div>
   </article>`).join('');
 }
@@ -85,7 +86,23 @@ document.querySelector('#refreshPaymentRequestsBtn')?.addEventListener('click',l
 document.querySelector('#paymentRequestList')?.addEventListener('click',async event=>{
   const approve=event.target.closest('[data-payment-approve]');
   const reject=event.target.closest('[data-payment-reject]');
-  if(!approve&&!reject)return;
+  const del=event.target.closest('[data-payment-delete]');
+  if(!approve&&!reject&&!del)return;
+  if(del){
+    const name=del.dataset.name||'người chơi này';
+    if(!confirm(`Xóa hẳn đơn đăng ký của "${name}"?\nĐơn sẽ biến mất khỏi danh sách và không thể khôi phục.`))return;
+    del.disabled=true;
+    const {error}=await sb.rpc('admin_delete_registration',{p_request_id:del.dataset.paymentDelete});
+    if(error){
+      paymentAdminMsg(error.message==='request_already_approved'?'Đơn đã được duyệt nên không thể xóa ở đây. Hãy xóa người chơi trong danh sách thành viên.':error.message,'error');
+      del.disabled=false;
+      await loadPaymentRequests();
+      return;
+    }
+    paymentAdminMsg(`Đã xóa đơn của ${name}.`,'success');
+    await loadPaymentRequests();
+    return;
+  }
   const id=(approve||reject).dataset.paymentApprove||(approve||reject).dataset.paymentReject;
   if(approve){
     approve.disabled=true;
@@ -109,4 +126,19 @@ document.querySelector('#paymentRequestList')?.addEventListener('click',async ev
 // khi session được khôi phục sau khi reload trang.
 sb.auth.onAuthStateChange((_event,session)=>{
   if(session) setTimeout(()=>window.loadPaymentAdmin?.(),0);
+});
+
+// Tự làm mới danh sách đơn chờ mỗi 10 giây (chỉ khi Admin đang đăng nhập và đang xem tab).
+// Chỉ tải lại danh sách đơn, KHÔNG tải lại cài đặt để không ghi đè ô phí/chế độ đang chỉnh.
+setInterval(()=>{
+  if(document.hidden)return;
+  const area=document.querySelector('#adminArea');
+  if(!area||area.hidden)return;
+  loadPaymentRequests();
+},10000);
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden){
+    const area=document.querySelector('#adminArea');
+    if(area&&!area.hidden)loadPaymentRequests();
+  }
 });

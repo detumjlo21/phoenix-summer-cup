@@ -452,7 +452,9 @@ syncModeHero();
 setInterval(syncRegistrationStatus,30000);
 setInterval(syncModeHero,15000);
 
-async function loadPublicData(){
+let publicDataSignature="";
+async function loadPublicData(opts){
+  const silent=!!(opts&&opts.silent===true);
   const [playersResult,teamsResult]=await Promise.all([
     sb.rpc("get_public_players_v35"),
     sb.from("team_names").select("team_number,name,logo_url,captain_player_id").order("team_number")
@@ -460,7 +462,8 @@ async function loadPublicData(){
 
   const error=playersResult.error||teamsResult.error;
   if(error){
-    teamsBox.innerHTML=`<p class="error">Không tải được danh sách đội: ${esc(error.message)}</p>`;
+    // Khi tự làm mới ngầm mà lỗi mạng thì giữ nguyên danh sách đang hiển thị.
+    if(!silent)teamsBox.innerHTML=`<p class="error">Không tải được danh sách đội: ${esc(error.message)}</p>`;
     return;
   }
 
@@ -480,6 +483,11 @@ async function loadPublicData(){
   count.textContent=publicPlayers.length;
   document.querySelector("#progressBar").style.width=`${Math.min(100,(publicPlayers.length/cfg.maxPlayers)*100)}%`;
   joinBtn.disabled=isClosed()||publicPlayers.length>=cfg.maxPlayers;
+
+  // Dữ liệu không đổi thì không vẽ lại giao diện (tránh nháy khi tự làm mới).
+  const signature=JSON.stringify(publicPlayers.map(p=>[p.id,p.game_name,p.team_number,p.team_name,p.logo_url,p.captain_player_id]));
+  if(signature===publicDataSignature)return;
+  publicDataSignature=signature;
 
   if(playersBox) playersBox.innerHTML=publicPlayers.length
     ?publicPlayers.map((p,i)=>`<div class="player"><strong>${i+1}. ${esc(p.game_name)} ${p.captain_player_id===p.id?'<span class="public-captain-badge">👑 Đội trưởng</span>':""}</strong><span class="badge team-badge">
@@ -689,7 +697,19 @@ function renderRegistrationStatus(data){
 async function loadPaymentRequestStatus(requestCode,showMessage=false){
   if(!requestCode)return;
   const {data,error}=await sb.rpc("get_registration_request_status",{p_request_code:requestCode});
-  if(error||!data?.length)return;
+  if(error)return;
+  if(!data?.length){
+    // Không còn đơn này nữa = Admin đã xóa. Dừng chờ và cho phép đăng ký lại.
+    clearInterval(paymentPollTimer);
+    localStorage.removeItem("phoenix_pending_request");
+    currentPaymentRequest=null;
+    const payPanel=document.querySelector("#paymentPanel");
+    if(payPanel)payPanel.hidden=true;
+    const statusPanel=document.querySelector("#registrationStatusPanel");
+    if(statusPanel)statusPanel.hidden=true;
+    setMsg("Đơn đăng ký của bạn đã bị Ban tổ chức xóa. Bạn có thể đăng ký lại.","error");
+    return;
+  }
   const row=data[0];
   renderRegistrationStatus(row);
   if(row.status==='approved'){
@@ -814,7 +834,10 @@ async function restorePendingPaymentRequest(){
   if(!code)return;
   const {data}=await sb.rpc("get_registration_request_status",{p_request_code:code});
   const row=data?.[0];
-  if(!row)return;
+  if(!row){
+    localStorage.removeItem("phoenix_pending_request");
+    return;
+  }
   if(row.status==='rejected'){
     localStorage.removeItem("phoenix_pending_request");
     return;
@@ -832,7 +855,10 @@ async function restorePendingPaymentRequest(){
   renderRegistrationStatus(row);
 }
 
-document.querySelector("#refreshBtn")?.addEventListener("click",loadPublicData);
+document.querySelector("#refreshBtn")?.addEventListener("click",()=>loadPublicData());
 loadPublicData();
+// Tự cập nhật danh sách thành viên/đội mỗi 10 giây, không cần tải lại trang.
+setInterval(()=>{if(!document.hidden)loadPublicData({silent:true});},10000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)loadPublicData({silent:true});});
 loadRegistrationMode();
 restorePendingPaymentRequest();

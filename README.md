@@ -90,3 +90,9 @@ Nội dung chuyển khoản được tạo tự động từ TÊN FACEBOOK KHÔN
 - Tên thành viên / MVP không còn xuống hàng: tách thành "PHX 丶" (nhỏ) + tên chính (lớn) + "禄" (nhỏ) trên một dòng.
 - Khối MVP chia lại tỉ lệ cột để đủ chỗ cho tên.
 - `repair_v73_3_captain_zenus.sql`: Zenus là đội trưởng Mùa 1.
+
+## V74 — Admin xóa đơn & tự cập nhật danh sách
+- Admin → Thanh toán: mỗi đơn đang chờ có nút **🗑 XÓA ĐƠN** (kể cả đơn người chơi chưa bấm xác nhận chuyển khoản).
+- Danh sách đơn ở Admin tự làm mới mỗi 10 giây; trang công khai tự cập nhật danh sách thành viên/đội mỗi 10 giây (không cần F5).
+- Nếu đơn của người chơi bị xóa, trang của họ tự dọn trạng thái chờ và cho đăng ký lại.
+- SQL: chạy `repair_v74_admin_delete_registration.sql` một lần trong Supabase SQL Editor.
