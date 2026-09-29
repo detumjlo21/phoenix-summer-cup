@@ -15,12 +15,38 @@
     const cls=w?(Number(w)===Number(n)?"win":"lose"):"";
     return `<div class="dmx-team ${cls}"><span class="dmx-logo">${logo(n)?`<img src="${esc(logo(n))}" alt="" loading="lazy">`:esc(initials(n))}</span><strong>${esc(teamName(n))}</strong>${cls==="win"?`<em>THẮNG</em>`:""}</div>`;
   };
+  const matchTs=m=>m?.match_date?new Date(`${m.match_date}T${m.match_time?String(m.match_time).slice(0,5):"00:00"}:00+07:00`).getTime():0;
+  const whenBlock=m=>{
+    const ts=matchTs(m); if(!ts)return `<div class="dmx-when none"><span>📅 Chưa xếp lịch thi đấu</span></div>`;
+    const dt=new Date(ts);
+    const day=new Intl.DateTimeFormat("vi-VN",{day:"2-digit",month:"2-digit",timeZone:"Asia/Ho_Chi_Minh"}).format(dt);
+    const wd=new Intl.DateTimeFormat("vi-VN",{weekday:"long",timeZone:"Asia/Ho_Chi_Minh"}).format(dt);
+    const tm=m.match_time?String(m.match_time).slice(0,5):"--:--";
+    return `<div class="dmx-when"><div class="dmx-when-date"><small>${esc(wd)}</small><b>📅 ${day}</b></div><div class="dmx-when-time"><small>GIỜ ĐẤU</small><b>⏰ ${tm}</b></div></div>`;
+  };
+  const badge=(m,st)=>{
+    if(st.k==="next"&&matchTs(m))return `<b class="dmx-st next dmx-cd" data-ts="${matchTs(m)}">⏳ --:--:--</b>`;
+    return `<b class="dmx-st ${st.k}">${st.l}</b>`;
+  };
   function card(m,label,tone=""){
     if(!m)return `<article class="dmx-match ${tone} empty"><header><span>${esc(label)}</span><b class="dmx-st next">CHỜ GHÉP</b></header></article>`;
     const st=status(m),a=Number(m.team_a)||0,b=Number(m.team_b)||0,w=Number(m.winner_team)||0;
     const num=(String(m.round_name||label).match(/Trận\s*\d+/i)||[String(label)])[0];
-    return `<article class="dmx-match ${tone} ${st.k}"><header><span>${esc(num)}</span><b class="dmx-st ${st.k}">${st.l}</b></header>${teamRow(a,w)}<div class="dmx-vs"><i></i><span>VS</span><i></i></div>${teamRow(b,w)}${m.bye_team?`<div class="dmx-note">🎟️ Đặc cách: <b>${esc(teamName(m.bye_team))}</b></div>`:""}<footer><span>📅 ${shortDate(m.match_date,m.match_time)}</span><b>BO${m.best_of||3}</b></footer></article>`;
+    return `<article class="dmx-match ${tone} ${st.k}"><header><span>${esc(num)}</span>${badge(m,st)}</header>${st.k==="done"?"":whenBlock(m)}${teamRow(a,w)}<div class="dmx-vs"><i></i><span>VS</span><i></i></div>${teamRow(b,w)}${m.bye_team?`<div class="dmx-note">🎟️ Đặc cách: <b>${esc(teamName(m.bye_team))}</b></div>`:""}<footer><span>${st.k==="done"?`📅 ${shortDate(m.match_date,m.match_time)}`:"Thể thức"}</span><b>BO${m.best_of||3}</b></footer></article>`;
   }
+  // Đếm ngược mỗi giây cho các trận SẮP ĐẤU
+  function tickCountdown(){
+    const now=Date.now();
+    document.querySelectorAll(".dmx-cd").forEach(el=>{
+      const diff=Number(el.dataset.ts)-now;
+      if(diff<=0){el.textContent="🔥 SẮP BẮT ĐẦU";el.classList.add("soon");return;}
+      const d=Math.floor(diff/86400000),h=Math.floor(diff%86400000/3600000),mi=Math.floor(diff%3600000/60000),se=Math.floor(diff%60000/1000);
+      const p=n=>String(n).padStart(2,"0");
+      el.textContent=`⏳ ${d>0?d+" ngày ":""}${p(h)}:${p(mi)}:${p(se)}`;
+      el.classList.toggle("soon",diff<3600000);
+    });
+  }
+  setInterval(tickCountdown,1000);
   function renderProgress(){
     const box=document.querySelector("#deathmatchStandings"); if(!box)return;
     const done=dmMatches.filter(m=>m.status==="completed").length;
@@ -68,6 +94,7 @@
     }).join("")+`</div>`;
     const done=dmMatches.filter(m=>m.status==="completed").length;
     const meta=document.querySelector("#deathmatchScheduleMeta"); if(meta)meta.textContent=`${done}/17 trận đã chốt`;
+    tickCountdown();
     const meta2=document.querySelector("#deathmatchStandingsMeta"); if(meta2)meta2.textContent=`${Math.round(done/17*100)}% hoàn thành`;
   }
   function updateMatchResultsCard(mode){

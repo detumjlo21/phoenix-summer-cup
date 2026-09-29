@@ -8226,3 +8226,13 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   #deathmatchAdminGroups .dm-admin-teams>b{text-align:center}
   #deathmatchAdminGroups .dm-admin-teams>div:last-child{justify-content:flex-start;text-align:left}
 }
+
+/* V77 - Đếm ngược + khối lịch thi đấu nổi bật */
+.dmx-when{display:grid;grid-template-columns:1.2fr 1fr;gap:8px;margin:0 0 10px}
+.dmx-when>div{padding:9px 12px;border-radius:12px;background:linear-gradient(135deg,rgba(239,61,50,.16),rgba(255,138,31,.08));border:1px solid rgba(255,138,31,.28)}
+.dmx-when small{display:block;font-size:10px;font-weight:800;letter-spacing:.1em;color:#ffb05a;text-transform:uppercase}
+.dmx-when b{display:block;margin-top:3px;font-size:20px;line-height:1.1;font-weight:900;color:#fff;letter-spacing:.02em}
+.dmx-when.none{display:block}.dmx-when.none span{display:block;padding:10px 12px;border-radius:12px;border:1px dashed rgba(255,255,255,.15);font-size:12px;color:var(--muted);text-align:center}
+.dmx-st.dmx-cd{font-size:12px;font-variant-numeric:tabular-nums;padding:5px 10px;letter-spacing:.02em}
+.dmx-st.dmx-cd.soon{color:#fff;background:linear-gradient(90deg,#ef3d32,#ff8a1f);animation:dmPulse 1.4s infinite}
+@media(max-width:360px){.dmx-when b{font-size:17px}}
