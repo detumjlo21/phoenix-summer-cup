@@ -33,7 +33,7 @@ $$;
 -- Mua 1: 4 thanh vien do BTC cung cap
 update public.champion_seasons
 set team_members=jsonb_build_array(
-  jsonb_build_object('name','PHX 丶 Zeus 禄','is_captain',false,'is_mvp',false),
+  jsonb_build_object('name','PHX 丶 Zenus 禄','is_captain',false,'is_mvp',false),
   jsonb_build_object('name','PHX 丶 Just 禄','is_captain',false,'is_mvp',false),
   jsonb_build_object('name','PHX 丶 Oric 禄','is_captain',false,'is_mvp',false),
   jsonb_build_object('name','PHX 丶 TjnThai 禄','is_captain',false,'is_mvp',true)

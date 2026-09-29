@@ -8080,7 +8080,7 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 .hall-v73-member.is-mvp{border-color:rgba(255,44,28,.65);background:linear-gradient(180deg,rgba(80,10,6,.6),rgba(6,6,7,.9))}
 .hall-v73-member.is-mvp::before{background:linear-gradient(90deg,transparent,#ff2c1c,transparent);box-shadow:0 0 14px #ff2c1c}
 .hall-v73-member-no{position:absolute;right:8px;top:6px;font-size:22px;font-weight:1000;color:transparent;-webkit-text-stroke:1px rgba(255,140,40,.28)}
-.hall-v73-member strong{max-width:100%;margin-top:12px;font-size:clamp(13px,1.5vw,17px);line-height:1.25;color:#fff1d4;overflow-wrap:anywhere;word-break:break-word}
+
 .hall-v73-member-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;min-height:18px}
 .hall-v73-member-badges em{font-style:normal;font-size:9px;font-weight:900;letter-spacing:1px;padding:3px 7px;color:#8d8983;border:1px solid rgba(255,255,255,.12)}
 .hall-v73-member-badges em.cap{color:#ffc63d;border-color:rgba(255,198,61,.55);background:rgba(255,181,45,.08)}
@@ -8090,4 +8090,23 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 .hall-v73-member-kills b{color:#ffb52d;font-size:20px}
 @media(max-width:760px){
  .hall-v73-member-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* V73.3 - Ten khong xuong hang tren PC */
+.hall-v73-member{padding:16px 8px 16px}
+.hall-v73-member strong{max-width:100%;margin-top:12px;color:#fff1d4;line-height:1.2}
+.hall-v73-name{display:inline-flex;align-items:baseline;justify-content:center;gap:4px;max-width:100%;white-space:nowrap;overflow:hidden}
+.hall-v73-name .core{font-weight:1000;font-size:clamp(14px,1.55vw,18px);letter-spacing:.2px}
+.hall-v73-name i{font-style:normal;font-weight:800;font-size:.62em;color:#c98a3a}
+.hall-v73-member strong .hall-v73-name i{font-size:10px}
+.hall-v73-member.is-captain strong .core{color:#ffd166;text-shadow:0 0 14px rgba(255,181,45,.35)}
+.hall-v44-mvp{grid-template-columns:1.3fr .7fr}
+.hall-v73-mvp-name{display:block;margin:0}
+.hall-v73-mvp-name .hall-v73-name{gap:6px}
+.hall-v73-mvp-name .core{font-size:clamp(28px,3.1vw,40px);line-height:1.05}
+.hall-v73-mvp-name i{font-size:clamp(13px,1.4vw,17px)}
+@media(max-width:1000px){.hall-v73-member-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){
+ .hall-v44-mvp{grid-template-columns:1fr}
+ .hall-v73-mvp-name .core{font-size:34px}
 }

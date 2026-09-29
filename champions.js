@@ -5,6 +5,16 @@ let hallSeasons=[];
 function hallEsc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
 function hallDate(v){return v?new Date(v+"T00:00:00").toLocaleDateString("vi-VN"):"Đã hoàn thành";}
 
+function nameParts(raw){
+  const name=String(raw??"").replace(/\s+/g," ").trim();
+  const m=name.match(/^(.*?[^\sA-Za-z0-9_])\s*([A-Za-z0-9_][A-Za-z0-9_ .\-]*?)\s*([^\sA-Za-z0-9_].*)?$/u);
+  return m?{pre:m[1].trim(),core:m[2].trim(),suf:(m[3]||"").trim()}:{pre:"",core:name,suf:""};
+}
+function nameHtml(raw){
+  const p=nameParts(raw);
+  return `<span class="hall-v73-name" title="${hallEsc(raw)}">${p.pre?`<i class="pre">${hallEsc(p.pre)}</i>`:""}<span class="core">${hallEsc(p.core)}</span>${p.suf?`<i class="suf">${hallEsc(p.suf)}</i>`:""}</span>`;
+}
+
 function membersBlock(s){
   let list=s.team_members;
   if(typeof list==='string'){try{list=JSON.parse(list);}catch(e){list=[];}}
@@ -16,7 +26,7 @@ function membersBlock(s){
     ].join('');
     return `<article class="hall-v73-member ${m.is_mvp?'is-mvp':''} ${m.is_captain?'is-captain':''}">
       <span class="hall-v73-member-no">0${idx+1}</span>
-      <strong title="${hallEsc(m.name)}">${hallEsc(m.name)}</strong>
+      <strong>${nameHtml(m.name)}</strong>
       <div class="hall-v73-member-badges">${badges||'<em>TUYỂN THỦ</em>'}</div>
     </article>`;
   }).join('');
@@ -46,7 +56,7 @@ function seasonPanel(s,i){
     <section class="hall-v44-mvp">
       <div class="hall-v44-mvp-copy">
         <div class="hall-v44-kicker">♛ · · MVP MÙA GIẢI · ·</div>
-        <h3>${hallEsc(s.mvp_name||"Chưa cập nhật")}</h3>
+        <h3 class="hall-v73-mvp-name">${s.mvp_name?nameHtml(s.mvp_name):"Chưa cập nhật"}</h3>
         <div class="hall-v44-mvp-stat"><span>⚔ HẠ GỤC</span><b>${Number(s.mvp_kills||0)}</b></div>
         <div class="hall-v44-mvp-stat"><span>🏆 DANH HIỆU</span><b>MVP</b></div>
       </div>

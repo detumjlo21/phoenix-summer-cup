@@ -85,3 +85,8 @@ Nội dung chuyển khoản được tạo tự động từ TÊN FACEBOOK KHÔN
 - Thẻ thành viên chỉ hiển thị tên (+ huy hiệu Đội trưởng / MVP), không còn số hạ gục.
 - `repair_v73_2_members_names_only.sql`: snapshot thành viên chỉ lưu tên; điền tay 4 thành viên Mùa 1 (chạy sau file V73).
 - Mùa sau: bấm "Lưu mùa giải" trong `hall-admin.html` để lấy danh sách đội hiện tại.
+
+### V73.3
+- Tên thành viên / MVP không còn xuống hàng: tách thành "PHX 丶" (nhỏ) + tên chính (lớn) + "禄" (nhỏ) trên một dòng.
+- Khối MVP chia lại tỉ lệ cột để đủ chỗ cho tên.
+- `repair_v73_3_captain_zenus.sql`: Zenus là đội trưởng Mùa 1.
