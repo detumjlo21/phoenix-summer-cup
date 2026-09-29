@@ -15,13 +15,22 @@ async function verifyAdmin(){
   return !!data;
 }
 async function syncUI(){
+  // Luôn khóa giao diện trước khi xác thực lại.
+  document.body.classList.remove("phoenix-admin-authenticated");
+  adminArea.hidden=true;
+  adminArea.setAttribute("aria-hidden","true");
+  loginPanel.hidden=false;
+
   const ok=await verifyAdmin();
-  loginPanel.hidden=ok;
-  adminArea.hidden=!ok;
-  if(ok){
-    await loadAll();
-    window.dispatchEvent(new CustomEvent("phoenix-admin-ready"));
-  }
+  if(!ok)return;
+
+  loginPanel.hidden=true;
+  adminArea.hidden=false;
+  adminArea.setAttribute("aria-hidden","false");
+  document.body.classList.add("phoenix-admin-authenticated");
+
+  await loadAll();
+  window.dispatchEvent(new CustomEvent("phoenix-admin-ready"));
 }
 document.querySelector("#loginForm").addEventListener("submit",async e=>{
   e.preventDefault();msg(loginMessage,"Đang đăng nhập...");
@@ -37,7 +46,12 @@ document.querySelector("#loginForm").addEventListener("submit",async e=>{
 document.querySelector("#logoutBtn").addEventListener("click",async()=>{await sb.auth.signOut();syncUI()});
 
 async function loadAll(){
-  const [{data:players,error:pError},{data:teams,error:tError}]=await Promise.all([
+  // Không cho bất kỳ lần refresh nào tự đọc dữ liệu Admin nếu session/quyền đã mất.
+  if(!(await verifyAdmin())){
+    await syncUI();
+    return;
+  }
+  const [{data:players,error:pError},{data:teams,error:tError}]= await Promise.all([
     sb.from("players").select("id,game_name,facebook_name,team_number,registration_code,created_at").order("created_at"),
     sb.from("team_names").select("*").order("team_number")
   ]);
@@ -447,3 +461,10 @@ document.querySelector("#rerandomBtn").addEventListener("click",async()=>{
 
 document.querySelector("#refreshAdminBtn").addEventListener("click",loadAll);
 syncUI();
+
+
+sb.auth.onAuthStateChange((event)=>{
+  if(event === "SIGNED_OUT" || event === "TOKEN_REFRESHED" || event === "USER_UPDATED") {
+    setTimeout(()=>syncUI(),0);
+  }
+});

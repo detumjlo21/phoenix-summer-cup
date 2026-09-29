@@ -92,7 +92,7 @@
     toggle(mode);
     if(mode!=="deathmatch")return;
     // Ưu tiên RPC tổng hợp để BXH công khai không phụ thuộc RLS của bảng players.
-    // Fallback về đọc trực tiếp nếu RPC chưa được cài.
+    // Public chỉ dùng RPC tổng hợp; không đọc bảng Kill nội bộ trực tiếp.
     const [tm,mm,top10Rpc]=await Promise.all([
       dmSb.from("team_names").select("team_number,name,logo_url").lte("team_number",12).order("team_number"),
       dmSb.from("deathmatch_matches").select("*").order("stage").order("group_code").order("match_order"),
@@ -103,9 +103,7 @@
     dmTeams=tm.data||[];
     dmMatches=mm.data||[];
 
-    // Ưu tiên dữ liệu Tử chiến thật. Nếu chưa có dòng nào trong bảng
-    // deathmatch_player_kills (trường hợp đang test bằng ô Kill ở Team Manager),
-    // fallback sang player_match_results để số Kill vừa nhập vẫn hiện ngay.
+    // Dữ liệu TOP 10 công khai chỉ đi qua RPC an toàn. Không fallback sang bảng nội bộ.
     if(!top10Rpc.error && Array.isArray(top10Rpc.data) && top10Rpc.data.length){
       dmTop10=(top10Rpc.data||[]).map(r=>({
         player_id:r.player_id,
@@ -114,44 +112,9 @@
         total_kills:Number(r.total_kills)||0
       })).filter(r=>r.total_kills>0).slice(0,10);
     }else{
-      const [kills,players]=await Promise.all([
-        dmSb.from("deathmatch_player_kills").select("player_id,kills"),
-        dmSb.from("players").select("id,game_name,team_number")
-      ]);
-      if(kills.error)return console.error(kills.error);
-      if(players.error)return console.error(players.error);
-      const playerMap=new Map((players.data||[]).map(p=>[String(p.id),p]));
-      const totals=new Map();
-      for(const row of (kills.data||[])){
-        const p=playerMap.get(String(row.player_id));
-        if(!p)continue;
-        const key=String(p.id);
-        const prev=totals.get(key);
-        totals.set(key,{player_id:p.id,game_name:p.game_name,team_number:p.team_number,total_kills:(prev?.total_kills||0)+(Number(row.kills)||0)});
-      }
-      dmTop10=[...totals.values()].filter(r=>r.total_kills>0).sort((a,b)=>b.total_kills-a.total_kills || String(a.game_name||"").localeCompare(String(b.game_name||""))).slice(0,10);
-
-      // Compatibility fallback: ô Kill trong Team Manager đang lưu ở
-      // player_match_results. Chỉ dùng nguồn này khi bảng Tử chiến chưa có dữ liệu.
-      if(!dmTop10.length){
-        const {data:matchKills,error:matchKillError}=await dmSb
-          .from("player_match_results")
-          .select("player_id,kills")
-          .gt("kills",0);
-        if(matchKillError){
-          console.warn("Không đọc được player_match_results:",matchKillError.message);
-        }else{
-          const totals2=new Map();
-          for(const row of (matchKills||[])){
-            const p=playerMap.get(String(row.player_id));
-            if(!p)continue;
-            const key=String(p.id);
-            const prev=totals2.get(key);
-            totals2.set(key,{player_id:p.id,game_name:p.game_name,team_number:p.team_number,total_kills:(prev?.total_kills||0)+(Number(row.kills)||0)});
-          }
-          dmTop10=[...totals2.values()].filter(r=>r.total_kills>0).sort((a,b)=>b.total_kills-a.total_kills || String(a.game_name||"").localeCompare(String(b.game_name||""))).slice(0,10);
-        }
-      }
+      // Không fallback đọc trực tiếp bảng Kill nội bộ nữa.
+      // Public chỉ được đọc qua RPC get_public_deathmatch_top10().
+      dmTop10=[];
     }
     renderProgress();
     renderTop10();
