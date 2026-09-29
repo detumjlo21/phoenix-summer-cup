@@ -579,14 +579,19 @@ async function loadTournamentPublic(){
     const settings = settingsRes.data;
     const status = document.querySelector("#registrationStatusBadge");
 
-    if(status && settings){
-      status.textContent = settings.registration_open
-        ? "Đăng ký đang mở"
-        : "Đăng ký đã đóng";
+    if(status){
+      if(!settings){
+        status.textContent = "Chưa xác định";
+        status.className = "status-badge";
+      }else{
+        status.textContent = settings.registration_open
+          ? "Đăng ký đang mở"
+          : "Đăng ký đã đóng";
 
-      status.className = `status-badge ${
-        settings.registration_open ? "open" : "closed"
-      }`;
+        status.className = `status-badge ${
+          settings.registration_open ? "open" : "closed"
+        }`;
+      }
     }
 
     if(typeof registrationManuallyOpen !== "undefined" && settings){
