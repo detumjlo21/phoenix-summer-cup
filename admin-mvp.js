@@ -1,6 +1,10 @@
 let mvpSelectedMatch=1;
 
 async function loadMvpAdmin(){
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user)return;
+  const {data:isAdmin}=await sb.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
+  if(!isAdmin)return;
   const [{data:mvp},{data:settings}]=await Promise.all([
     sb.rpc("get_public_mvp"),
     sb.from("mvp_settings").select("*").eq("id",1).maybeSingle()
@@ -103,4 +107,4 @@ document.querySelector("#removeMvpCharacterBtn")?.addEventListener("click",async
   }
 });
 
-setTimeout(loadMvpAdmin,900);
+document.addEventListener("phoenix-admin-ready",()=>loadMvpAdmin(),{once:true});

@@ -4708,14 +4708,12 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   font-size:11px;
 }
 
-/* Khong hien khu vuc Admin khi chua xac thuc */
-#adminArea[hidden]{
-  display:none !important;
-}
-
 /* Giảm khoảng cách giữa các panel trong Admin */
 #adminArea{
   gap:14px;
+}
+#adminArea[hidden]{
+  display:none !important;
 }
 
 #adminArea>.panel{

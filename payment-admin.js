@@ -48,6 +48,10 @@ async function loadPaymentRequests(){
 
 async function loadPaymentAdmin(){
   if(!paymentAdminBox)return;
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user)return;
+  const {data:isAdmin}=await sb.from('admins').select('user_id').eq('user_id',user.id).maybeSingle();
+  if(!isAdmin)return;
   await Promise.all([loadPaymentSettings(),loadPaymentRequests()]);
 }
 
@@ -61,7 +65,12 @@ document.querySelector('#savePaymentSettingsBtn')?.addEventListener('click',asyn
   else paymentAdminMsg(`Đã lưu phí ${paymentAdminMoney(amount)} / người.`,'success');
 });
 
-document.querySelector('#refreshPaymentRequestsBtn')?.addEventListener('click',loadPaymentRequests);
+document.querySelector('#refreshPaymentRequestsBtn')?.addEventListener('click',async()=>{
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user)return;
+  const {data:isAdmin}=await sb.from('admins').select('user_id').eq('user_id',user.id).maybeSingle();
+  if(isAdmin)loadPaymentRequests();
+});
 
 document.querySelector('#paymentRequestList')?.addEventListener('click',async event=>{
   const approve=event.target.closest('[data-payment-approve]');
@@ -88,6 +97,4 @@ document.querySelector('#paymentRequestList')?.addEventListener('click',async ev
 
 // Sau khi admin đăng nhập, admin.js gọi hàm này; đoạn listener cũng giúp cập nhật
 // khi session được khôi phục sau khi reload trang.
-sb.auth.onAuthStateChange((_event,session)=>{
-  if(session) setTimeout(()=>window.loadPaymentAdmin?.(),0);
-});
+window.addEventListener('phoenix-admin-ready',()=>window.loadPaymentAdmin?.(),{once:true});
