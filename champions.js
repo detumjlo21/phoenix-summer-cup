@@ -5,6 +5,28 @@ let hallSeasons=[];
 function hallEsc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
 function hallDate(v){return v?new Date(v+"T00:00:00").toLocaleDateString("vi-VN"):"Đã hoàn thành";}
 
+function membersBlock(s){
+  let list=s.team_members;
+  if(typeof list==='string'){try{list=JSON.parse(list);}catch(e){list=[];}}
+  if(!Array.isArray(list)||!list.length)return '';
+  const cards=list.map((m,idx)=>{
+    const badges=[
+      m.is_captain?'<em class="cap">👑 ĐỘI TRƯỞNG</em>':'',
+      m.is_mvp?'<em class="mvp">★ MVP</em>':''
+    ].join('');
+    return `<article class="hall-v73-member ${m.is_mvp?'is-mvp':''} ${m.is_captain?'is-captain':''}">
+      <span class="hall-v73-member-no">0${idx+1}</span>
+      <strong title="${hallEsc(m.name)}">${hallEsc(m.name)}</strong>
+      <div class="hall-v73-member-badges">${badges||'<em>TUYỂN THỦ</em>'}</div>
+      <div class="hall-v73-member-kills"><small>HẠ GỤC</small><b>${Number(m.kills||0)}</b></div>
+    </article>`;
+  }).join('');
+  return `<section class="hall-v73-members">
+    <div class="hall-v44-kicker">♛ · · THÀNH VIÊN ĐỘI VÔ ĐỊCH · · ♛</div>
+    <div class="hall-v73-member-grid">${cards}</div>
+  </section>`;
+}
+
 function seasonPanel(s,i){
   const name=hallEsc(s.team_name||`Đội ${s.team_number||""}`);
   const logo=s.team_logo_url?`<img src="${hallEsc(s.team_logo_url)}" alt="">`:`<div class="hall-v44-logo-fallback">PHX</div>`;
@@ -21,6 +43,7 @@ function seasonPanel(s,i){
         <div><span>💀</span><small>BOOYAH</small><b>${Number(s.booyahs||0)}</b></div>
       </div>
     </section>
+    ${membersBlock(s)}
     <section class="hall-v44-mvp">
       <div class="hall-v44-mvp-copy">
         <div class="hall-v44-kicker">♛ · · MVP MÙA GIẢI · ·</div>

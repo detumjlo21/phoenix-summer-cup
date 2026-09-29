@@ -75,3 +75,8 @@ Nội dung chuyển khoản được tạo tự động từ TÊN FACEBOOK KHÔN
 - Chạy `repair_v71_registration_mode_fair_random.sql` một lần trong Supabase SQL Editor.
 - Admin → Thanh toán → chọn **Chế độ đăng ký**: (1) Chuyển khoản + xác nhận, hoặc (2) Đăng ký thẳng không thu phí. Bấm "Lưu cài đặt đăng ký".
 - Random đội: bốc ngẫu nhiên theo số slot trống của từng đội (không còn ép mỗi đội 1 người trước).
+
+## V73 — Thành viên đội vô địch (Hall of Champions)
+- Trang `champions.html` hiển thị thêm khối "THÀNH VIÊN ĐỘI VÔ ĐỊCH" (tên, đội trưởng, MVP, số hạ gục).
+- Dữ liệu lưu dạng snapshot trong cột `champion_seasons.team_members`.
+- Sau khi deploy, chạy `repair_v73_champion_members.sql` một lần trong Supabase SQL Editor (sau V45). File này cũng điền thành viên cho Mùa 1.

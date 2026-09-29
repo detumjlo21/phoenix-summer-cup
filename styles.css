@@ -8069,3 +8069,25 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 .registration-mode-box{margin:16px 0 4px;display:grid;gap:8px}
 .registration-mode-box select{width:100%}
 .payment-admin-preview[hidden],#paymentAmountWrap[hidden]{display:none}
+
+/* V73 - Thanh vien doi vo dich (Hall of Champions) */
+.hall-v73-members{margin:0 0 25px;text-align:center}
+.hall-v73-member-grid{margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.hall-v73-member{position:relative;overflow:hidden;min-width:0;padding:16px 10px 12px;display:flex;flex-direction:column;align-items:center;gap:9px;border:1px solid rgba(190,92,18,.38);background:linear-gradient(180deg,rgba(40,14,8,.55),rgba(6,6,7,.85))}
+.hall-v73-member::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,transparent,#c9531a,transparent)}
+.hall-v73-member.is-captain{border-color:rgba(255,181,45,.6)}
+.hall-v73-member.is-captain::before{background:linear-gradient(90deg,transparent,#ffb52d,transparent);box-shadow:0 0 14px #ffb52d}
+.hall-v73-member.is-mvp{border-color:rgba(255,44,28,.65);background:linear-gradient(180deg,rgba(80,10,6,.6),rgba(6,6,7,.9))}
+.hall-v73-member.is-mvp::before{background:linear-gradient(90deg,transparent,#ff2c1c,transparent);box-shadow:0 0 14px #ff2c1c}
+.hall-v73-member-no{position:absolute;right:8px;top:6px;font-size:22px;font-weight:1000;color:transparent;-webkit-text-stroke:1px rgba(255,140,40,.28)}
+.hall-v73-member strong{max-width:100%;margin-top:12px;font-size:clamp(13px,1.5vw,17px);line-height:1.25;color:#fff1d4;overflow-wrap:anywhere;word-break:break-word}
+.hall-v73-member-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;min-height:18px}
+.hall-v73-member-badges em{font-style:normal;font-size:9px;font-weight:900;letter-spacing:1px;padding:3px 7px;color:#8d8983;border:1px solid rgba(255,255,255,.12)}
+.hall-v73-member-badges em.cap{color:#ffc63d;border-color:rgba(255,198,61,.55);background:rgba(255,181,45,.08)}
+.hall-v73-member-badges em.mvp{color:#ff5b4a;border-color:rgba(255,60,40,.6);background:rgba(255,44,28,.1)}
+.hall-v73-member-kills{width:100%;margin-top:auto;padding-top:8px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:baseline}
+.hall-v73-member-kills small{color:#85817d;font-size:9px;letter-spacing:1px}
+.hall-v73-member-kills b{color:#ffb52d;font-size:20px}
+@media(max-width:760px){
+ .hall-v73-member-grid{grid-template-columns:repeat(2,1fr)}
+}
