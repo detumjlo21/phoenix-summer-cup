@@ -16,7 +16,7 @@
   <meta name="twitter:description" content="PHOENIX CUP 2026 Mùa 2 • Giải đấu nội bộ quân đoàn">
   <meta name="twitter:image" content="https://phoenix-summer-cup.vercel.app/phoenix-og.jpg?v=2">
   <title>PHOENIX CUP 2026 Mùa 2</title>
-  <link rel="stylesheet" href="styles.css?v=65">
+  <link rel="stylesheet" href="styles.css?v=66">
   <link rel="stylesheet" href="prizes.css?v=66">
 </head>
 <body>
@@ -201,9 +201,9 @@
         <span class="status-badge closed">BO3</span>
       </div>
 
-      <div class="deathmatch-stage-strip">
-        <span class="active">Vòng 1</span><i>→</i><span>Vé vớt</span><i>→</i><span>Quyết đấu</span><i>→</i><span>Top 8</span><i>→</i><span>Tứ kết</span><i>→</i><span>Bán kết</span><i>→</i><span>Chung kết</span>
-      </div>
+      <nav class="dmx-tabs" aria-label="Các vòng đấu">
+        <a href="#dmx-round1" class="active">Vòng 1</a><a href="#dmx-repechage">Vé vớt</a><a href="#dmx-decider">Quyết đấu</a><a href="#dmx-quarterfinal">Tứ kết</a><a href="#dmx-semifinal">Bán kết</a><a href="#dmx-final">Chung kết</a>
+      </nav>
 
       <div class="deathmatch-section-title">
         <div><p class="eyebrow">TIẾN TRÌNH VÒNG LOẠI</p><h3>Thắng – Thua</h3></div>
@@ -214,11 +214,7 @@
         <div><p class="eyebrow">LỊCH THI ĐẤU</p><h3>BRACKET TỬ CHIẾN</h3></div>
         <span id="deathmatchScheduleMeta" class="muted">Đang tải...</span>
       </div>
-      <div class="deathmatch-bracket-legend">
-        <span><i class="bracket-dot upper"></i> NHÁNH CỌ XÁT</span>
-        <span><i class="bracket-dot lower"></i> NHÁNH PLAY-OFF</span>
-        <span><b>BO3</b> • Thắng 2 ván</span>
-      </div>
+      <div class="dmx-legend"><span><i class="d done"></i>Đã chốt</span><span><i class="d live"></i>Đang đấu</span><span><i class="d next"></i>Sắp đấu</span><span><b>BO3</b> thắng 2 ván</span></div>
       <div id="deathmatchSchedule" class="deathmatch-bracket-list"></div>
     </section>
 
@@ -325,7 +321,7 @@
   <script src="app.js?v=66"></script>
   <script src="registration-layout.js?v=2"></script>
   <script src="scoreboard.js?v=57"></script>
-  <script src="deathmatch-public.js?v=69"></script>
+  <script src="deathmatch-public.js?v=70"></script>
   <script src="champion.js?v=63"></script>
 
   <div id="teamDetailModal" class="team-detail-modal" hidden>
