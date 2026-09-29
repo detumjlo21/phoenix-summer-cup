@@ -7,6 +7,10 @@ function controlEsc(value){
 }
 
 async function loadResultControl(){
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user)return;
+  const {data:isAdmin}=await sb.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
+  if(!isAdmin)return;
   const [{data:state},{data:snapshots}]=await Promise.all([
     sb.from("match_publication")
       .select("*")
@@ -178,4 +182,4 @@ document.addEventListener("click",async event=>{
   }
 });
 
-setTimeout(loadResultControl,1200);
+document.addEventListener("phoenix-admin-ready",()=>loadResultControl(),{once:true});

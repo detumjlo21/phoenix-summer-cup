@@ -29,6 +29,10 @@ function rankLabel(rank){
 }
 
 async function loadTournamentAdmin(){
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user)return;
+  const {data:isAdmin}=await sb.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
+  if(!isAdmin)return;
   const [{data:settings},{data:schedule},{data:teams},{data:players},{data:ranking},{data:dmMatches},{data:dmKills}]=await Promise.all([
     sb.from("tournament_settings").select("*").eq("id",1).maybeSingle(),
     sb.from("match_schedule").select("*").order("match_number"),
@@ -490,4 +494,4 @@ function renderAdminRanking(rows){
   `).join("")||'<tr><td colspan="7" class="muted">Chưa có kết quả.</td></tr>';
 }
 
-setTimeout(loadTournamentAdmin,600);
+document.addEventListener("phoenix-admin-ready",()=>loadTournamentAdmin(),{once:true});
