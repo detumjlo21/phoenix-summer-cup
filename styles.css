@@ -8186,3 +8186,43 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
   .dmx-grid.n1{max-width:360px;margin:0 auto}
 }
 @media(max-width:380px){.dmx-team strong{font-size:13px}.dmx-steps span{font-size:10px}}
+
+/* ===== V76 - Sửa giao diện admin Tử chiến (bị lồng grid nên vỡ layout) ===== */
+#deathmatchAdminGroups.deathmatch-admin-groups{display:block}
+#deathmatchAdminGroups .dm-admin-stage{margin:0 0 16px;padding:14px;border-radius:16px}
+#deathmatchAdminGroups .dm-admin-stage-title{gap:10px;flex-wrap:wrap}
+#deathmatchAdminGroups .dm-admin-stage-title h3{font-size:15px;letter-spacing:.03em}
+#deathmatchAdminGroups .dm-admin-stage-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px}
+#deathmatchAdminGroups .dm-admin-match{display:flex;flex-direction:column;gap:10px;min-width:0;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(160deg,#171a23,#101219)}
+#deathmatchAdminGroups .dm-admin-match.completed{border-color:rgba(74,222,128,.35)}
+#deathmatchAdminGroups .dm-admin-match-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap;font-size:12px}
+#deathmatchAdminGroups .dm-admin-match-top strong{flex:1 1 140px;min-width:0;line-height:1.35;color:#ffb05a}
+#deathmatchAdminGroups .dm-admin-match-top span{white-space:nowrap;font-size:11px;color:#c9cdd8}
+#deathmatchAdminGroups .dm-admin-teams{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;margin:0}
+#deathmatchAdminGroups .dm-admin-teams>div{min-width:0;padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.04);gap:8px}
+#deathmatchAdminGroups .dm-admin-teams strong{font-size:14px;line-height:1.25;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal;word-break:break-word;letter-spacing:0;font-family:inherit}
+#deathmatchAdminGroups .dm-admin-teams img{flex:0 0 28px;width:28px;height:28px}
+#deathmatchAdminGroups .dm-admin-teams>b{font-size:10px}
+#deathmatchAdminGroups .dm-admin-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#deathmatchAdminGroups .dm-admin-controls label{display:flex;flex-direction:column;gap:4px;min-width:0;font-size:11px;color:#9da3b3}
+#deathmatchAdminGroups .dm-admin-controls input,#deathmatchAdminGroups .dm-admin-controls select{width:100%;min-width:0;box-sizing:border-box;margin:0;height:42px;font-size:14px}
+#deathmatchAdminGroups .dm-admin-controls button{width:100%;height:44px;margin:0;font-size:13px;letter-spacing:0;font-family:inherit;font-weight:800}
+#deathmatchAdminGroups .dm-admin-controls .dmSaveSchedule,
+#deathmatchAdminGroups .dm-admin-controls .dmWinnerSelect,
+#deathmatchAdminGroups .dm-admin-controls .dmSaveWinner{grid-column:1/-1}
+#deathmatchAdminGroups .dm-admin-controls .dmWinnerSelect{margin-top:4px}
+#deathmatchAdminGroups .dm-bye-note{margin:0}
+#deathmatchAdminGroups .dm-kill-editor{margin:0;padding-top:10px;overflow-x:auto}
+#deathmatchAdminGroups .dm-kill-editor summary{font-size:12px;padding:4px 0}
+#deathmatchAdminGroups .dm-kill-editor table{min-width:260px}
+#deathmatchAdminGroups .dm-kill-editor input{width:64px;height:34px}
+.deathmatch-admin-toolbar{flex-wrap:wrap}
+.deathmatch-admin-toolbar button{flex:1 1 200px}
+#dmActionMsg{margin:0 0 14px}
+@media(max-width:520px){
+  #deathmatchAdminGroups .dm-admin-stage{padding:10px}
+  #deathmatchAdminGroups .dm-admin-stage-grid{grid-template-columns:1fr}
+  #deathmatchAdminGroups .dm-admin-teams{grid-template-columns:1fr;gap:4px}
+  #deathmatchAdminGroups .dm-admin-teams>b{text-align:center}
+  #deathmatchAdminGroups .dm-admin-teams>div:last-child{justify-content:flex-start;text-align:left}
+}

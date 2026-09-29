@@ -39,8 +39,8 @@ create or replace function public.admin_init_deathmatch_bracket()
 returns void language plpgsql security definer set search_path=public as $$
 begin
   if not public.is_phoenix_admin() then raise exception 'not_admin'; end if;
-  delete from public.deathmatch_player_kills;
-  delete from public.deathmatch_matches;
+  delete from public.deathmatch_player_kills where true;
+  delete from public.deathmatch_matches where true;
   insert into public.deathmatch_matches(stage,group_code,match_order,round_name,team_a,team_b,best_of,status)
   values
     ('round1','R1',1,'Trận 1 • Vòng 1',null,null,3,'pending'),
