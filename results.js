@@ -180,16 +180,15 @@ async function loadDeathmatchResultsPage(){
     const [tm,mm,kills]=await Promise.all([
       resultSb.from("team_names").select("team_number,name,logo_url").lte("team_number",12).order("team_number"),
       resultSb.from("deathmatch_matches").select("*").order("stage").order("group_code").order("match_order"),
-      resultSb.rpc("get_public_deathmatch_match_kill_counts")
+      resultSb.from("deathmatch_player_kills").select("match_id,kills")
     ]);
     if(tm.error||mm.error||kills.error)throw (tm.error||mm.error||kills.error);
     const teams=tm.data||[],matches=mm.data||[], rows=kills.data||[];
-    const killCounts=new Map((rows||[]).map(r=>[String(r.match_id),Number(r.player_count)||0]));
     const name=n=>teams.find(t=>Number(t.team_number)===Number(n))?.name||`Đội ${n||"?"}`;
     const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
     const labels={round1:"VÒNG 1",repechage:"VÉ VỚT",decider:"QUYẾT ĐẤU",quarterfinal:"TỨ KẾT",semifinal:"BÁN KẾT",final:"CHUNG KẾT"};
     const box=document.querySelector("#deathmatchResultsList");
-    box.innerHTML=matches.map(m=>{const a=Number(m.team_a),b=Number(m.team_b),w=Number(m.winner_team);const kaCount=killCounts.get(String(m.id))||0;return `<article class="dm-result-item ${m.status}"><div class="dm-result-item-head"><strong>${esc(m.round_name)}</strong><span>${labels[m.stage]||m.stage} • BO${m.best_of}</span></div><div class="dm-result-match"><b>${a?esc(name(a)):"Chờ đội"}</b><span class="${w===a?'winner':''}">${w===a?'🏆 THẮNG':a&&b?'VS':'—'}</span><b>${b?esc(name(b)):"Chờ đội"}</b><span class="${w===b?'winner':''}">${w===b?'🏆 THẮNG':''}</span></div>${m.bye_team?`<div class="dm-result-bye">🎟️ Đặc cách: <strong>${esc(name(m.bye_team))}</strong></div>`:""}${kaCount?`<details><summary>Đã nhập Kill cho ${kaCount} người chơi</summary></details>`:""}</article>`;}).join("");
+    box.innerHTML=matches.map(m=>{const a=Number(m.team_a),b=Number(m.team_b),w=Number(m.winner_team);const ka=rows.filter(r=>Number(r.match_id)===Number(m.id)&&Number(r.player_id));return `<article class="dm-result-item ${m.status}"><div class="dm-result-item-head"><strong>${esc(m.round_name)}</strong><span>${labels[m.stage]||m.stage} • BO${m.best_of}</span></div><div class="dm-result-match"><b>${a?esc(name(a)):"Chờ đội"}</b><span class="${w===a?'winner':''}">${w===a?'🏆 THẮNG':a&&b?'VS':'—'}</span><b>${b?esc(name(b)):"Chờ đội"}</b><span class="${w===b?'winner':''}">${w===b?'🏆 THẮNG':''}</span></div>${m.bye_team?`<div class="dm-result-bye">🎟️ Đặc cách: <strong>${esc(name(m.bye_team))}</strong></div>`:""}${ka.length?`<details><summary>Đã nhập Kill cho ${ka.length} người chơi</summary></details>`:""}</article>`;}).join("");
   }catch(e){console.error(e);}
 }
 

@@ -1,10 +1,6 @@
 let championPlayers=[];
 
 async function loadChampionAdmin(){
-  const {data:{user}}=await sb.auth.getUser();
-  if(!user)return;
-  const {data:isAdmin}=await sb.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
-  if(!isAdmin)return;
   const [{data:players},{data:images}]=await Promise.all([
     sb.from("players")
       .select("id,game_name,team_number,team_names(name)")
@@ -101,4 +97,4 @@ document.querySelector("#removeChampionCharacterBtn")?.addEventListener("click",
   }
 });
 
-document.addEventListener("phoenix-admin-ready",()=>loadChampionAdmin(),{once:true});
+setTimeout(loadChampionAdmin,1100);

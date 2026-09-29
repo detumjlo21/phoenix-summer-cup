@@ -5,13 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#08090d">
   <title>Quản trị PHOENIX CUP 2026</title>
-  <link rel="stylesheet" href="styles.css?v=58">
-  <link rel="stylesheet" href="prizes.css?v=70">
-  <style>
-    /* Admin luôn ẩn tuyệt đối trước khi Supabase xác thực quyền. */
-    #adminArea{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
-    body.phoenix-admin-authenticated #adminArea{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
-  </style>
+  <link rel="stylesheet" href="styles.css?v=57">
+  <link rel="stylesheet" href="prizes.css?v=63">
 </head>
 <body>
   <div class="background-grid"></div>
@@ -35,7 +30,7 @@
       </form>
     </section>
 
-    <div id="adminArea" hidden aria-hidden="true">
+    <div id="adminArea" hidden>
       <section id="v14Dashboard" class="dashboard-grid v14-dashboard">
         <article class="metric-card">
           <span>Thành viên</span>
@@ -519,17 +514,17 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="config.js?v=70"></script>
-  <script src="admin.js?v=70"></script>
-  <script src="admin-tournament.js?v=70"></script>
-  <script src="admin-mvp.js?v=70"></script>
-  <script src="admin-champion.js?v=70"></script>
-  <script src="toast.js?v=70"></script>
-  <script src="admin-results-control.js?v=70"></script>
-  <script src="admin-poster.js?v=70"></script>
-  <script src="admin-season-manager.js?v=70"></script>
-  <script src="payment-admin.js?v=70"></script>
-  <script src="admin-pro.js?v=70"></script>
-  <script src="admin-prizes.js?v=70"></script>
+  <script src="config.js?v=63"></script>
+  <script src="admin.js?v=56"></script>
+  <script src="admin-tournament.js?v=68"></script>
+  <script src="admin-mvp.js?v=63"></script>
+  <script src="admin-champion.js?v=63"></script>
+  <script src="toast.js?v=63"></script>
+  <script src="admin-results-control.js?v=63"></script>
+  <script src="admin-poster.js?v=63"></script>
+  <script src="admin-season-manager.js?v=56"></script>
+  <script src="payment-admin.js?v=56"></script>
+  <script src="admin-pro.js?v=42"></script>
+  <script src="admin-prizes.js?v=63"></script>
 </body>
 </html>
