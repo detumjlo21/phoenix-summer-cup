@@ -8064,3 +8064,8 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 
 /* Registration page builder */
 .registration-layout-list{display:grid;gap:10px;margin:14px 0}.registration-layout-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line,rgba(255,255,255,.14));border-radius:12px;background:rgba(255,255,255,.035);cursor:grab}.registration-layout-item:active{cursor:grabbing}.layout-drag{font-size:22px;color:var(--muted,#aaa);user-select:none}.layout-name{flex:1;font-weight:600}.layout-toggle{display:flex;align-items:center;gap:7px;white-space:nowrap}.layout-toggle input{width:auto;min-height:auto}
+
+/* V71 - Registration mode */
+.registration-mode-box{margin:16px 0 4px;display:grid;gap:8px}
+.registration-mode-box select{width:100%}
+.payment-admin-preview[hidden],#paymentAmountWrap[hidden]{display:none}

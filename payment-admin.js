@@ -14,6 +14,21 @@ async function loadPaymentSettings(){
   if(error){paymentAdminMsg(error.message,'error');return;}
   const amount=document.querySelector('#paymentAmountInput');
   if(amount)amount.value=data?.amount??0;
+  const mode=document.querySelector('#registrationModeSelect');
+  if(mode)mode.value=data?.registration_mode==='direct'?'direct':'payment';
+  applyRegistrationModeUI();
+}
+
+function applyRegistrationModeUI(){
+  const direct=document.querySelector('#registrationModeSelect')?.value==='direct';
+  const hint=document.querySelector('#registrationModeHint');
+  if(hint)hint.textContent=direct
+    ?'Người chơi chỉ nhập tên rồi đăng ký, không cần chuyển khoản. Đơn vào thẳng danh sách chờ duyệt bên dưới.'
+    :'Người chơi phải chuyển khoản và bấm “Tôi đã chuyển khoản” thì đơn mới vào danh sách chờ duyệt.';
+  const wrap=document.querySelector('#paymentAmountWrap');
+  const prev=document.querySelector('#paymentAdminPreview');
+  if(wrap)wrap.hidden=direct;
+  if(prev)prev.hidden=direct;
 }
 
 async function loadPaymentRequests(){
@@ -35,9 +50,9 @@ async function loadPaymentRequests(){
       <strong>${paymentAdminEsc(r.game_name)}</strong>
       <span>Facebook: ${paymentAdminEsc(r.facebook_name)}</span>
       <span>Mã đơn: <b>${paymentAdminEsc(r.request_code)}</b></span>
-      <span>Số tiền: <b>${paymentAdminMoney(r.payment_amount)}</b></span>
-      <span>Nội dung chuyển khoản: <b class="payment-ref">${paymentAdminEsc(r.payment_reference||r.facebook_name||'Chưa có')}</b></span>
-      <small class="muted">${r.status==='pending_review'?'Đã xác nhận đã chuyển khoản — chờ Admin duyệt':'Chờ người chơi chuyển khoản và xác nhận'}</small>
+      ${Number(r.payment_amount||0)>0?`<span>Số tiền: <b>${paymentAdminMoney(r.payment_amount)}</b></span>
+      <span>Nội dung chuyển khoản: <b class="payment-ref">${paymentAdminEsc(r.payment_reference||r.facebook_name||'Chưa có')}</b></span>`:'<span>Hình thức: <b>Đăng ký thẳng (không thu phí)</b></span>'}
+      <small class="muted">${r.status==='pending_review'?(Number(r.payment_amount||0)>0?'Đã xác nhận đã chuyển khoản — chờ Admin duyệt':'Chờ Admin duyệt & random đội'):'Chờ người chơi chuyển khoản và xác nhận'}</small>
     </div>
     <div class="payment-request-actions">
       ${r.status==='pending_review'?`<button type="button" data-payment-approve="${r.id}">✓ DUYỆT ĐƠN</button>
@@ -54,13 +69,17 @@ async function loadPaymentAdmin(){
 window.loadPaymentAdmin=loadPaymentAdmin;
 
 document.querySelector('#savePaymentSettingsBtn')?.addEventListener('click',async()=>{
+  const mode=document.querySelector('#registrationModeSelect')?.value==='direct'?'direct':'payment';
   const amount=Number(document.querySelector('#paymentAmountInput')?.value||0);
-  if(amount<=0){paymentAdminMsg('Hãy nhập phí đăng ký lớn hơn 0.','error');return;}
-  const {error}=await sb.from('tournament_payment_settings').update({amount,updated_at:new Date().toISOString()}).eq('id',1);
+  if(mode==='payment'&&amount<=0){paymentAdminMsg('Hãy nhập phí đăng ký lớn hơn 0.','error');return;}
+  const patch={registration_mode:mode,updated_at:new Date().toISOString()};
+  if(mode==='payment')patch.amount=amount;
+  const {error}=await sb.from('tournament_payment_settings').update(patch).eq('id',1);
   if(error)paymentAdminMsg(error.message,'error');
-  else paymentAdminMsg(`Đã lưu phí ${paymentAdminMoney(amount)} / người.`,'success');
+  else paymentAdminMsg(mode==='direct'?'Đã chuyển sang chế độ ĐĂNG KÝ THẲNG (không thu phí).':`Đã lưu chế độ CHUYỂN KHOẢN, phí ${paymentAdminMoney(amount)} / người.`,'success');
 });
 
+document.querySelector('#registrationModeSelect')?.addEventListener('change',applyRegistrationModeUI);
 document.querySelector('#refreshPaymentRequestsBtn')?.addEventListener('click',loadPaymentRequests);
 
 document.querySelector('#paymentRequestList')?.addEventListener('click',async event=>{

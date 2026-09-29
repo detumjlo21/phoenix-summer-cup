@@ -212,18 +212,27 @@
           <span id="paymentPendingBadge" class="status-badge">0 đơn chờ</span>
         </div>
 
+        <div class="registration-mode-box">
+          <label for="registrationModeSelect">Chế độ đăng ký</label>
+          <select id="registrationModeSelect">
+            <option value="payment">1. Chuyển khoản → người chơi bấm xác nhận → Admin duyệt & random đội</option>
+            <option value="direct">2. Đăng ký thẳng (không thu phí) → Admin duyệt & random đội</option>
+          </select>
+          <p class="muted" id="registrationModeHint"></p>
+        </div>
+
         <div class="payment-admin-settings">
-          <div>
+          <div id="paymentAmountWrap">
             <label for="paymentAmountInput">Phí đăng ký / người</label>
             <input id="paymentAmountInput" type="number" min="0" step="1000" placeholder="Ví dụ: 50000">
           </div>
           <div class="payment-admin-actions">
-            <button id="savePaymentSettingsBtn" type="button">Lưu cài đặt thanh toán</button>
+            <button id="savePaymentSettingsBtn" type="button">Lưu cài đặt đăng ký</button>
           </div>
         </div>
         <p id="paymentAdminMessage" class="message" aria-live="polite"></p>
 
-        <div class="payment-admin-preview">
+        <div class="payment-admin-preview" id="paymentAdminPreview">
           <img src="payment-qr.png" alt="QR nhận tiền" class="payment-admin-qr">
           <div>
             <strong>QR nhận tiền</strong>
@@ -529,7 +538,7 @@
   <script src="admin-results-control.js?v=63"></script>
   <script src="admin-poster.js?v=63"></script>
   <script src="admin-season-manager.js?v=56"></script>
-  <script src="payment-admin.js?v=64"></script>
+  <script src="payment-admin.js?v=65"></script>
   <script src="admin-pro.js?v=42"></script>
   <script src="admin-prizes.js?v=63"></script>
 </body>

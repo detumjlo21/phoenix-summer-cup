@@ -70,3 +70,8 @@ Nội dung chuyển khoản được tạo tự động từ TÊN FACEBOOK KHÔN
 - Admin chọn MVP + số kill cho từng trận Tử chiến.
 - Trang công khai hiển thị MVP ngay trong từng card trận.
 - SQL: repair_v58_deathmatch_mvp.sql
+
+## V71 – Chế độ đăng ký & random công bằng
+- Chạy `repair_v71_registration_mode_fair_random.sql` một lần trong Supabase SQL Editor.
+- Admin → Thanh toán → chọn **Chế độ đăng ký**: (1) Chuyển khoản + xác nhận, hoặc (2) Đăng ký thẳng không thu phí. Bấm "Lưu cài đặt đăng ký".
+- Random đội: bốc ngẫu nhiên theo số slot trống của từng đội (không còn ép mỗi đội 1 người trước).

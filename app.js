@@ -423,7 +423,7 @@ async function syncRegistrationStatus(){
       }else if(full){
         joinBtn.textContent="GIẢI ĐÃ ĐỦ 48 NGƯỜI";
       }else{
-        joinBtn.textContent="TẠO ĐƠN & THANH TOÁN";
+        joinBtn.textContent=joinLabel();
       }
     }
   }catch(error){
@@ -631,6 +631,15 @@ function playRandomAnimation(finalTeam){
 }
 
 let currentPaymentRequest=null;
+let registrationMode="payment";
+function joinLabel(){return registrationMode==="direct"?"ĐĂNG KÝ THAM GIA":"TẠO ĐƠN & THANH TOÁN";}
+async function loadRegistrationMode(){
+  try{
+    const {data}=await sb.from("tournament_payment_settings").select("registration_mode").eq("id",1).maybeSingle();
+    registrationMode=data?.registration_mode==="direct"?"direct":"payment";
+  }catch{registrationMode="payment";}
+  if(joinBtn&&!joinBtn.disabled)joinBtn.textContent=joinLabel();
+}
 let paymentPollTimer=null;
 
 function formatVnd(value){
@@ -668,6 +677,8 @@ function renderRegistrationStatus(data){
     text.textContent=`${data.game_name} đã được Admin duyệt. ${data.registration_code?`Mã đăng ký: ${data.registration_code}.`:''} Hệ thống sẽ xếp đội cho bạn.`;
   }else if(status==='rejected'){
     text.textContent=`Đơn ${data.request_code} bị từ chối.${data.rejection_reason?` Lý do: ${data.rejection_reason}`:''}`;
+  }else if(status==='pending_review'&&Number(data.amount||0)<=0){
+    text.textContent=`Đơn ${data.request_code} đã được ghi nhận. Vui lòng chờ Ban tổ chức duyệt và xếp đội.`;
   }else if(status==='pending_review'){
     text.textContent=`Đơn ${data.request_code} đã ghi nhận chuyển khoản và đang chờ Ban tổ chức kiểm tra.`;
   }else{
@@ -720,6 +731,16 @@ async function createPaymentRequest(gameName,facebookName){
   return Array.isArray(data)?data[0]:data;
 }
 
+async function showDirectRequest(request,gameName){
+  currentPaymentRequest=request;
+  const panel=document.querySelector("#paymentPanel");
+  if(panel)panel.hidden=true;
+  renderRegistrationStatus({request_code:request.request_code,game_name:gameName||"",amount:0,status:"pending_review"});
+  localStorage.setItem("phoenix_pending_request",request.request_code);
+  if(paymentPollTimer)clearInterval(paymentPollTimer);
+  paymentPollTimer=setInterval(()=>loadPaymentRequestStatus(request.request_code),15000);
+}
+
 async function showPaymentForRequest(request){
   currentPaymentRequest=request;
   const panel=document.querySelector("#paymentPanel");
@@ -749,7 +770,7 @@ form.addEventListener("submit",async e=>{
   if(gameName.length<2){setMsg("Tên trong game phải có ít nhất 2 ký tự.","error");return}
   if(facebookName.length<2){setMsg("Tên Facebook phải có ít nhất 2 ký tự.","error");return}
 
-  joinBtn.disabled=true;setMsg("Đang tạo đơn đăng ký...");
+  joinBtn.disabled=true;setMsg(registrationMode==="direct"?"Đang gửi đăng ký...":"Đang tạo đơn đăng ký...");
   const {data:registrationSettings}=await sb.from("tournament_settings").select("registration_open,updated_at").eq("id",1).maybeSingle();
   if(registrationSettings&&registrationSettings.registration_open===false){
     registrationManuallyOpen=false;setRegistrationVisibility(false,registrationSettings?.updated_at||null);updateCountdown();
@@ -757,8 +778,13 @@ form.addEventListener("submit",async e=>{
   }
   try{
     const request=await createPaymentRequest(gameName,facebookName);
-    await showPaymentForRequest(request);
-    setMsg(`Đã tạo đơn ${request.request_code}. Hãy chuyển khoản rồi xác nhận.`,"success");
+    if(request.status==="pending_review"){
+      await showDirectRequest(request,gameName);
+      setMsg(`Đã đăng ký thành công (mã đơn ${request.request_code}). Vui lòng chờ Ban tổ chức duyệt.`,"success");
+    }else{
+      await showPaymentForRequest(request);
+      setMsg(`Đã tạo đơn ${request.request_code}. Hãy chuyển khoản rồi xác nhận.`,"success");
+    }
     joinBtn.disabled=true;
   }catch(err){
     setMsg(err.message,"error");joinBtn.disabled=false;
@@ -793,7 +819,11 @@ async function restorePendingPaymentRequest(){
     localStorage.removeItem("phoenix_pending_request");
     return;
   }
-  if(row.status!=='approved'){
+  if(row.status==='pending_review'&&Number(row.amount||0)<=0){
+    await showDirectRequest({request_code:row.request_code,amount:0,content:row.payment_reference,status:row.status},row.game_name);
+    document.querySelector("#gameName").value=row.game_name||"";
+    document.querySelector("#facebookName").value=row.facebook_name||"";
+  }else if(row.status!=='approved'){
     currentPaymentRequest={request_code:row.request_code,amount:row.amount,content:row.payment_reference||row.facebook_name||"TEN FACEBOOK KHONG DAU"};
     await showPaymentForRequest(currentPaymentRequest);
     document.querySelector("#gameName").value=row.game_name||"";
@@ -804,4 +834,5 @@ async function restorePendingPaymentRequest(){
 
 document.querySelector("#refreshBtn")?.addEventListener("click",loadPublicData);
 loadPublicData();
+loadRegistrationMode();
 restorePendingPaymentRequest();
