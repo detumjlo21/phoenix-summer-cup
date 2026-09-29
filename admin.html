@@ -206,13 +206,21 @@
         <div class="section-row">
           <div>
             <p class="eyebrow">THANH TOÁN</p>
-            <h2>Cài đặt phí & duyệt đơn đăng ký</h2>
-            <p class="muted">Mỗi người chơi tự chuyển khoản. Nội dung chuyển khoản là TÊN FACEBOOK KHÔNG DẤU. Admin kiểm tra đơn rồi mới duyệt vào giải.</p>
+            <h2>Hình thức đăng ký & duyệt đơn đăng ký</h2>
+            <p class="muted">Chọn đăng ký miễn phí (chờ Admin duyệt) hoặc chuyển khoản (người chơi xác nhận, Admin duyệt). Admin duyệt là hệ thống tự xếp đội.</p>
           </div>
           <span id="paymentPendingBadge" class="status-badge">0 đơn chờ</span>
         </div>
 
         <div class="payment-admin-settings">
+          <div>
+            <label for="registrationModeInput">Hình thức đăng ký</label>
+            <select id="registrationModeInput">
+              <option value="payment">Chuyển khoản → xác nhận → Admin duyệt</option>
+              <option value="free">Đăng ký miễn phí → Admin duyệt</option>
+            </select>
+          </div>
+
           <div>
             <label for="paymentAmountInput">Phí đăng ký / người</label>
             <input id="paymentAmountInput" type="number" min="0" step="1000" placeholder="Ví dụ: 50000">

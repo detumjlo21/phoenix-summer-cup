@@ -698,7 +698,9 @@ async function loadPaymentRequestStatus(requestCode,showMessage=false){
 }
 
 async function createPaymentRequest(gameName,facebookName){
-  const {data,error}=await sb.rpc("create_registration_request",{
+  const {data:paySettings}=await sb.from("tournament_payment_settings").select("registration_mode").eq("id",1).maybeSingle();
+  const freeMode=paySettings?.registration_mode==="free";
+  const {data,error}=await sb.rpc(freeMode?"create_free_registration_request":"create_registration_request",{
     p_game_name:gameName,
     p_facebook_name:facebookName
   });
@@ -757,9 +759,18 @@ form.addEventListener("submit",async e=>{
   }
   try{
     const request=await createPaymentRequest(gameName,facebookName);
-    await showPaymentForRequest(request);
-    setMsg(`Đã tạo đơn ${request.request_code}. Hãy chuyển khoản rồi xác nhận.`,"success");
-    joinBtn.disabled=true;
+    if(request.status==="pending_review"){
+      localStorage.setItem("phoenix_pending_request",request.request_code);
+      renderRegistrationStatus({request_code:request.request_code,game_name:gameName,facebook_name:facebookName,status:"pending_review"});
+      setMsg(`Đã gửi đăng ký miễn phí ${request.request_code}. Vui lòng chờ Admin duyệt.`,"success");
+      joinBtn.disabled=true;
+      if(paymentPollTimer)clearInterval(paymentPollTimer);
+      paymentPollTimer=setInterval(()=>loadPaymentRequestStatus(request.request_code),15000);
+    }else{
+      await showPaymentForRequest(request);
+      setMsg(`Đã tạo đơn ${request.request_code}. Hãy chuyển khoản rồi xác nhận.`,"success");
+      joinBtn.disabled=true;
+    }
   }catch(err){
     setMsg(err.message,"error");joinBtn.disabled=false;
   }
