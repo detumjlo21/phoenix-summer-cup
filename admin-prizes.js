@@ -64,10 +64,6 @@
   }
 
   async function load(){
-    const {data:{user}}=await sb.auth.getUser();
-    if(!user)return;
-    const {data:isAdmin}=await sb.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
-    if(!isAdmin)return;
     status("Đang tải...");
     const {data,error}=await sb.from("tournament_prizes").select("*").eq("id",1).maybeSingle();
     if(error){status("Chưa cài SQL","closed");console.error(error);return}
@@ -107,5 +103,6 @@
   }
 
   function init(){makePanel();load()}
-  document.addEventListener("phoenix-admin-ready",init,{once:true});
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});
+  else init();
 })();

@@ -15,13 +15,8 @@ async function verifyAdmin(){
   return !!data;
 }
 async function syncUI(){
-  const ok=await verifyAdmin();
-  loginPanel.hidden=ok;
-  adminArea.hidden=!ok;
-  if(ok){
-    await loadAll();
-    window.dispatchEvent(new CustomEvent("phoenix-admin-ready"));
-  }
+  const ok=await verifyAdmin();loginPanel.hidden=ok;adminArea.hidden=!ok;
+  if(ok)await loadAll();
 }
 document.querySelector("#loginForm").addEventListener("submit",async e=>{
   e.preventDefault();msg(loginMessage,"Đang đăng nhập...");

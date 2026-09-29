@@ -25,10 +25,6 @@ function adminProKillMap(){
 }
 
 async function loadAdminPro(){
-  const {data:{user}}=await sb.auth.getUser();
-  if(!user)return;
-  const {data:isAdmin}=await sb.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
-  if(!isAdmin)return;
   const [{data:teams,error:teamError},{data:players,error:playerError}]=await Promise.all([
     sb.from("team_names")
       .select("team_number,name,logo_url,captain_player_id")
@@ -808,7 +804,7 @@ window.addEventListener("beforeunload",event=>{
   event.returnValue="";
 });
 
-document.addEventListener("phoenix-admin-ready",()=>{
+setTimeout(()=>{
   collapseOldTeamTools();
   loadAdminPro();
-},{once:true});
+},1200);
