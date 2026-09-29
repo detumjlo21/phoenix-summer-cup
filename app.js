@@ -130,6 +130,7 @@ function updateTopLayout(){
   if(leaderboardHome.parentNode && leaderboardPanel){
     leaderboardHome.parentNode.insertBefore(leaderboardPanel, leaderboardHome.nextSibling);
   }
+  window.applyRegistrationPageLayout?.();
 }
 
 window.updatePhoenixTopLayout=updateTopLayout;

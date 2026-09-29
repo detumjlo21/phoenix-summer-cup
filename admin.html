@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="prizes.css?v=63">
 </head>
 <body>
-<button onclick="openRegistrationBuilder()" style="position:fixed;bottom:20px;right:20px;z-index:9999">🎨 Chỉnh trang đăng ký</button>
   <div class="background-grid"></div>
 
   <main class="page">
@@ -32,6 +31,11 @@
     </section>
 
     <div id="adminArea" hidden>
+      <section class="panel" id="registrationLayoutPanel">
+        <div class="section-row"><div><p class="eyebrow">PAGE BUILDER</p><h2>🎛️ Tùy chỉnh trang đăng ký</h2><p class="muted">Kéo thả để đổi thứ tự; bật/tắt để ẩn hoặc hiện từng khu vực.</p></div></div>
+        <div id="registrationLayoutList" class="registration-layout-list"><p class="muted">Đang tải cấu hình...</p></div>
+        <div class="mode-save-row"><span id="registrationLayoutMessage" class="message" aria-live="polite"></span><button id="saveRegistrationLayoutBtn" type="button">💾 Lưu bố cục</button></div>
+      </section>
       <section id="v14Dashboard" class="dashboard-grid v14-dashboard">
         <article class="metric-card">
           <span>Thành viên</span>
@@ -516,7 +520,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="config.js?v=63"></script>
-  <script src="admin.js?v=56"></script>
+  <script src="admin.js?v=64"></script>
+  <script src="registration-layout-admin.js?v=1"></script>
   <script src="admin-tournament.js?v=68"></script>
   <script src="admin-mvp.js?v=63"></script>
   <script src="admin-champion.js?v=63"></script>
@@ -524,10 +529,8 @@
   <script src="admin-results-control.js?v=63"></script>
   <script src="admin-poster.js?v=63"></script>
   <script src="admin-season-manager.js?v=56"></script>
-  <script src="payment-admin.js?v=56"></script>
+  <script src="payment-admin.js?v=64"></script>
   <script src="admin-pro.js?v=42"></script>
   <script src="admin-prizes.js?v=63"></script>
 </body>
 </html>
-
-<script src="registration-builder.js?v=1"></script>
