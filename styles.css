@@ -8236,3 +8236,6 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 .dmx-st.dmx-cd{font-size:12px;font-variant-numeric:tabular-nums;padding:5px 10px;letter-spacing:.02em}
 .dmx-st.dmx-cd.soon{color:#fff;background:linear-gradient(90deg,#ef3d32,#ff8a1f);animation:dmPulse 1.4s infinite}
 @media(max-width:360px){.dmx-when b{font-size:17px}}
+
+/* V78 - đảm bảo thuộc tính hidden luôn thắng các rule display khác */
+.survival-public-section[hidden],#deathmatchPublicArea[hidden],#survivalScheduleSection[hidden]{display:none!important}

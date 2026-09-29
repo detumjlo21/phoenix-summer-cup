@@ -127,10 +127,24 @@
 
     if(window.setModeHeroBanner)window.setModeHeroBanner(mode);
   }
+  const MODE_KEY="phoenix_game_mode";
+  const cachedMode=()=>{try{return localStorage.getItem(MODE_KEY);}catch(_){return null;}};
+  // Chưa biết chế độ nào → ẩn cả hai để không hiện nhầm khối Sinh tồn khi đang tải
+  function applyEarly(){
+    const m=cachedMode();
+    if(m==="deathmatch"||m==="survival"){toggle(m);return;}
+    document.querySelectorAll(".survival-public-section").forEach(el=>el.hidden=true);
+    const dm=document.querySelector("#deathmatchPublicArea"); if(dm)dm.hidden=true;
+  }
+  applyEarly();
   async function load(){
     const {data:settings,error}=await dmSb.from("tournament_settings").select("game_mode").eq("id",1).maybeSingle();
-    if(error)return;
-    const mode=settings?.game_mode||"survival";
+    if(error){ // lỗi mạng/DB: giữ chế độ đã lưu, chưa có thì mặc định Sinh tồn
+      toggle(cachedMode()==="deathmatch"?"deathmatch":"survival");
+      return;
+    }
+    const mode=settings?.game_mode==="deathmatch"?"deathmatch":"survival";
+    try{localStorage.setItem(MODE_KEY,mode);}catch(_){}
     toggle(mode);
     if(mode!=="deathmatch")return;
     // Ưu tiên RPC tổng hợp để BXH công khai không phụ thuộc RLS của bảng players.
