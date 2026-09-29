@@ -55,7 +55,24 @@
     box.innerHTML=sections.map(([num,title,sub,stage,count,tone])=>{const ms=dmMatches.filter(m=>m.stage===stage).sort((a,b)=>Number(a.match_order)-Number(b.match_order));return `<section class="dm-stage-block"><div class="dm-stage-heading ${stage==='final'?'gold':''}"><span>${num}</span><div><h3>${title}</h3><small>${sub}</small></div></div><div class="dm-final-grid ${count===1?'one':count===2?'two':count===3?'three':'six'}">${ms.map(m=>card(m,m.round_name,tone)).join("")}</div></section>`;}).join("");
     const done=dmMatches.filter(m=>m.status==="completed").length; const meta=document.querySelector("#deathmatchScheduleMeta"); if(meta)meta.textContent=`${done}/17 trận đã chốt`;
   }
+  function updateMatchResultsCard(mode){
+    const title=document.querySelector("#matchResultsTitle");
+    const desc=document.querySelector("#matchResultsDescription");
+    const link=document.querySelector("#matchResultsLink");
+    if(!title||!desc||!link)return;
+    const deathmatch=mode==="deathmatch";
+    title.textContent="📊 Kết quả từng trận";
+    if(deathmatch){
+      desc.textContent="Xem kết quả, thắng–thua và Kill của 17 trận Tử chiến.";
+      link.textContent="Xem kết quả Trận 1–17";
+    }else{
+      desc.textContent="Xem kết quả, Kill và MVP của 4 trận Sinh tồn.";
+      link.textContent="Xem kết quả Trận 1–4";
+    }
+  }
+
   function toggle(mode){
+    updateMatchResultsCard(mode);
     const dm=document.querySelector("#deathmatchPublicArea");
     if(dm)dm.hidden=mode!=="deathmatch";
     document.querySelectorAll(".survival-public-section").forEach(el=>el.hidden=mode==="deathmatch");
