@@ -80,3 +80,8 @@ Nội dung chuyển khoản được tạo tự động từ TÊN FACEBOOK KHÔN
 - Trang `champions.html` hiển thị thêm khối "THÀNH VIÊN ĐỘI VÔ ĐỊCH" (tên, đội trưởng, MVP, số hạ gục).
 - Dữ liệu lưu dạng snapshot trong cột `champion_seasons.team_members`.
 - Sau khi deploy, chạy `repair_v73_champion_members.sql` một lần trong Supabase SQL Editor (sau V45). File này cũng điền thành viên cho Mùa 1.
+
+### V73.2
+- Thẻ thành viên chỉ hiển thị tên (+ huy hiệu Đội trưởng / MVP), không còn số hạ gục.
+- `repair_v73_2_members_names_only.sql`: snapshot thành viên chỉ lưu tên; điền tay 4 thành viên Mùa 1 (chạy sau file V73).
+- Mùa sau: bấm "Lưu mùa giải" trong `hall-admin.html` để lấy danh sách đội hiện tại.

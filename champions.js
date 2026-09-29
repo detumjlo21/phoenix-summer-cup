@@ -18,7 +18,6 @@ function membersBlock(s){
       <span class="hall-v73-member-no">0${idx+1}</span>
       <strong title="${hallEsc(m.name)}">${hallEsc(m.name)}</strong>
       <div class="hall-v73-member-badges">${badges||'<em>TUYỂN THỦ</em>'}</div>
-      <div class="hall-v73-member-kills"><small>HẠ GỤC</small><b>${Number(m.kills||0)}</b></div>
     </article>`;
   }).join('');
   return `<section class="hall-v73-members">
