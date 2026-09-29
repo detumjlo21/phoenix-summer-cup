@@ -13,7 +13,9 @@ async function loadPaymentSettings(){
   const {data,error}=await sb.from('tournament_payment_settings').select('*').eq('id',1).maybeSingle();
   if(error){paymentAdminMsg(error.message,'error');return;}
   const amount=document.querySelector('#paymentAmountInput');
-  if(amount)amount.value=data?.amount??0;\n  const mode=document.querySelector('#registrationModeInput');\n  if(mode)mode.value=data?.registration_mode||'payment';
+  if(amount)amount.value=data?.amount??0;
+  const mode=document.querySelector('#registrationModeInput');
+  if(mode)mode.value=data?.registration_mode||'payment';
 }
 
 async function loadPaymentRequests(){
