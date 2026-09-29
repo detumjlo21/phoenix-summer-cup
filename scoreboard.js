@@ -577,7 +577,7 @@ async function loadTournamentPublic(){
     ]);
 
     const settings = settingsRes.data;
-    const status = document.querySelector("#registrationStatusBadge");
+    const status = document.querySelector("#publicRegistrationStatusBadge");
 
     if(status){
       if(!settings){
