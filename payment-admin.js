@@ -14,8 +14,6 @@ async function loadPaymentSettings(){
   if(error){paymentAdminMsg(error.message,'error');return;}
   const amount=document.querySelector('#paymentAmountInput');
   if(amount)amount.value=data?.amount??0;
-  const mode=document.querySelector('#registrationModeInput');
-  if(mode)mode.value=data?.registration_mode||'payment';
 }
 
 async function loadPaymentRequests(){
@@ -58,9 +56,9 @@ window.loadPaymentAdmin=loadPaymentAdmin;
 document.querySelector('#savePaymentSettingsBtn')?.addEventListener('click',async()=>{
   const amount=Number(document.querySelector('#paymentAmountInput')?.value||0);
   if(amount<=0){paymentAdminMsg('Hãy nhập phí đăng ký lớn hơn 0.','error');return;}
-  const mode=document.querySelector('#registrationModeInput')?.value||'payment';\n  const {error}=await sb.from('tournament_payment_settings').update({amount,registration_mode:mode,updated_at:new Date().toISOString()}).eq('id',1);
+  const {error}=await sb.from('tournament_payment_settings').update({amount,updated_at:new Date().toISOString()}).eq('id',1);
   if(error)paymentAdminMsg(error.message,'error');
-  else paymentAdminMsg(`Đã lưu chế độ ${mode==='free'?'miễn phí, chờ duyệt':'chuyển khoản'} và phí ${paymentAdminMoney(amount)} / người.`,'success');
+  else paymentAdminMsg(`Đã lưu phí ${paymentAdminMoney(amount)} / người.`,'success');
 });
 
 document.querySelector('#refreshPaymentRequestsBtn')?.addEventListener('click',loadPaymentRequests);
