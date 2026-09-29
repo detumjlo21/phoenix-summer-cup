@@ -30,9 +30,16 @@ const countdownWrap=document.querySelector(".countdown-wrap");
 const progressCard=document.querySelector(".progress-card");
 const schedulePanel=document.querySelector("#publicSchedule")?.closest(".panel");
 const announcementPanel=document.querySelector(".tournament-info");
+const teamsPanel=document.querySelector("#teams")?.closest(".panel");
+const resultsPanel=document.querySelector("#matchResultsCta");
+const leaderboardPanel=document.querySelector(".leaderboard-panel");
 
 const announcementHome=document.createComment("announcement-home");
 const scheduleHome=document.createComment("schedule-home");
+const joinHome=document.createComment("join-home");
+const teamsHome=document.createComment("teams-home");
+const resultsHome=document.createComment("results-home");
+const leaderboardHome=document.createComment("leaderboard-home");
 let liveBannerHome=null;
 
 if(announcementPanel?.parentNode){
@@ -48,6 +55,11 @@ if(schedulePanel?.parentNode){
     schedulePanel
   );
 }
+
+if(joinPanel?.parentNode) joinPanel.parentNode.insertBefore(joinHome, joinPanel);
+if(teamsPanel?.parentNode) teamsPanel.parentNode.insertBefore(teamsHome, teamsPanel);
+if(resultsPanel?.parentNode) resultsPanel.parentNode.insertBefore(resultsHome, resultsPanel);
+if(leaderboardPanel?.parentNode) leaderboardPanel.parentNode.insertBefore(leaderboardHome, leaderboardPanel);
 
 // Luôn hiện bảng quy định khi người dùng vừa vào hoặc tải lại trang.
 // Trạng thái Admin chỉ quyết định có hiện form đăng ký hay không.
@@ -77,48 +89,46 @@ function updateTopLayout(){
   const hero=document.querySelector(".hero");
   const liveBanner=document.querySelector("#liveTournamentBanner");
 
-  if(!hero||!schedulePanel)return;
+  if(!hero) return;
 
-  // Ghi nhớ vị trí gốc của khối "Sắp diễn ra" ngay khi scoreboard tạo nó.
   if(liveBanner&&!liveBannerHome&&liveBanner.parentNode){
     liveBannerHome=document.createComment("live-banner-home");
     liveBanner.parentNode.insertBefore(liveBannerHome,liveBanner);
   }
 
   if(registrationManuallyOpen===false){
-    // Khi đóng đăng ký, chỉ di chuyển các khối liên quan đến lịch đấu.
-    // Thông báo BTC luôn giữ nguyên vị trí phía dưới Cơ cấu giải thưởng.
-    let cursor=hero;
-
-    if(liveBanner){
-      cursor.insertAdjacentElement("afterend",liveBanner);
-      cursor=liveBanner;
-    }
-
-    cursor.insertAdjacentElement("afterend",schedulePanel);
+    // Đóng đăng ký:
+    // Thông báo BTC -> Lịch thi đấu -> Danh sách đội -> Kết quả -> BXH
+    if(joinPanel) joinPanel.hidden=true;
+    if(announcementPanel) hero.parentNode.insertBefore(announcementPanel, hero.nextSibling);
+    if(liveBanner && schedulePanel) schedulePanel.parentNode.insertBefore(liveBanner, schedulePanel);
+    if(schedulePanel) announcementPanel.parentNode.insertBefore(schedulePanel, announcementPanel.nextSibling);
+    if(teamsPanel) schedulePanel.parentNode.insertBefore(teamsPanel, schedulePanel.nextSibling);
+    if(resultsPanel) teamsPanel.parentNode.insertBefore(resultsPanel, teamsPanel.nextSibling);
+    if(leaderboardPanel) resultsPanel.parentNode.insertBefore(leaderboardPanel, resultsPanel.nextSibling);
     return;
   }
 
-  // Khi Admin mở đăng ký, đưa các khu vực về đúng vị trí gốc.
-  if(announcementPanel&&announcementHome.parentNode){
-    announcementHome.parentNode.insertBefore(
-      announcementPanel,
-      announcementHome.nextSibling
-    );
+  // Mở đăng ký:
+  // Cơ cấu giải thưởng -> Thông báo BTC -> Đăng ký -> Danh sách đội -> Lịch -> Kết quả -> BXH
+  if(announcementHome.parentNode && announcementPanel){
+    announcementHome.parentNode.insertBefore(announcementPanel, announcementHome.nextSibling);
   }
-
-  if(liveBanner&&liveBannerHome?.parentNode){
-    liveBannerHome.parentNode.insertBefore(
-      liveBanner,
-      liveBannerHome.nextSibling
-    );
+  if(joinHome.parentNode && joinPanel){
+    joinHome.parentNode.insertBefore(joinPanel, joinHome.nextSibling);
+    joinPanel.hidden=false;
   }
-
-  if(schedulePanel&&scheduleHome.parentNode){
-    scheduleHome.parentNode.insertBefore(
-      schedulePanel,
-      scheduleHome.nextSibling
-    );
+  if(teamsHome.parentNode && teamsPanel){
+    teamsHome.parentNode.insertBefore(teamsPanel, teamsHome.nextSibling);
+  }
+  if(scheduleHome.parentNode && schedulePanel){
+    scheduleHome.parentNode.insertBefore(schedulePanel, scheduleHome.nextSibling);
+  }
+  if(resultsHome.parentNode && resultsPanel){
+    resultsHome.parentNode.insertBefore(resultsPanel, resultsHome.nextSibling);
+  }
+  if(leaderboardHome.parentNode && leaderboardPanel){
+    leaderboardHome.parentNode.insertBefore(leaderboardPanel, leaderboardHome.nextSibling);
   }
 }
 
