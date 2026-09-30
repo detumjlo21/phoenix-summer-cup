@@ -102,6 +102,7 @@
     status("Đã lưu","open");
   }
 
+  window.loadPrizesAdmin=()=>load();
   function init(){makePanel();load()}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});
   else init();

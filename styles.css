@@ -8248,3 +8248,9 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 #adminRefreshBtn.spinning .ar-ico{animation:arSpin .7s linear infinite}
 @keyframes arSpin{to{transform:rotate(360deg)}}
 @media(max-width:520px){#adminRefreshBtn{width:52px;height:52px;padding:0;justify-content:center}#adminRefreshBtn .ar-txt{display:none}}
+
+/* V80 - thông báo của nút tải lại dữ liệu */
+#adminRefreshToast{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:9999;max-width:min(86vw,340px);padding:10px 14px;border-radius:12px;font-size:13px;font-weight:700;color:#fff;background:#1a1d27;border:1px solid rgba(255,255,255,.14);box-shadow:0 10px 26px rgba(0,0,0,.45);opacity:0;transform:translateY(8px);pointer-events:none;transition:.25s}
+#adminRefreshToast.show{opacity:1;transform:none}
+#adminRefreshToast.ok{border-color:rgba(74,222,128,.5);color:#b9f7d0}
+#adminRefreshToast.error{border-color:rgba(239,68,68,.6);color:#ffb4ae}

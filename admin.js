@@ -9,10 +9,20 @@ const editor=document.querySelector("#teamNameEditor");
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 function msg(el,text,type=""){el.textContent=text;el.className=`message ${type}`}
+function showAuthDiag(){
+  // Chẩn đoán nhanh vì sao F5 không còn phiên đăng nhập
+  const p=[];
+  try{localStorage.setItem("__t","1");localStorage.removeItem("__t");p.push("lưu trữ trình duyệt: OK");}
+  catch(e){p.push("lưu trữ trình duyệt: BỊ CHẶN ("+e.name+")");}
+  try{const k=Object.keys(localStorage).filter(x=>/^sb-.*-auth-token/.test(x));p.push(k.length?"có phiên đã lưu nhưng không dùng được (hết hạn/bị hủy)":"không có phiên đã lưu");}catch(_){}
+  p.push(location.protocol==="file:"?"đang mở file trực tiếp (nên dùng link web)":"địa chỉ: "+location.origin);
+  if(loginMessage&&!loginMessage.textContent)msg(loginMessage,"Chưa đăng nhập — "+p.join(" • "));
+}
 async function verifyAdmin(){
   try{
     // getSession đọc phiên đã lưu trong máy (tự gia hạn nếu hết hạn)
-    const {data:{session}}=await sb.auth.getSession();const user=session?.user;if(!user)return false;
+    const {data:{session}}=await sb.auth.getSession();const user=session?.user;
+    if(!user){showAuthDiag();return false;}
     const query=()=>sb.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
     let res=await query();
     if(res.error){await new Promise(r=>setTimeout(r,800));res=await query();}
