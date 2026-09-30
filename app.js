@@ -585,7 +585,7 @@ function showResult(data){
   document.querySelector("#resultCode").textContent=`Mã đăng ký: ${data.registration_code}`;
   if(registrationManuallyOpen){
     resultCard.hidden=false;
-    resultCard.scrollIntoView({behavior:"smooth",block:"center"});
+    resultCard.scrollIntoView({behavior:"smooth",block:"start"});
   }else{
     resultCard.hidden=true;
   }
