@@ -4,7 +4,7 @@ let currentPlayers=[],currentTeams=[],searchTerm="";
 
 const loginPanel=document.querySelector("#loginPanel"),adminArea=document.querySelector("#adminArea");
 const loginMessage=document.querySelector("#loginMessage"),adminMessage=document.querySelector("#adminMessage");
-const adminPlayers=document.querySelector("#adminPlayers"),adminTeams=document.querySelector("#adminTeams");
+const adminPlayers=document.querySelector("#adminPlayers"),adminTeams=document.querySelector("#adminTeams")||document.createElement("div"); // #adminTeams không còn trong admin.html: dùng phần tử rỗng để code không bị lỗi null
 const editor=document.querySelector("#teamNameEditor");
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
