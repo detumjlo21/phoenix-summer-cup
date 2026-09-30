@@ -8282,3 +8282,7 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 #adminProBoard .admin-pro-captain-button{grid-column:3;grid-row:2}
 #adminProBoard .admin-pro-delete-player{grid-column:4;grid-row:2}
 #adminProBoard .admin-pro-kill-box{grid-column:5;grid-row:2;justify-self:end}
+
+/* V83 - Thẻ "Đăng ký thành công" nằm TRONG khối đăng ký (không bị script layout đẩy đi nơi khác) */
+.result-card.in-join{margin-top:18px}
+.result-card.in-join[hidden]{display:none}
