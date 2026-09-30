@@ -117,7 +117,7 @@
     updateMatchResultsCard(mode);
     const dm=document.querySelector("#deathmatchPublicArea");
     if(dm)dm.hidden=mode!=="deathmatch";
-    document.querySelectorAll(".survival-public-section").forEach(el=>el.hidden=mode==="deathmatch");
+    document.querySelectorAll(".survival-public-section,#matchMvpSection").forEach(el=>el.hidden=mode==="deathmatch");
 
     // Tử chiến dùng bảng TOP 10 KILL thay hoàn toàn khối MVP cũ.
     const top10Panel=document.querySelector(".deathmatch-top10-panel");

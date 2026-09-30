@@ -215,12 +215,12 @@ async function loadMatchMvps(){
   let section=document.querySelector("#matchMvpSection");
 
   if(!section){
-    const honor=document.querySelector(".mvp-honor-panel");
+    const honor=document.querySelector("#survivalMvpKillPanel");
     if(!honor)return;
 
     section=document.createElement("section");
     section.id="matchMvpSection";
-    section.className="panel match-mvp-section";
+    section.className="panel match-mvp-section survival-public-section";
     honor.parentNode.insertBefore(section,honor);
   }
 
@@ -363,7 +363,7 @@ async function renderMvpV26(){
     const character=document.querySelector("#mvpCharacterImage");
     const placeholder=document.querySelector("#mvpCharacterPlaceholder");
     const cornerLogo=document.querySelector("#mvpTeamLogo");
-    const panel=document.querySelector(".mvp-honor-panel");
+    const panel=document.querySelector("#survivalMvpKillPanel");
 
     if(!info)return;
 
@@ -545,7 +545,7 @@ async function renderMvpV30(){
   ]);
 
   const info=document.querySelector("#mvpPublicInfo");
-  const panel=document.querySelector(".mvp-honor-panel");
+  const panel=document.querySelector("#survivalMvpKillPanel");
   const logo=document.querySelector("#mvpTeamLogo");
   const character=document.querySelector("#mvpCharacterImage");
   const placeholder=document.querySelector("#mvpCharacterPlaceholder");
