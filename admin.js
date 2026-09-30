@@ -10,7 +10,8 @@ const editor=document.querySelector("#teamNameEditor");
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 function msg(el,text,type=""){el.textContent=text;el.className=`message ${type}`}
 async function verifyAdmin(){
-  const {data:{user}}=await sb.auth.getUser();if(!user)return false;
+  // getSession đọc phiên đã lưu trong máy (tự làm mới token nếu hết hạn) → F5 không bị văng đăng nhập
+  const {data:{session}}=await sb.auth.getSession();const user=session?.user;if(!user)return false;
   const {data}=await sb.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
   return !!data;
 }
