@@ -8239,3 +8239,12 @@ footer{text-align:center;margin-top:24px}footer a{color:#ffb05a}
 
 /* V78 - đảm bảo thuộc tính hidden luôn thắng các rule display khác */
 .survival-public-section[hidden],#deathmatchPublicArea[hidden],#survivalScheduleSection[hidden]{display:none!important}
+
+/* V79 - Nút tải lại nổi cho admin */
+#adminRefreshBtn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:9999;display:flex;align-items:center;gap:8px;height:48px;padding:0 18px;border:0;border-radius:999px;font-size:14px;font-weight:800;color:#fff;cursor:pointer;background:linear-gradient(90deg,#ef3d32,#ff8a1f);box-shadow:0 10px 26px rgba(239,61,50,.4)}
+#adminRefreshBtn:hover{filter:brightness(1.08)}
+#adminRefreshBtn:disabled{opacity:.8;cursor:wait}
+#adminRefreshBtn .ar-ico{display:inline-block;font-size:16px}
+#adminRefreshBtn.spinning .ar-ico{animation:arSpin .7s linear infinite}
+@keyframes arSpin{to{transform:rotate(360deg)}}
+@media(max-width:520px){#adminRefreshBtn{width:52px;height:52px;padding:0;justify-content:center}#adminRefreshBtn .ar-txt{display:none}}
