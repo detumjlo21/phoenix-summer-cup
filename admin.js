@@ -10,14 +10,23 @@ const editor=document.querySelector("#teamNameEditor");
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 function msg(el,text,type=""){el.textContent=text;el.className=`message ${type}`}
 async function verifyAdmin(){
-  // getSession đọc phiên đã lưu trong máy (tự làm mới token nếu hết hạn) → F5 không bị văng đăng nhập
-  const {data:{session}}=await sb.auth.getSession();const user=session?.user;if(!user)return false;
-  const {data}=await sb.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
-  return !!data;
+  try{
+    // getSession đọc phiên đã lưu trong máy (tự gia hạn nếu hết hạn)
+    const {data:{session}}=await sb.auth.getSession();const user=session?.user;if(!user)return false;
+    const query=()=>sb.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
+    let res=await query();
+    if(res.error){await new Promise(r=>setTimeout(r,800));res=await query();}
+    if(res.error)throw res.error;
+    return !!res.data;
+  }catch(e){
+    console.error("verifyAdmin:",e);
+    msg(loginMessage,"Không kiểm tra được phiên đăng nhập: "+(e.message||e)+". Bấm F5 thử lại hoặc đăng nhập lại.","error");
+    return false;
+  }
 }
 async function syncUI(){
   const ok=await verifyAdmin();loginPanel.hidden=ok;adminArea.hidden=!ok;
-  if(ok)await loadAll();
+  if(ok){msg(loginMessage,"");await loadAll();}
 }
 document.querySelector("#loginForm").addEventListener("submit",async e=>{
   e.preventDefault();msg(loginMessage,"Đang đăng nhập...");
