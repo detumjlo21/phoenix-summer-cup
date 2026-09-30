@@ -537,15 +537,18 @@ async function saveAdminProTeamName(input){
 
 async function uploadAdminProLogo(input){
   const teamNumber=Number(input.dataset.team);
-  const file=input.files?.[0];
+  let file=input.files?.[0];
   if(!file)return;
 
-  const ext=(file.name.split(".").pop()||"png").toLowerCase();
+  try{file=await phoenixCompressLogo(file);}
+  catch(err){adminProToast("Không xử lý được ảnh: "+(err.message||err),"error");input.value="";return;}
+
+  const ext=file.type==="image/png"?"png":"webp";
   const path=`team-${teamNumber}-${Date.now()}.${ext}`;
 
   const {error:uploadError}=await sb.storage
     .from("team-logos")
-    .upload(path,file,{cacheControl:"3600",upsert:true});
+    .upload(path,file,{cacheControl:"3600",upsert:true,contentType:file.type});
 
   if(uploadError){
     adminProToast(uploadError.message,"error");
@@ -812,4 +815,33 @@ setTimeout(()=>{
 
 function adminProZone(el){
   return el.closest?.(".admin-pro-dropzone")||el.closest?.(".admin-pro-team")?.querySelector(".admin-pro-dropzone")||null;
+}
+
+// Nén + thu nhỏ logo đội trước khi tải lên (bucket team-logos giới hạn 2 MB).
+// Trả về File webp (hoặc png nếu trình duyệt không hỗ trợ webp) tối đa ~1.5 MB.
+async function phoenixCompressLogo(file,maxSide=512,maxBytes=1.5*1024*1024){
+  if(!file||!/^image\//.test(file.type))throw new Error("File không phải ảnh");
+  let bmp;
+  try{bmp=await createImageBitmap(file);}
+  catch(_){
+    bmp=await new Promise((res,rej)=>{const img=new Image();img.onload=()=>res(img);img.onerror=()=>rej(new Error("Không đọc được ảnh (định dạng không hỗ trợ)"));img.src=URL.createObjectURL(file);});
+  }
+  const w0=bmp.width||bmp.naturalWidth,h0=bmp.height||bmp.naturalHeight;
+  const toBlob=(c,type,q)=>new Promise(r=>c.toBlob(r,type,q));
+  let blob=null;
+  for(const side of [maxSide,384,256]){
+    const scale=Math.min(1,side/Math.max(w0,h0));
+    const c=document.createElement("canvas");
+    c.width=Math.max(1,Math.round(w0*scale));c.height=Math.max(1,Math.round(h0*scale));
+    c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);
+    for(const q of [0.92,0.82,0.7,0.55]){
+      blob=await toBlob(c,"image/webp",q);
+      if(blob&&blob.size<=maxBytes)break;
+    }
+    if(!blob||blob.type!=="image/webp")blob=await toBlob(c,"image/png");
+    if(blob&&blob.size<=maxBytes)break;
+  }
+  if(!blob)throw new Error("Không nén được ảnh");
+  const ext=blob.type==="image/png"?"png":"webp";
+  return new File([blob],`logo.${ext}`,{type:blob.type});
 }

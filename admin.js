@@ -219,22 +219,16 @@ editor.addEventListener("click",async e=>{
   if(uploadButton){
     const team=Number(uploadButton.dataset.team);
     const fileInput=editor.querySelector(`.teamLogoInput[data-team="${team}"]`);
-    const file=fileInput.files?.[0];
+    let file=fileInput.files?.[0];
 
     if(!file){
       msg(adminMessage,"Hãy chọn ảnh logo trước.","error");
       return;
     }
 
-    if(!["image/png","image/jpeg","image/webp"].includes(file.type)){
-      msg(adminMessage,"Chỉ nhận ảnh PNG, JPG hoặc WEBP.","error");
-      return;
-    }
+    if(!/^image\//.test(file.type)){msg(adminMessage,"Chỉ nhận file ảnh.","error");return;}
 
-    if(file.size>2*1024*1024){
-      msg(adminMessage,"Ảnh logo phải nhỏ hơn hoặc bằng 2 MB.","error");
-      return;
-    }
+    try{file=await phoenixCompressLogo(file);}catch(err){msg(adminMessage,"Không xử lý được ảnh: "+(err.message||err),"error");return;}
 
     uploadButton.disabled=true;
     msg(adminMessage,"Đang tải logo lên...");
