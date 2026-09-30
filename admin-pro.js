@@ -140,13 +140,6 @@ function renderAdminProBoard(){
                         ${player.id===team.captain_player_id?'<span class="captain-badge">👑 LEADER</span>':""}
                       </div>
                       <small>${adminProEsc(player.facebook_name||"")}</small>
-                      <select class="adminProMoveSelect" data-player="${player.id}" aria-label="Chuyển đội">
-                        <option value="">↔ Chuyển đội…</option>
-                        ${adminProTeams.filter(t=>Number(t.team_number)!==Number(team.team_number)).map(t=>{
-                          const c=adminProTeamMembers(t.team_number).length;
-                          return `<option value="${t.team_number}">${adminProEsc(t.name||"Đội "+t.team_number)} (${c}/4${c>=4?" • đổi chỗ":""})</option>`;
-                        }).join("")}
-                      </select>
                     </div>
 
                     <button
@@ -820,21 +813,3 @@ setTimeout(()=>{
 function adminProZone(el){
   return el.closest?.(".admin-pro-dropzone")||el.closest?.(".admin-pro-team")?.querySelector(".admin-pro-dropzone")||null;
 }
-
-// Chuyển đội bằng ô chọn: đội còn chỗ → chuyển thẳng; đội đã đủ 4 → chọn 1 người để đổi chỗ
-document.addEventListener("change",async event=>{
-  const sel=event.target.closest?.(".adminProMoveSelect");
-  if(!sel)return;
-  const playerId=sel.dataset.player,team=Number(sel.value);
-  sel.value="";
-  if(!team)return;
-  const members=adminProTeamMembers(team);
-  if(members.length>=4){
-    const list=members.map((m,i)=>`${i+1}. ${m.game_name}`).join("\n");
-    const ans=prompt(`Đội ${team} đã đủ 4 người.\nNhập số để ĐỔI CHỖ với 1 người:\n${list}`);
-    const target=members[Number(ans)-1];
-    if(target)await adminProSwapPlayers(playerId,target.id);
-    return;
-  }
-  await adminProMovePlayer(playerId,team);
-});
